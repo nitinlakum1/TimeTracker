@@ -1,9 +1,19 @@
+using Microsoft.EntityFrameworkCore;
+using TimeTracker.Configurations;
+using TimeTracker_Data;
+using TimeTracker_Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
+builder.Services.ConfigureDependencies();
+
+builder.Services.AddDbContext<TTContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("TTContext")));
 
 var app = builder.Build();
 
@@ -24,6 +34,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=User}/{action=Index}/{id?}");
 
 app.Run();

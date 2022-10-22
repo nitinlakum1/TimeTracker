@@ -6,3 +6,10 @@
 /TimeTracker/.vs/TimeTracker
 /TimeTracker/TimeTracker/obj
 /TimeTracker/TimeTracker/Properties
+/TimeTracker/TimeTracker/bin/Debug/net6.0
+/TimeTracker/TimeTracker_Data/obj
+/TimeTracker/TimeTracker_Model/obj
+/TimeTracker/TimeTracker_Repository/bin/Debug/net6.0
+/TimeTracker/TimeTracker_Repository/obj
+/TimeTracker/TimeTracker_Data/bin/Debug/net6.0
+/TimeTracker/TimeTracker_Model/bin/Debug/net6.0
