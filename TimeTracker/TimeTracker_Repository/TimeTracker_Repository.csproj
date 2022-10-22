@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TimeTracker_Data\TimeTracker_Data.csproj" />
+    <ProjectReference Include="..\TimeTracker_Model\TimeTracker_Model.csproj" />
   </ItemGroup>
 
 </Project>
