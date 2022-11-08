@@ -9,6 +9,8 @@ namespace TimeTracker_Data
             : base(options)
         { }
 
+        public TTContext() { }
+
         public DbSet<User> Users { get; set; }
     }
 }
