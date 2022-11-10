@@ -1,46 +1,44 @@
-/*
- * Create Windows Service
- *  sc.exe create TTService binpath="G:\Projects\WCT\TimeTracker\PublishTimeTrackerService\TimeTrackerService.exe"
- * Manage Service Lifetime
- *  sc.exe start TTService | sc.exe stop TTService | sc.exe delete TTService
- */
-
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace TimeTrackerService
 {
     public class Worker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
+        #region Declaration
+        private readonly ILogger<Worker> _logger; 
+        #endregion
 
+        #region Constructor
         public Worker(ILogger<Worker> logger)
         {
-            SetLog("START1");
             _logger = logger;
-            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
-            SetLog("START2");
-        }
+        } 
+        #endregion
 
+        #region Events
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
+            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             await base.StartAsync(cancellationToken);
-        }
-
-        public override async Task StopAsync(CancellationToken cancellationToken)
-        {
-            await base.StopAsync(cancellationToken);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(5000, stoppingToken);
+                if (!IsProcessOpen("ttservice"))
+                {
+
+                }
+                // SetLog(string.Format("RUN: {0}", IsProcessOpen("skype")));
+                await Task.Delay(1000, stoppingToken);
             }
         }
 
-        static async void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
+        static void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
+            SetLog("START2");
             try
             {
                 if (e.Reason == SessionSwitchReason.SessionLock)
@@ -58,6 +56,20 @@ namespace TimeTrackerService
             {
                 SetLog(ex.Message);
             }
+        } 
+        #endregion
+
+        #region Private Methods
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName.ToLower().Contains(name))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private static void SetLog(string message)
@@ -79,6 +91,7 @@ namespace TimeTrackerService
                     sw.WriteLine($"{DateTime.Now.ToLongTimeString()} | {message}");
                 }
             }
-        }
+        } 
+        #endregion
     }
 }
