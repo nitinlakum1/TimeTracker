@@ -10,6 +10,8 @@ namespace TimeTracker_Repository
 
         Task<UserListModel> GetUserById(int id);
 
+        Task<bool> AddUser(AddUserModel model);
+
         Task<bool> DeleteUser(int id);
     }
 }

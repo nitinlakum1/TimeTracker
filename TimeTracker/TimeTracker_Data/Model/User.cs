@@ -7,28 +7,44 @@ namespace TimeTracker_Data.Model
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Username is Required!")]
-        [StringLength(20, MinimumLength = 5, ErrorMessage = "Username should containt between 5 to 20 characters!")]
+        [Required]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "FullName is Required!")]
+        [Required]
         public string FullName { get; set; }
 
-        [Required(ErrorMessage = "Email is Required!")]
-        [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Please enter a valid e-mail adress")]
+        [Required]
         public string Email { get; set; }
+        
+        public string? Designation { get; set; }
 
-        [Required(ErrorMessage = "Contact No. is required!")]
-        [RegularExpression(@"^(\d{10})$", ErrorMessage = "Please enter a valid Contact No.!")]
+        public string? Education { get; set; }
+
+        public string? Experience { get; set; }
+
+        [Required]
         public string ContactNo { get; set; }
 
-        [Required(ErrorMessage = "Gender is Required!")]
+        [Required]
         public bool Gender { get; set; }
 
-        [Required(ErrorMessage = "Password is Required!")]
+        [Required]
         public string Password { get; set; }
+
+        public string? Address { get; set; }
+
+        public DateTime? DOB { get; set; }
+
+        [Required]
+        public DateTime JoiningDate { get; set; }
 
         [Required]
         public DateTime CreateAt { get; set; }
+
+        public string? BankName { get; set; }
+
+        public string? AccountNo { get; set; }
+
+        public string? IFSC { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeTracker.Models;
+using TimeTracker.Models.User;
 using TimeTracker_Model;
 using TimeTracker_Model.User;
 using TimeTracker_Repository;
@@ -41,6 +42,40 @@ namespace TimeTracker.Controllers
         }
 
         public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(AddUserViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var addUser = _mapper.Map<AddUserModel>(model);
+                    var result = await _userRepo.AddUser(addUser);
+
+                    if (result)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
+        }
+
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditUserViewModel model)
         {
             return View();
         }

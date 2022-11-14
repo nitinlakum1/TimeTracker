@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TimeTracker.Models;
+using TimeTracker.Models.User;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.User;
 
@@ -13,6 +14,8 @@ namespace TimeTracker.AutoMapper
             profile.CreateMap<LoginViewModel, LoginModel>();
             profile.CreateMap<User, LoginDetailsModel>();
             profile.CreateMap<User, UserListModel>();
+            profile.CreateMap<AddUserModel, User>();
+            profile.CreateMap<AddUserViewModel, AddUserModel>();
 
             profile.CreateMap<DatatableParamViewModel, UserFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))

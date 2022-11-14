@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.User;
 
@@ -37,6 +38,13 @@ namespace TimeTracker_Repository
         {
             var result = await _userData.GetUserById(id);
             return _mapper.Map<UserListModel>(result);
+        }
+
+        public async Task<bool> AddUser(AddUserModel model)
+        {
+            var user = _mapper.Map<User>(model);
+            user.CreateAt = DateTime.Now;
+            return await _userData.AddUser(user);
         }
 
         public async Task<bool> DeleteUser(int id)

@@ -342,7 +342,7 @@
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
-                    <div class="row mb-2">
+                    <div class="row">
                         @await RenderSectionAsync("ContentHeader", required: false)
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->
@@ -377,7 +377,6 @@
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED SCRIPTS -->
-    
     <!-- Bootstrap -->
     <script src="~/Template/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- overlayScrollbars -->
@@ -391,14 +390,11 @@
     <script src="~/Template/plugins/raphael/raphael.min.js"></script>
     <script src="~/Template/plugins/jquery-mapael/jquery.mapael.min.js"></script>
     <script src="~/Template/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-    
+
     <!-- JQuery Datatable -->
     <script src="~/Template/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Template/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <!-- validate -->
-    <script src="~/Template/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/Template/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-
     <!-- ChartJS -->
     <script src="~/Template/plugins/chart.js/Chart.min.js"></script>
 
@@ -407,6 +403,9 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="~/Template/dist/js/pages/dashboard2.js"></script>
     <script src="~/js/common.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
