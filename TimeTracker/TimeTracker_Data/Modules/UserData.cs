@@ -32,6 +32,71 @@ namespace TimeTracker_Data.Modules
             return result;
         }
 
+        public async Task<(List<User>, int)> GetUserList(UserFilterModel model)
+        {
+            var result = _context.Users
+                .Where(a => string.IsNullOrWhiteSpace(model.SearchText)
+                       || a.FullName.ToLower().Contains(model.SearchText)
+                       || a.ContactNo.ToLower().Contains(model.SearchText)
+                       || a.Email.ToLower().Contains(model.SearchText)
+                       || a.Username.ToLower().Contains(model.SearchText));
+
+            var totalRecord = result.Count();
+
+            if (model.SortOrder.ToLower().Equals("desc")
+                && model.SortColumn.ToLower().Equals("username"))
+            {
+                result = result.OrderByDescending(a => a.Username);
+            }
+            if (model.SortOrder.ToLower().Equals("asc")
+                && model.SortColumn.ToLower().Equals("username"))
+            {
+                result = result.OrderBy(a => a.Username);
+            }
+
+            if (model.SortOrder.ToLower().Equals("desc")
+                && model.SortColumn.ToLower().Equals("contactno"))
+            {
+                result = result.OrderByDescending(a => a.ContactNo);
+            }
+            if (model.SortOrder.ToLower().Equals("asc")
+                && model.SortColumn.ToLower().Equals("contactno"))
+            {
+                result = result.OrderBy(a => a.ContactNo);
+            }
+
+            result = result
+                .Skip(model.DisplayStart)
+                .Take(model.PageSize);
+
+            return (await result.ToListAsync(), totalRecord);
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
+
+            if (result == null)
+            {
+                result = new User();
+            }
+            return result;
+        }
+
+        public async Task<bool> DeleteUser(int id)
+        {
+            var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
+
+            if (result == null)
+            {
+                return false;
+            }
+            _context.Users.Remove(result);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         #endregion
     }
 }

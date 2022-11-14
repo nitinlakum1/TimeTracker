@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using TimeTracker.Models;
 using TimeTracker_Model;
 using TimeTracker_Model.User;
@@ -8,22 +8,16 @@ using TimeTracker_Repository;
 
 namespace TimeTracker.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper;
-        private readonly ITokenService _tokenService;
-        private readonly JwtSettingModel _jwtSettings;
 
-        public UserController(IUserRepo userRepo,
-                              IMapper mapper,
-                              ITokenService tokenService,
-                              IOptions<JwtSettingModel> jwtSettings)
+        public UserController(IUserRepo userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
             _mapper = mapper;
-            _tokenService = tokenService;
-            _jwtSettings = jwtSettings.Value;
         }
 
         public IActionResult Index()
@@ -31,41 +25,44 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> LoadUser(DatatableParamViewModel param)
         {
-            try
-            {
-                var result = await _userRepo.ValidateUser(_mapper.Map<LoginModel>(model));
+            var dtParam = _mapper.Map<UserFilterModel>(param);
 
-                if (result != null && result.Id > 0)
-                {
-                    UserToken generatedToken = _tokenService.BuildToken(result, _jwtSettings);
-                    if (generatedToken != null)
-                    {
-                        HttpContext.Session.SetString("Token", generatedToken.Token);
-                        return RedirectToAction("Index", "Dashboard");
-                    }
-                    else
-                    {
-                        //TODO: Set validation. | Display error message to user.
-                        return RedirectToAction("Index");
-                    }
-                }
-                else
-                {
-                    //TODO: Set validation. | Display error message to user.
-                    return View("Index");
-                }
-            }
-            catch (Exception)
+            var (userList, totalRecord) = await _userRepo.GetUserList(dtParam);
+
+            return Json(new
             {
-                throw;
-            }
+                param.sEcho,
+                iTotalRecords = totalRecord,
+                iTotalDisplayRecords = totalRecord,
+                aaData = userList
+            });
         }
 
-        public IActionResult ForgotPassword()
+        public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            bool isSuccess = false;
+            string message = "";
+            try
+            {
+                if (id > 0)
+                {
+                    isSuccess = await _userRepo.DeleteUser(id);
+                    message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
+                }
+            }
+            catch (Exception ex)
+            {
+                //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
+            }
+            return Json(new { isSuccess, message });
         }
     }
 }

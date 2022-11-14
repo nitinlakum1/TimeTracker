@@ -1,18 +1,37 @@
-html {
-  font-size: 14px;
+.card-header {
+    padding: 7px 20px !important;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.card-title {
+    margin-top: 5px !important;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+.alert-success {
+    color: #155724 !important;
+    background-color: #d4edda !important;
+    border-color: #c3e6cb !important;
 }
 
-body {
-  margin-bottom: 60px;
+.alert-warning {
+    color: #856404 !important;
+    background-color: #fff3cd !important;
+    border-color: #ffeeba !important;
 }
+
+.alert-danger {
+    color: #721c24 !important;
+    background-color: #f8d7da !important;
+    border-color: #f5c6cb !important;
+}
+
+.alert {
+    padding: 0.5rem 1.25rem !important;
+}
+
+.close {
+    padding: 0.5rem 1.25rem !important;
+}
+
+
+
+
