@@ -19,7 +19,7 @@ namespace TimeTracker_Data.Modules
 
         #region Methods
 
-        public async Task<User> ValidateUser(LoginModel model)
+        public async Task<Users> ValidateUser(LoginModel model)
         {
             var result = await _context.Users
                                        .FirstOrDefaultAsync(a => a.Username.ToLower() == model.Username.ToLower()
@@ -27,12 +27,12 @@ namespace TimeTracker_Data.Modules
 
             if (result == null)
             {
-                result = new User();
+                result = new Users();
             }
             return result;
         }
 
-        public async Task<(List<User>, int)> GetUserList(UserFilterModel model)
+        public async Task<(List<Users>, int)> GetUserList(UserFilterModel model)
         {
             var result = _context.Users
                 .Where(a => string.IsNullOrWhiteSpace(model.SearchText)
@@ -72,18 +72,18 @@ namespace TimeTracker_Data.Modules
             return (await result.ToListAsync(), totalRecord);
         }
 
-        public async Task<User> GetUserById(int id)
+        public async Task<Users> GetUserById(int id)
         {
             var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
 
             if (result == null)
             {
-                result = new User();
+                result = new Users();
             }
             return result;
         }
 
-        public async Task<bool> AddUser(User model)
+        public async Task<bool> AddUser(Users model)
         {
             _context.Users.Add(model);
             await _context.SaveChangesAsync();

@@ -2,7 +2,7 @@
 
 namespace TimeTracker_Data.Model
 {
-    public class User
+    public class Users
     {
         [Key]
         public int Id { get; set; }
@@ -46,5 +46,7 @@ namespace TimeTracker_Data.Model
         public string? AccountNo { get; set; }
 
         public string? IFSC { get; set; }
+
+        public string? MacAddress { get; set; }
     }
 }

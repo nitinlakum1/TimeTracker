@@ -42,7 +42,7 @@ namespace TimeTracker_Repository
 
         public async Task<bool> AddUser(AddUserModel model)
         {
-            var user = _mapper.Map<User>(model);
+            var user = _mapper.Map<Users>(model);
             user.CreateAt = DateTime.Now;
             return await _userData.AddUser(user);
         }

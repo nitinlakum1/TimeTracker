@@ -11,6 +11,8 @@ namespace TimeTracker_Data
 
         public TTContext() { }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Settings> Settings { get; set; }
+        public DbSet<SystemLogs> SystemLogs { get; set; }
     }
 }
