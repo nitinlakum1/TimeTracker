@@ -40,6 +40,7 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.ServiceName = "TTService";
+            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
             // 
