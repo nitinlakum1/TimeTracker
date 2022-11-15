@@ -1,29 +1,24 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using TimeTracker.Models;
+using TimeTracker.Models.User;
 using TimeTracker_Model;
 using TimeTracker_Model.User;
 using TimeTracker_Repository;
 
 namespace TimeTracker.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper;
-        private readonly ITokenService _tokenService;
-        private readonly JwtSettingModel _jwtSettings;
 
-        public UserController(IUserRepo userRepo,
-                              IMapper mapper,
-                              ITokenService tokenService,
-                              IOptions<JwtSettingModel> jwtSettings)
+        public UserController(IUserRepo userRepo, IMapper mapper)
         {
             _userRepo = userRepo;
             _mapper = mapper;
-            _tokenService = tokenService;
-            _jwtSettings = jwtSettings.Value;
         }
 
         public IActionResult Index()
@@ -31,41 +26,78 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> LoadUser(DatatableParamViewModel param)
+        {
+            var dtParam = _mapper.Map<UserFilterModel>(param);
+
+            var (userList, totalRecord) = await _userRepo.GetUserList(dtParam);
+
+            return Json(new
+            {
+                param.sEcho,
+                iTotalRecords = totalRecord,
+                iTotalDisplayRecords = totalRecord,
+                aaData = userList
+            });
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(AddUserViewModel model)
         {
             try
             {
-                var result = await _userRepo.ValidateUser(_mapper.Map<LoginModel>(model));
-
-                if (result != null && result.Id > 0)
+                if (ModelState.IsValid)
                 {
-                    UserToken generatedToken = _tokenService.BuildToken(result, _jwtSettings);
-                    if (generatedToken != null)
+                    var addUser = _mapper.Map<AddUserModel>(model);
+                    var result = await _userRepo.AddUser(addUser);
+
+                    if (result)
                     {
-                        HttpContext.Session.SetString("Token", generatedToken.Token);
-                        return RedirectToAction("Index", "Dashboard");
-                    }
-                    else
-                    {
-                        //TODO: Set validation. | Display error message to user.
                         return RedirectToAction("Index");
                     }
-                }
-                else
-                {
-                    //TODO: Set validation. | Display error message to user.
-                    return View("Index");
                 }
             }
             catch (Exception)
             {
                 throw;
             }
+            return View();
         }
 
-        public IActionResult ForgotPassword()
+        public IActionResult Edit()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditUserViewModel model)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            bool isSuccess = false;
+            string message = "";
+            try
+            {
+                if (id > 0)
+                {
+                    isSuccess = await _userRepo.DeleteUser(id);
+                    message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
+                }
+            }
+            catch (Exception ex)
+            {
+                //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
+            }
+            return Json(new { isSuccess, message });
         }
     }
 }
