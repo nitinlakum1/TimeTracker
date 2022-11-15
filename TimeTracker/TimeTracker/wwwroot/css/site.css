@@ -32,6 +32,12 @@
     padding: 0.5rem 1.25rem !important;
 }
 
+.theme-color {
+    background: #3c8dbc;
+    border-color: #3c8dbc;
+}
 
-
-
+.theme-colors {
+    color: #3c8dbc;
+    border-color: #3c8dbc;
+}
