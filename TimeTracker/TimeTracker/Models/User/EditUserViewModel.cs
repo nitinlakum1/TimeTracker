@@ -30,18 +30,20 @@ namespace TimeTracker.Models.User
         [Required(ErrorMessage = "Joining date is required.")]
         public DateTime JoiningDate { get; set; }
 
-        public string Education { get; set; }
+        public string? Education { get; set; }
 
-        public string Experience { get; set; }
+        public string? Experience { get; set; }
 
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
 
-        public string BankName { get; set; }
+        public string? BankName { get; set; }
 
-        public string AccountNo { get; set; }
+        public string? AccountNo { get; set; }
 
-        public string IFSC { get; set; }
+        public string? IFSC { get; set; }
+
+        public string? MacAddress { get; set; }
     }
 }

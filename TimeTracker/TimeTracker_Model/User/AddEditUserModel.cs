@@ -1,6 +1,8 @@
-﻿namespace TimeTracker_Model.User
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TimeTracker_Model.User
 {
-    public class UserListModel
+    public class AddEditUserModel
     {
         public int Id { get; set; }
         public string Username { get; set; }
@@ -11,11 +13,9 @@
         public string? Experience { get; set; }
         public string ContactNo { get; set; }
         public bool Gender { get; set; }
-        public string Password { get; set; }
         public string? Address { get; set; }
         public DateTime? DOB { get; set; }
         public DateTime JoiningDate { get; set; }
-        public DateTime CreateAt { get; set; }
         public string? BankName { get; set; }
         public string? AccountNo { get; set; }
         public string? IFSC { get; set; }

@@ -37,7 +37,12 @@
     border-color: #3c8dbc;
 }
 
-.theme-colors {
+.font-color {
     color: #3c8dbc;
     border-color: #3c8dbc;
+}
+
+label {
+    margin-bottom: 0.2rem !important;
+    font-size: 15px !important;
 }

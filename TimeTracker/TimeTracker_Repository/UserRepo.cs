@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.ComponentModel.DataAnnotations;
 using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.User;
@@ -40,11 +41,33 @@ namespace TimeTracker_Repository
             return _mapper.Map<UserListModel>(result);
         }
 
-        public async Task<bool> AddUser(AddUserModel model)
+        public async Task<bool> AddUser(AddEditUserModel model)
         {
             var user = _mapper.Map<Users>(model);
             user.CreateAt = DateTime.Now;
             return await _userData.AddUser(user);
+        }
+
+        public async Task<bool> UpdateUser(AddEditUserModel model)
+        {
+            var result = await _userData.GetUserById(model.Id);
+            result.Username = model.Username;
+            result.FullName = model.FullName;
+            result.Email = model.Email;
+            result.Designation = model.Designation;
+            result.Education = model.Education;
+            result.Experience = model.Experience;
+            result.ContactNo = model.ContactNo;
+            result.Gender = model.Gender;
+            result.Address = model.Address;
+            result.DOB = model.DOB;
+            result.JoiningDate = model.JoiningDate;
+            result.BankName = model.BankName;
+            result.AccountNo = model.AccountNo;
+            result.IFSC = model.IFSC;
+            result.MacAddress = model.MacAddress;
+
+            return await _userData.UpdateUser(result);
         }
 
         public async Task<bool> DeleteUser(int id)

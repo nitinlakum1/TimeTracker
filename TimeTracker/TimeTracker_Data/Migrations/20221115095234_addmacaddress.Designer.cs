@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TimeTracker_Data;
 
@@ -11,9 +12,10 @@ using TimeTracker_Data;
 namespace TimeTracker_Data.Migrations
 {
     [DbContext(typeof(TTContext))]
-    partial class TTContextModelSnapshot : ModelSnapshot
+    [Migration("20221115095234_addmacaddress")]
+    partial class addmacaddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +45,7 @@ namespace TimeTracker_Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("TimeTracker_Data.Model.SystemLogs", b =>
@@ -70,7 +72,7 @@ namespace TimeTracker_Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SystemLogs", (string)null);
+                    b.ToTable("SystemLogs");
                 });
 
             modelBuilder.Entity("TimeTracker_Data.Model.Users", b =>
@@ -139,7 +141,7 @@ namespace TimeTracker_Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

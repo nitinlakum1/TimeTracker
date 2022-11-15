@@ -53,7 +53,7 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var addUser = _mapper.Map<AddUserModel>(model);
+                    var addUser = _mapper.Map<AddEditUserModel>(model);
                     var result = await _userRepo.AddUser(addUser);
 
                     if (result)
@@ -69,14 +69,33 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        public IActionResult Edit()
+        public async Task<IActionResult> Update(int id)
         {
-            return View();
+            var user = await _userRepo.GetUserById(id);
+            var model = _mapper.Map<EditUserViewModel>(user);
+            return View(model);
         }
 
         [HttpPost]
-        public IActionResult Edit(EditUserViewModel model)
+        public async Task<IActionResult> Update(EditUserViewModel model)
         {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var editUser = _mapper.Map<AddEditUserModel>(model);
+                    var result = await _userRepo.UpdateUser(editUser);
+
+                    if (result)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             return View();
         }
 

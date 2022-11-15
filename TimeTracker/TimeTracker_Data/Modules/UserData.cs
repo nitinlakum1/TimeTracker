@@ -90,6 +90,13 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
+        public async Task<bool> UpdateUser(Users model)
+        {
+            _context.Users.Update(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> DeleteUser(int id)
         {
             var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
