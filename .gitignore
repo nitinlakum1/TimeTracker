@@ -19,3 +19,6 @@
 /TimeTracker/TimeTrackerService/obj
 /TimeTracker/TimeTrackerService/TimeTrackerService.csproj.user
 /TimeTracker/TimeTrackerService/appsettings.Development.json
+/PublishTimeTrackerSystemLog
+/TimeTracker/TimeTrackerService/1
+/TimeTracker/TimeTrackerService/publish
