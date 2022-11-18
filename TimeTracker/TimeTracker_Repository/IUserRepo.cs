@@ -6,9 +6,9 @@ namespace TimeTracker_Repository
     {
         Task<LoginDetailsModel> ValidateUser(LoginModel model);
 
-        Task<(List<UserListModel>, int)> GetUserList(UserFilterModel model);
+        Task<(List<UserModel>, int)> GetUserList(UserFilterModel model);
 
-        Task<UserListModel> GetUserById(int id);
+        Task<UserModel> GetUserById(int id);
 
         Task<bool> AddUser(AddEditUserModel model);
 

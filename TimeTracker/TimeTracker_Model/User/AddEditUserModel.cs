@@ -20,5 +20,6 @@ namespace TimeTracker_Model.User
         public string? AccountNo { get; set; }
         public string? IFSC { get; set; }
         public string? MacAddress { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TimeTracker_Data.Model
 {
@@ -6,6 +7,10 @@ namespace TimeTracker_Data.Model
     {
         [Key]
         public int Id { get; set; }
+
+        [Required]
+        [ForeignKey("Roles")]
+        public int RoleId { get; set; }
 
         [Required]
         public string Username { get; set; }
@@ -48,5 +53,8 @@ namespace TimeTracker_Data.Model
         public string? IFSC { get; set; }
 
         public string? MacAddress { get; set; }
+
+        
+        public Roles Roles { get; set; }
     }
 }

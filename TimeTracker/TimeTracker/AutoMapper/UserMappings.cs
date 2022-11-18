@@ -13,10 +13,11 @@ namespace TimeTracker.AutoMapper
         {
             profile.CreateMap<LoginViewModel, LoginModel>();
             profile.CreateMap<Users, LoginDetailsModel>();
-            profile.CreateMap<Users, UserListModel>();
+            profile.CreateMap<Users, UserModel>();
+            profile.CreateMap<AddEditUserModel, Users>();
             profile.CreateMap<AddUserViewModel, AddEditUserModel>();
             profile.CreateMap<EditUserViewModel, AddEditUserModel>();
-            profile.CreateMap<UserListModel, EditUserViewModel>();
+            profile.CreateMap<UserModel, EditUserViewModel>();
 
             profile.CreateMap<DatatableParamViewModel, UserFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))

@@ -1,6 +1,6 @@
 ﻿namespace TimeTracker_Model.User
 {
-    public class UserListModel
+    public class UserModel
     {
         public int Id { get; set; }
         public string Username { get; set; }

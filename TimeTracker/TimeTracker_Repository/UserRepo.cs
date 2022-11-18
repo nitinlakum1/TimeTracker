@@ -29,16 +29,16 @@ namespace TimeTracker_Repository
             return _mapper.Map<LoginDetailsModel>(result);
         }
 
-        public async Task<(List<UserListModel>, int)> GetUserList(UserFilterModel model)
+        public async Task<(List<UserModel>, int)> GetUserList(UserFilterModel model)
         {
             var (userList, totalRecord) = await _userData.GetUserList(model);
-            return (_mapper.Map<List<UserListModel>>(userList), totalRecord);
+            return (_mapper.Map<List<UserModel>>(userList), totalRecord);
         }
 
-        public async Task<UserListModel> GetUserById(int id)
+        public async Task<UserModel> GetUserById(int id)
         {
             var result = await _userData.GetUserById(id);
-            return _mapper.Map<UserListModel>(result);
+            return _mapper.Map<UserModel>(result);
         }
 
         public async Task<bool> AddUser(AddEditUserModel model)
