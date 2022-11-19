@@ -1,0 +1,77 @@
+﻿@model List<TimeTracker_Model.SystemLog.SystemLogModel>
+
+@{
+    ViewData["Title"] = "SystemLog";
+}
+
+@section ContentHeader{
+    <div class="col-sm-6">
+        <h1 class="m-0">Users</h1>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Users</li>
+        </ol>
+    </div>
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-lightblue card-outline">
+                <div class="card-header">
+                    <h3 class="card-title font-color">
+                        <i class="fas fa-user"></i>
+                        Users
+                    </h3>
+                    <div style="float:right;">
+                        <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-striped" id="tblUsers">
+                                    <thead>
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Log Time</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="comformdelete">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure to delete</h5>
+                    <p hidden id="deleteId"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Close()">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="conformDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts{
+    <script src="~/js/systemlog.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            bindDataTable();
+        });
+    </script>
+}
