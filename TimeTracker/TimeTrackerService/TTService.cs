@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.ServiceProcess;
+using TimeTrackerService.DataModel;
+using static TimeTrackerService.Enum;
 
 namespace TimeTrackerService
 {
@@ -19,7 +21,7 @@ namespace TimeTrackerService
         #region Events
         protected override void OnStart(string[] args)
         {
-            SetLog("Service is Start");
+            SetLog("Service is Start", LogTypes.Other);
         }
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
@@ -27,22 +29,22 @@ namespace TimeTrackerService
             switch (changeDescription.Reason)
             {
                 case SessionChangeReason.SessionLogon:
-                    SetLog("System Log On");
+                    SetLog("System Log On", LogTypes.SystemLogOn);
                     break;
                 case SessionChangeReason.SessionLogoff:
-                    SetLog("System Log Off");
+                    SetLog("System Log Off", LogTypes.SystemLogOff);
                     break;
-                case SessionChangeReason.RemoteConnect:
-                    SetLog("System Remote Connect");
-                    break;
-                case SessionChangeReason.RemoteDisconnect:
-                    SetLog("System Remote Disconnect");
-                    break;
+                //case SessionChangeReason.RemoteConnect:
+                //    SetLog("System Remote Connect");
+                //    break;
+                //case SessionChangeReason.RemoteDisconnect:
+                //    SetLog("System Remote Disconnect");
+                //    break;
                 case SessionChangeReason.SessionLock:
-                    SetLog("System Locked");
+                    SetLog("System Locked", LogTypes.SystemLock);
                     break;
                 case SessionChangeReason.SessionUnlock:
-                    SetLog("System Unlocked");
+                    SetLog("System Unlocked", LogTypes.SystemUnlock);
                     break;
                 default:
                     break;
@@ -51,29 +53,47 @@ namespace TimeTrackerService
 
         protected override void OnShutdown()
         {
-            SetLog("System Shutdown");
+            SetLog("System Shutdown", LogTypes.Other);
         }
 
         protected override void OnStop()
         {
-            SetLog("Service is Stopped");
+            SetLog("Service is Stopped", LogTypes.Other);
         }
         #endregion
 
         #region Private Method
-        private static void SetLog(string message)
+        private static async void SetLog(string message, LogTypes module)
         {
+            var logTime = DateTime.Now;
+            try
+            {
+                Data.SystemLogData systemLogData = new Data.SystemLogData();
+                AddSystemLogModel model = new AddSystemLogModel()
+                {
+                    UserId = 1,
+                    LogType = module,
+                    Description = message,
+                    LogTime = logTime
+                };
+                await systemLogData.AddSystemLog(model);
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }
+
             string path = @"C:\Program Files\WCT\";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", DateTime.Now.Date));
+            path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
 
             FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
             StreamWriter sWriter = new StreamWriter(fs);
             sWriter.BaseStream.Seek(0, SeekOrigin.End);
-            sWriter.WriteLine($"{DateTime.Now:dd-MM-yy hh:mm:ss tt} | {message}");
+            sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {module} | {message}");
             sWriter.Flush();
             sWriter.Close();
         }
