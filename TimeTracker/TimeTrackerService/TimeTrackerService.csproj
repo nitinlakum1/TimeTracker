@@ -62,11 +62,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonData.cs" />
     <Compile Include="Data\Dac.cs" />
     <Compile Include="Data\SystemLogData.cs" />
-    <Compile Include="Enum.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Model\AddSystemLogModel.cs" />
-    <Compile Include="Model\SystemLogModel.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

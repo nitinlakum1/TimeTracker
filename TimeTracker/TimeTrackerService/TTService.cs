@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Net.NetworkInformation;
 using System.ServiceProcess;
 using TimeTrackerService.DataModel;
-using static TimeTrackerService.Enum;
+using static TimeTrackerService.Enums;
 
 namespace TimeTrackerService
 {
@@ -68,10 +70,12 @@ namespace TimeTrackerService
             var logTime = DateTime.Now;
             try
             {
+                var macAddress = GetMacAddress();
+
                 Data.SystemLogData systemLogData = new Data.SystemLogData();
                 AddSystemLogModel model = new AddSystemLogModel()
                 {
-                    UserId = 1,
+                    MacAddress = macAddress,
                     LogType = module,
                     Description = message,
                     LogTime = logTime
@@ -93,9 +97,18 @@ namespace TimeTrackerService
             FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
             StreamWriter sWriter = new StreamWriter(fs);
             sWriter.BaseStream.Seek(0, SeekOrigin.End);
-            sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {module} | {message}");
+            sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)module} | {message}");
             sWriter.Flush();
             sWriter.Close();
+        }
+
+        private static string GetMacAddress()
+        {
+            return NetworkInterface.GetAllNetworkInterfaces()
+                    .Where(a => a.NetworkInterfaceType.ToString() == NetworkInterfaceType.Ethernet.ToString()
+                           && a.GetType().Name == "SystemNetworkInterface")
+                    .Select(a => a.GetPhysicalAddress().ToString())
+                    .FirstOrDefault();
         }
         #endregion
     }

@@ -4,13 +4,15 @@
 -- Description : Insert system logs.
 -- =============================================
 CREATE PROCEDURE [dbo].[AddSystemLog]
-	@UserId INT
+	@MacAddress NVARCHAR(50)
 	,@LogType INT
 	,@Description NVARCHAR(50)
 	,@LogTime DATETIME
 AS
 BEGIN
 BEGIN TRY
+
+	DECLARE @UserId INT = (SELECT TOP 1 U.Id FROM dbo.Users U WHERE U.MacAddress = @MacAddress)
 
 	INSERT INTO [dbo].SystemLogs
 	(

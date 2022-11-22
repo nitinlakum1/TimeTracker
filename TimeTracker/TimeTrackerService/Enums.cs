@@ -1,6 +1,6 @@
 ﻿namespace TimeTrackerService
 {
-    public class Enum
+    public class Enums
     {
         #region LogTypes
         public enum LogTypes : int
