@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimeTracker_Model;
 
 namespace TimeTracker.Models.User
 {
@@ -28,5 +29,8 @@ namespace TimeTracker.Models.User
 
         [Required(ErrorMessage = "Joining date is required.")]
         public DateTime JoiningDate { get; set; }
+
+        [Required(ErrorMessage = "Role is required.")]
+        public int RoleId { get; set; }
     }
 }

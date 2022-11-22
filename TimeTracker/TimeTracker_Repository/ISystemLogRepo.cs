@@ -6,5 +6,8 @@ namespace TimeTracker_Repository
     public interface ISystemLogRepo
     {
         Task<(List<SystemLogModel>, int)> GetSystemLog(SystemLogFilterModel model);
+
+        Task<bool> DeleteSystemLog(int id);
+
     }
 }

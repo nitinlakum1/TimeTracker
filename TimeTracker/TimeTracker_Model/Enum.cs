@@ -7,6 +7,6 @@
         SystemLock = 2,
         SystemUnlock = 3,
         SystemLogOff = 4,
-    } 
+    }
     #endregion
 }
