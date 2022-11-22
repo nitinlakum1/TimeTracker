@@ -67,12 +67,14 @@
     <Compile Include="Data\SystemLogData.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Model\AddSystemLogModel.cs" />
+    <Compile Include="Model\SettingModel.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
+    <Compile Include="Structures.cs" />
     <Compile Include="TTService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -107,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SqlScripts\AddSystemLog.sql" />
+    <Content Include="SqlScripts\GetSettings.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

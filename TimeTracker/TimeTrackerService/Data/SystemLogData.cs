@@ -35,33 +35,28 @@ namespace TimeTrackerService.Data
             }
         }
 
-        //public async Task<GetUserByMacModel> GetUserByMac(string macAddress)
-        //{
-        //    try
-        //    {
-        //        GetUserByMacModel model = null;
+        public async Task<List<SettingModel>> GetSettings()
+        {
+            try
+            {
+                List<SettingModel> model = null;
 
-        //        List<SqlParameter> lstParameter = new List<SqlParameter>()
-        //        {
-        //            Dac.MakeDbParameter("@MacAddress", DbType.String, macAddress)
-        //        };
+                var result = await Dac.GetDataAsDatasetAsync("GetSettings");
 
-        //        var result = await Dac.GetDataAsDatasetAsync("GetUserByMac", lstParameter);
-
-        //        if (result != null && result.Tables.Count > 0)
-        //        {
-        //            var resultData = CommonData.DataTableToList<GetUserByMacModel>(result.Tables[0]);
-        //            if (resultData != null && resultData.Any())
-        //            {
-        //                model = resultData.FirstOrDefault();
-        //            }
-        //        }
-        //        return model;
-        //    }
-        //    catch
-        //    {
-        //        throw;
-        //    }
-        //}
+                if (result != null && result.Tables.Count > 0)
+                {
+                    var resultData = CommonData.DataTableToList<SettingModel>(result.Tables[0]);
+                    if (resultData != null && resultData.Any())
+                    {
+                        model = resultData;
+                    }
+                }
+                return model;
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
