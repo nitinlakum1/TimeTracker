@@ -36,3 +36,10 @@ function setDateTimeFormat(data) {
     }
     return moment(data).format('DD-MM-yyyy hh:mm A');
 }
+
+function SelectedMenu(mainMenu, subMenu) {
+    $('#' + mainMenu).addClass("active");
+    $('#' + mainMenu).parent().addClass("menu-is-opening");
+    $('#' + mainMenu).next('ul').css('display', 'block')
+    $('#' + subMenu).addClass("active");
+}

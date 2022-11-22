@@ -5,7 +5,7 @@
 
 @section ContentHeader{
     <div class="col-sm-6">
-        <h1 class="m-0">Update User</h1>
+        <h4 class="m-0">Update User</h4>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -89,7 +89,7 @@
                                 <label asp-for="IFSC">IFSC</label>
                                 <input asp-for="IFSC" type="text" class="form-control form-control-sm" placeholder="IFSC">
                             </div>
-                           
+
                         </div>
                         <hr />
                         <h5 class="font-color">Other Details</h5>
@@ -122,3 +122,12 @@
             </div>
         </div>
     </div>
+
+
+    @section Scripts{
+    <script>
+        $(document).ready(function () {
+            SelectedMenu('menuMaster', 'menuUsers');
+        });
+    </script>
+}

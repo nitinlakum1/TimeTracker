@@ -76,10 +76,7 @@ namespace TimeTracker_Data.Modules
         {
             var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
 
-            if (result == null)
-            {
-                result = new Users();
-            }
+            result ??= new Users();
             return result;
         }
 

@@ -3,21 +3,8 @@
 @{
     ViewData["Title"] = "Dashboard";
 
-    var logOn = Model.FirstOrDefault(a => a.Description.Equals("System Log On"));
-
-    var data = Model.Skip(1).ToList();
-
-    var Locked = data.Where(a => a.Description.Equals("System Locked")).Select(a => a.LogTime).ToList();
-    var Unlocked = data.Where(a => a.Description.Equals("System Unlocked") || a.Description.Equals("System Log On")).Select(a => a.LogTime).ToList();
-    TimeSpan aaa = new TimeSpan();
-
-    for (int i = 0; i < Locked.Count; i++)
-    {
-        aaa += (Unlocked[i] - Locked[i]);
-    }
-
-    var todaysHour = DateTime.Now - logOn.LogTime - aaa;
 }
+
 
 <div class="row">
     <div class="col-12 col-sm-6 col-md-3">
@@ -55,14 +42,23 @@
             <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">New Members</span>
-                <span class="info-box-number">@string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours,todaysHour.Minutes,todaysHour.Seconds)</span>
+                <span class="info-box-number">123</span>
             </div>
         </div>
     </div>
-    <div class="col-md-12">
+    @*<div class="col-md-12">
         @foreach (var item in Model)
         {
             <p>@item.LogTime | @item.Description </p>
         }
-    </div>
+    </div>*@
 </div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            SelectedMenu('menuDashboard', '');
+            bindDataTable();
+        });
+    </script>
+}

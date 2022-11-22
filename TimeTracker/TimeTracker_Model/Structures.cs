@@ -15,4 +15,11 @@ namespace TimeTracker_Model
         public const string EDIT_SUCCESS = "Updated successfully.";
     }
     #endregion
+
+    #region AppSettings
+    public struct AppSettings
+    {
+        public const string SYSTEM_WIFI_NAME = "SYSTEM_WIFI_NAME";
+    }
+    #endregion
 }

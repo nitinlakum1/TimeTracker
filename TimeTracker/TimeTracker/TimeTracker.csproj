@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SqlScript\01_Pre_Config.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="SqlScript\01_Pre_Config.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\Template\" />
   </ItemGroup>
 

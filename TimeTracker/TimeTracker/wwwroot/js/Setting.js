@@ -2,7 +2,7 @@
     datatable = $('#tblUsers')
         .dataTable(
             {
-                "sAjaxSource": "/SystemLog/GetSystemLog",
+                "sAjaxSource": "/Setting/SettingList",
                 "bServerSide": true,
                 "bProcessing": true,
                 "bSearchable": true,
@@ -19,23 +19,28 @@
                 "fnServerParams": function (aoData) {
                 },
                 "aoColumns": [
-                    { "data": "description" },
-                    {
-                        "data": "logTime", "render": function (data) {
-                            return setDateTimeFormat(data);
-                        }
-                    },
-                    { "data": "id", "bSortable": false },
+                    { "data": "displayName" },
+                    { "data": "key" },
+                    { "data": "value" },
+                    { "data": "isActive", "bSortable": false, width: 80 },
+                    { "data": "id", "bSortable": false, width: 70 },
                 ],
                 columnDefs: [
                     {
-                        targets: 2,
+                        targets: 3,
                         render: function (data, type, row) {
-                            if (row.username == 'Dev' || row.username == 'Admin') {
-                                return "";
+                            if (row.isActive == '1') {
+                                return '<button type="button" class="btn new-btn-success btn-sm" style="padding: 0px 6px 0 6px;width: 62px;">Active</button>';
                             } else {
-                                return '<a onclick="deleteUser(' + row.id + ')"><i class="fas fa-trash text-danger" style="cursor:pointer; width: 20px !important;"></i></a>';
+                                return '<button type="button" class="btn new-btn-danger btn-sm" style="padding: 0px 6px 0 6px;width: 62px;">Inactive</button>';
                             }
+                        },
+                        className: "text-center",
+                    },
+                    {
+                        targets: 4,
+                        render: function (data, type, row) {
+                            return '<a href="/setting/update/' + row.id + '" style="margin-right: 10px;" class="justify-content-center"><i class="fas fa-edit text-success"></i></a>';
                         },
                         className: "text-center",
                     }
@@ -53,7 +58,7 @@ function conformDelete() {
     var id = $("#deleteId").val();
     if (id > 0) {
         $.ajax({
-            url: '/SystemLog/DeleteSystemLog/',
+            url: '/Setting/DeleteSetting/',
             type: 'POST',
             data: { id: id },
             success: function (result) {

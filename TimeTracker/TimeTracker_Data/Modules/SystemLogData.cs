@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.SystemLog;
-using TimeTracker_Model.User;
 
 namespace TimeTracker_Data.Modules
 {
@@ -52,11 +51,23 @@ namespace TimeTracker_Data.Modules
             result = result
                 .Skip(model.DisplayStart)
                 .Take(model.PageSize);
-           
+
             return (await result.ToListAsync(), totalRecord);
         }
 
+        public async Task<bool> DeleteSystemLog(int id)
+        {
+            var result = await _context.SystemLogs.FirstOrDefaultAsync(a => a.Id == id);
 
-        #endregion
+            if (result == null)
+            {
+                return false;
+            }
+            _context.SystemLogs.Remove(result);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
+            #endregion
 }

@@ -11,6 +11,9 @@ namespace TimeTracker_Data.Model
         public string Key { get; set; }
 
         [Required]
+        public string DisplayName { get; set; }
+
+        [Required]
         public string Value { get; set; }
 
         [Required]

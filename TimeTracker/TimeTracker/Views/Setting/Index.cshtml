@@ -1,31 +1,17 @@
-﻿@*@model List<TimeTracker_Model.SystemLog.SystemLogModel>*@
-@model List<TimeTracker.Models.SystemLog.SystemLogListModel>
+﻿@model List<TimeTracker_Model.Setting.SettingModel>
 
 @{
-    ViewData["Title"] = "SystemLog";
-
-    var logOn = Model.FirstOrDefault(a => a.Description.Equals("SystemLogOn"));
-    var data = Model.Skip(1).ToList();
-    var Locked = data.Where(a => a.Description.Equals("SystemLocked")).Select(a => a.LogTime).ToList();
-    var Unlocked = data.Where(a => a.Description.Equals("SystemUnlocked") || a.Description.Equals("SystemLogOn")).Select(a => a.LogTime).ToList();
-    TimeSpan deduction = new TimeSpan();
-
-    for (int i = 0; i < Locked.Count; i++)
-    {
-        deduction += (Unlocked[i] - Locked[i]);
-    }
-    var todaysHour = DateTime.Now - logOn.LogTime - deduction;
-
+    ViewData["Title"] = "Settings";
 }
 
 @section ContentHeader{
     <div class="col-sm-6">
-        <h4 class="m-0">System Log</h4>
+        <h4 class="m-0">Settings</h4>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active">System Log</li>
+            <li class="breadcrumb-item active">Settings</li>
         </ol>
     </div>
 }
@@ -34,14 +20,10 @@
         <div class="col-md-12">
             <div class="card card-lightblue card-outline">
                 <div class="card-header">
-                    <h3 class="card-title font-color">
+                    <h4 class="card-title font-color">
                         <i class="fas fa-user"></i>
-                        System Log
-                    </h3>
-                    <div style="float:right; display:flex;">
-                        <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
-                        <h5 class="font-color">@string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours,todaysHour.Minutes,todaysHour.Seconds)</h5>
-                    </div>
+                        Settings
+                    </h4>
                 </div>
                 <div class="card-body">
                     <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -50,8 +32,10 @@
                                 <table class="table table-bordered table-striped" id="tblUsers">
                                     <thead>
                                         <tr>
-                                            <th>Description</th>
-                                            <th>Log Time</th>
+                                            <th>Name</th>
+                                            <th>Key</th>
+                                            <th>Value</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -82,7 +66,7 @@
     </div>
 
     @section Scripts{
-    <script src="~/js/systemlog.js"></script>
+    <script src="~/js/setting.js"></script>
 
     <script>
         $(document).ready(function () {
