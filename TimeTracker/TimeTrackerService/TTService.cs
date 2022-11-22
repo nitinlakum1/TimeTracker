@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.ServiceProcess;
+using System.Threading.Tasks;
 using TimeTrackerService.DataModel;
 using static TimeTrackerService.Enums;
 
@@ -70,36 +74,44 @@ namespace TimeTrackerService
         {
             bool writeLog = false;
             Data.SystemLogData systemLogData = new Data.SystemLogData();
+            bool serverOnline = await systemLogData.IsServerConnected();
 
-            try
+            if (serverOnline)
             {
-                var settings = await systemLogData.GetSettings();
-                if (settings != null && settings.Any())
+                try
                 {
-                    string wifiName = settings.FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME)).Value.Trim();
-
-                    string path = @"C:\Program Files\WCT\";
-                    if (!Directory.Exists(path))
+                    var settings = await systemLogData.GetSettings();
+                    if (settings != null && settings.Any())
                     {
-                        Directory.CreateDirectory(path);
+                        string wifiName = settings.FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME)).Value.Trim();
+
+                        string path = @"C:\Program Files\WCT\";
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        path = Path.Combine(path, "wifiname.txt");
+
+                        if (File.Exists(path))
+                        { File.Delete(path); }
+
+                        FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                        StreamWriter sWriter = new StreamWriter(fs);
+                        sWriter.BaseStream.Seek(0, SeekOrigin.End);
+                        sWriter.WriteLine(wifiName);
+                        sWriter.Flush();
+                        sWriter.Close();
                     }
-                    path = Path.Combine(path, "wifiname.txt");
-
-                    if (File.Exists(path))
-                    { File.Delete(path); }
-
-                    FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-                    StreamWriter sWriter = new StreamWriter(fs);
-                    sWriter.BaseStream.Seek(0, SeekOrigin.End);
-                    sWriter.WriteLine(wifiName);
-                    sWriter.Flush();
-                    sWriter.Close();
                 }
+                catch { }
             }
-            catch { }
+            else
+            {
+                message = "Server is offline";
+            }
 
             string[] text = File.ReadAllLines(@"C:\Program Files\WCT\wifiname.txt");
-            if(text != null && text.Length > 0)
+            if (text != null && text.Length > 0)
             {
                 writeLog = text[0].Split(',').Contains(GetConnectedWifi());
             }
@@ -107,22 +119,29 @@ namespace TimeTrackerService
             if (writeLog)
             {
                 var logTime = DateTime.Now;
-                try
-                {
-                    var macAddress = GetMacAddress();
 
-                    AddSystemLogModel model = new AddSystemLogModel()
-                    {
-                        MacAddress = macAddress,
-                        LogType = module,
-                        Description = message,
-                        LogTime = logTime
-                    };
-                    await systemLogData.AddSystemLog(model);
-                }
-                catch (Exception ex)
+                if (serverOnline)
                 {
-                    message = ex.Message;
+                    //Sync log text file with database.
+                    await SyncTextFileInDB();
+
+                    try
+                    {
+                        var macAddress = GetMacAddress();
+
+                        AddSystemLogModel model = new AddSystemLogModel()
+                        {
+                            MacAddress = macAddress,
+                            LogType = module,
+                            Description = message,
+                            LogTime = logTime
+                        };
+                        await systemLogData.AddSystemLog(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        message = ex.Message;
+                    }
                 }
 
                 try
@@ -145,13 +164,54 @@ namespace TimeTrackerService
             }
         }
 
-        private static string SyncTextFileInDB()
+        private static async Task SyncTextFileInDB()
         {
             try
             {
+                Data.SystemLogData systemLogData = new Data.SystemLogData();
+                var log = await systemLogData.GetSystemLog(GetMacAddress());
 
+                if (log != null)
+                {
+                    List<string> filePath = null;
+                    var length = (DateTime.Now.Date - log.LogTime.Date).TotalDays;
 
-                return "";
+                    filePath.Add(string.Format(@"{0:dd_MM_yy}.txt", log.LogTime));
+                    if (length > 0)
+                    {
+                        for (int i = 0; i < length; i++)
+                        {
+                            filePath.Add(string.Format(@"{0:dd_MM_yy}.txt", log.LogTime.AddDays(i + 1)));
+                        }
+                    }
+
+                    foreach (var file in filePath)
+                    {
+                        var data = File.ReadAllLines(@"C:\Program Files\WCT\" + file);
+                        if (data != null)
+                        {
+                            foreach (var item in data)
+                            {
+                                var logTime = Convert.ToDateTime(item.Split('|')[0].Trim());
+                                var module = Convert.ToInt32(item.Split('|')[1].Trim());
+                                var message = item.Split('|')[2].Trim();
+
+                                if (logTime >= log.LogTime)
+                                {
+                                    string name = Enum.GetName(typeof(LogTypes), module);
+                                    AddSystemLogModel model = new AddSystemLogModel()
+                                    {
+                                        MacAddress = GetMacAddress(),
+                                        LogType = (LogTypes)module,
+                                        Description = message,
+                                        LogTime = logTime
+                                    };
+                                    await systemLogData.AddSystemLog(model);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

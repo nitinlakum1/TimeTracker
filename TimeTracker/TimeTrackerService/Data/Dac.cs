@@ -626,6 +626,24 @@ namespace TimeTrackerService.Data
         }
         #endregion
 
+        #region IsServerConnected
+        public static async Task<bool> IsServerConnected()
+        {
+            using (SqlConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    await dbConnection.OpenAsync();
+                    return true;
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
+            }
+        } 
+        #endregion
+
         #region MakeDbParameter
         /// <summary>
         /// Method to create SqlParameter.

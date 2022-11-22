@@ -66,6 +66,7 @@
     <Compile Include="Data\Dac.cs" />
     <Compile Include="Data\SystemLogData.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Model\GetSystemLogModel.cs" />
     <Compile Include="Model\AddSystemLogModel.cs" />
     <Compile Include="Model\SettingModel.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -109,6 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SqlScripts\AddSystemLog.sql" />
+    <Content Include="SqlScripts\GetSystemLogs.sql" />
     <Content Include="SqlScripts\GetSettings.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

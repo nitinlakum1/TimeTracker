@@ -15,6 +15,18 @@ namespace TimeTrackerService.Data
             _ = new Dac(cnstr);
         }
 
+        public async Task<bool> IsServerConnected()
+        {
+            try
+            {
+                return await Dac.IsServerConnected();
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> AddSystemLog(AddSystemLogModel model)
         {
             try
@@ -49,6 +61,35 @@ namespace TimeTrackerService.Data
                     if (resultData != null && resultData.Any())
                     {
                         model = resultData;
+                    }
+                }
+                return model;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<GetSystemLogModel> GetSystemLog(string macAddress)
+        {
+            try
+            {
+                GetSystemLogModel model = null;
+
+                List<SqlParameter> lstParameter = new List<SqlParameter>()
+                {
+                    Dac.MakeDbParameter("@MacAddress", DbType.String, macAddress),
+                };
+
+                var result = await Dac.GetDataAsDatasetAsync("GetSystemLogs", lstParameter);
+
+                if (result != null && result.Tables.Count > 0)
+                {
+                    var resultData = CommonData.DataTableToList<GetSystemLogModel>(result.Tables[0]);
+                    if (resultData != null && resultData.Any())
+                    {
+                        model = resultData.FirstOrDefault();
                     }
                 }
                 return model;
