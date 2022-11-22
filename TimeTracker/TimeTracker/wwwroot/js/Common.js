@@ -29,3 +29,10 @@ function scrollUp() {
         scrollTop: $(".scrollUp").offset().top
     }, 800);
 };
+
+function setDateTimeFormat(data) {
+    if (data == null || data == undefined) {
+        return "";
+    }
+    return moment(data).format('DD-MM-yyyy hh:mm A');
+}

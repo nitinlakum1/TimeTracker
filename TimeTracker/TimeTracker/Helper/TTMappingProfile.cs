@@ -8,6 +8,7 @@ namespace TimeTracker.Helper
         public TTMappingProfile()
         {
             UserMappings.Map(this);
+            SystemLogMappings.Map(this);
         }
     }
 }
