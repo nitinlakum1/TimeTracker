@@ -32,18 +32,6 @@ namespace TimeTrackerService.Data
             }
         }
 
-        public bool IsServerConnectedNon()
-        {
-            try
-            {
-                return Dac.IsServerConnectedNon();
-            }
-            catch (SqlException)
-            {
-                return false;
-            }
-        }
-
         public async Task<bool> AddSystemLog(AddSystemLogModel model)
         {
             try
