@@ -20,6 +20,7 @@
                 },
                 "aoColumns": [
                     { "data": "description" },
+                    { "data": "logType" },
                     {
                         "data": "logTime", "render": function (data) {
                             return setDateTimeFormat(data);

@@ -73,7 +73,17 @@ label {
 }
 
 
-/*#menuDashboard {
+.nav-treeview > .nav-item > .active {
+    background-color: rgba(255,255,255,.1) !important;
+    color: #fff !important;
+}
+
+.nav-sidebar > .nav-item.menu-open > .nav-link {
     background-color: #343a40 !important;
-    color: #c2c7d0 !important;
-}*/
+    color: #fff !important;
+}
+
+.nav-sidebar > .nav-item.menu-open > .active {
+    background-color: #3c8dbc !important;
+    color: #fff !important;
+}

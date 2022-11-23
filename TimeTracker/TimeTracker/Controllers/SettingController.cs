@@ -78,7 +78,7 @@ namespace TimeTracker.Controllers
         }
 
         //[HttpPost]
-        //public async Task<IActionResult> DeleteSetting(int id)
+        //public async Task<IActionResult> StatusSettings(int id)
         //{
         //    bool isSuccess = false;
         //    string message = "";
@@ -86,7 +86,7 @@ namespace TimeTracker.Controllers
         //    {
         //        if (id > 0)
         //        {
-        //            isSuccess = await _settingRepo.DeleteSetting(id);
+        //            isSuccess = await _settingRepo.StatusSettings(id);
         //            message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
         //        }
         //    }

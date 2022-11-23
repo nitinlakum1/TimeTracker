@@ -169,7 +169,7 @@
         <aside class="main-sidebar sidebar-dark-lightblue elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link text-sm">
-                <img src="~/images/4.png" alt="AdminLTE Logo" class="brand-image elevation-3" style="opacity: .8; box-shadow:none !important;">
+                <img src="~/images/4.png" alt="AdminLTE Logo" class="brand-image elevation-3" style="opacity: .8; box-shadow:none !important; filter: brightness(0) invert(1);">
             </a>
 
             <!-- Sidebar -->
@@ -222,13 +222,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-controller="SystemLog" asp-action="Index" class="nav-link">
+                                    <a asp-controller="SystemLog" asp-action="Index" class="nav-link" id="menuSystemLog">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>System Log</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-controller="Setting" asp-action="Index" class="nav-link">
+                                    <a asp-controller="Setting" asp-action="Index" class="nav-link" id="menuSettings">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Settings</p>
                                     </a>

@@ -71,7 +71,6 @@ namespace TimeTracker_Data.Modules
             await _context.SaveChangesAsync();
             return true;
         }
-
         #endregion
     }
 }

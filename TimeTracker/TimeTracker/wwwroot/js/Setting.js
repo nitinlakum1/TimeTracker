@@ -30,9 +30,9 @@
                         targets: 3,
                         render: function (data, type, row) {
                             if (row.isActive == '1') {
-                                return '<button type="button" class="btn new-btn-success btn-sm" style="padding: 0px 6px 0 6px;width: 62px;">Active</button>';
+                                return '<button onclick="deleteUser(' + row.id + ')" type="button" class="btn new-btn-success btn-sm" style="padding: 0px 6px 0 6px;width: 62px;">Active</button>';
                             } else {
-                                return '<button type="button" class="btn new-btn-danger btn-sm" style="padding: 0px 6px 0 6px;width: 62px;">Inactive</button>';
+                                return '<button onclick="deleteUser(' + row.id + ')" type="button" class="btn new-btn-danger btn-sm" style="padding: 0px 6px 0 6px;width: 62px;">Inactive</button>';
                             }
                         },
                         className: "text-center",
@@ -58,7 +58,7 @@ function conformDelete() {
     var id = $("#deleteId").val();
     if (id > 0) {
         $.ajax({
-            url: '/Setting/DeleteSetting/',
+            url: '/Setting/StatusSetting/',
             type: 'POST',
             data: { id: id },
             success: function (result) {
