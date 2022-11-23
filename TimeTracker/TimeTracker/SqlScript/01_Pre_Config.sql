@@ -9,7 +9,7 @@ INSERT INTO dbo.Settings ([Key], DisplayName, [Value], IsActive)
 VALUES ('SYSTEM_WIFI_NAME', 'System Wifi Name', 'WCT-GTPL,WCT', 1)
 
 INSERT INTO dbo.Settings ([Key], DisplayName, [Value], IsActive)
-VALUES ('SYSTEM_LOG_START_TIMING', 'System Log Start Timing', '8', 1)
+VALUES ('SYSTEM_LOG_START_TIMING', 'System Log Start Timing', '8:0', 1)
 
 INSERT INTO dbo.Settings ([Key], DisplayName, [Value], IsActive)
-VALUES ('SYSTEM_LOG_END_TIMING', 'System Log End Timing', '20', 1)
+VALUES ('SYSTEM_LOG_END_TIMING', 'System Log End Timing', '20:0', 1)

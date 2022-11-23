@@ -75,6 +75,8 @@ namespace TimeTrackerService
         {
             try
             {
+                TimeSpan startTiming = new TimeSpan();
+                TimeSpan endTiming = new TimeSpan();
                 bool writeLog = false;
                 bool serverOnline = await systemLogData.IsServerConnected();
                 if (serverOnline)
@@ -99,12 +101,30 @@ namespace TimeTrackerService
                             .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
                             .Value;
                         writeLog = wifiName.Split(',').Contains(GetConnectedWifi());
+
+                        var start = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
+                            .Value;
+
+                        var end = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_END_TIMING))
+                            .Value;
+
+                        startTiming = new TimeSpan(
+                            Convert.ToInt32(start.Split(':')[0]),
+                            Convert.ToInt32(start.Split(':')[1]), 0);
+
+                        endTiming = new TimeSpan(
+                            Convert.ToInt32(end.Split(':')[0]),
+                            Convert.ToInt32(end.Split(':')[1]), 0);
                     }
                 }
                 #endregion
 
-                if (writeLog)
+                TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
+                if (writeLog && curentTime >= startTiming && curentTime <= endTiming)
                 {
+                    //HH:mm  // 13:55
                     var logTime = DateTime.Now;
                     if (serverOnline)
                     {
