@@ -521,6 +521,18 @@ namespace TimeTrackerService.Data
         /// Get data as dataset.
         /// </summary>
         /// <param name="commandText"></param>
+        /// <param name="commandType"></param>
+        /// <returns></returns>
+        public async static Task<DataSet> GetDataAsDatasetAsync(String commandText,
+                                                                CommandType commandType)
+        {
+            return await GetDataAsDatasetAsync(commandText, "", null, commandType, false);
+        }
+
+        /// <summary>
+        /// Get data as dataset.
+        /// </summary>
+        /// <param name="commandText"></param>
         /// <param name="tableName"></param>
         /// <param name="lstParameter"></param>
         /// <param name="commandType"></param>
@@ -641,7 +653,23 @@ namespace TimeTrackerService.Data
                     return false;
                 }
             }
-        } 
+        }
+
+        public static bool IsServerConnectedNon()
+        {
+            using (SqlConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    dbConnection.Open();
+                    return true;
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
+            }
+        }
         #endregion
 
         #region MakeDbParameter
