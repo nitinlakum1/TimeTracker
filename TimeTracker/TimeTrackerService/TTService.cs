@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Net.NetworkInformation;
-using System.Reflection;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using TimeTrackerService.DataModel;
@@ -15,12 +14,14 @@ namespace TimeTrackerService
     public partial class TTService : ServiceBase
     {
         #region Declaration
+        private static Data.SystemLogData systemLogData;
         #endregion
 
         #region Const
         public TTService()
         {
             InitializeComponent();
+            systemLogData = new Data.SystemLogData();
         }
         #endregion
 
@@ -72,80 +73,62 @@ namespace TimeTrackerService
 
         private static async void SetLog(string message, LogTypes module)
         {
-            bool writeLog = false;
-            Data.SystemLogData systemLogData = new Data.SystemLogData();
-            bool serverOnline = await systemLogData.IsServerConnected();
-
-            if (serverOnline)
+            try
             {
-                try
-                {
-                    var settings = await systemLogData.GetSettings();
-                    if (settings != null && settings.Any())
-                    {
-                        string wifiName = settings.FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME)).Value.Trim();
-
-                        string path = @"C:\Program Files\WCT\";
-                        if (!Directory.Exists(path))
-                        {
-                            Directory.CreateDirectory(path);
-                        }
-                        path = Path.Combine(path, "wifiname.txt");
-
-                        if (File.Exists(path))
-                        { File.Delete(path); }
-
-                        FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-                        StreamWriter sWriter = new StreamWriter(fs);
-                        sWriter.BaseStream.Seek(0, SeekOrigin.End);
-                        sWriter.WriteLine(wifiName);
-                        sWriter.Flush();
-                        sWriter.Close();
-                    }
-                }
-                catch { }
-            }
-            else
-            {
-                message = "Server is offline";
-            }
-
-            string[] text = File.ReadAllLines(@"C:\Program Files\WCT\wifiname.txt");
-            if (text != null && text.Length > 0)
-            {
-                writeLog = text[0].Split(',').Contains(GetConnectedWifi());
-            }
-
-            if (writeLog)
-            {
-                var logTime = DateTime.Now;
-
+                bool writeLog = false;
+                bool serverOnline = await systemLogData.IsServerConnected();
                 if (serverOnline)
                 {
-                    //Sync log text file with database.
-                    await SyncTextFileInDB();
-
-                    try
-                    {
-                        var macAddress = GetMacAddress();
-
-                        AddSystemLogModel model = new AddSystemLogModel()
-                        {
-                            MacAddress = macAddress,
-                            LogType = module,
-                            Description = message,
-                            LogTime = logTime
-                        };
-                        await systemLogData.AddSystemLog(model);
-                    }
-                    catch (Exception ex)
-                    {
-                        message = ex.Message;
-                    }
+                    //Get settings from database then write in setting.txt file.
+                    await WriteSetting();
                 }
 
-                try
+                #region Get setting from settings.json
+                if (File.Exists(@"C:\Program Files\WCT\settings.json"))
                 {
+                    List<SettingModel> settings = null;
+                    using (StreamReader r = new StreamReader(@"C:\Program Files\WCT\settings.json"))
+                    {
+                        string json = r.ReadToEnd();
+                        settings = JsonConvert.DeserializeObject<List<SettingModel>>(json);
+                    }
+
+                    if (settings != null && settings.Any())
+                    {
+                        string wifiName = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
+                            .Value;
+                        writeLog = wifiName.Split(',').Contains(GetConnectedWifi());
+                    }
+                }
+                #endregion
+
+                if (writeLog)
+                {
+                    var logTime = DateTime.Now;
+                    if (serverOnline)
+                    {
+                        //Sync log text file with database.
+                        await SyncTextFileInDB();
+                        try
+                        {
+                            var macAddress = GetMacAddress();
+
+                            AddSystemLogModel model = new AddSystemLogModel()
+                            {
+                                MacAddress = macAddress,
+                                LogType = module,
+                                Description = message,
+                                LogTime = logTime
+                            };
+                            await systemLogData.AddSystemLog(model);
+                        }
+                        catch (Exception ex)
+                        {
+                            WriteTextFile("AddSystemLog", ex.Message);
+                        }
+                    }
+
                     string path = @"C:\Program Files\WCT\";
                     if (!Directory.Exists(path))
                     {
@@ -160,7 +143,51 @@ namespace TimeTrackerService
                     sWriter.Flush();
                     sWriter.Close();
                 }
-                catch { }
+                else
+                {
+                    WriteTextFile(nameof(SetLog), "Wi-Fi is not configured.");
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteTextFile(nameof(SetLog), ex.Message);
+            }
+        }
+
+        private static async Task WriteSetting()
+        {
+            try
+            {
+                var settings = await systemLogData.GetSettings();
+                if (settings != null && settings.Any())
+                {
+                    var wsSettings = settings
+                        .Where(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME)
+                               || a.Key.Equals(AppSettings.SYSTEM_LOG_END_TIMING)
+                               || a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
+                        .ToList();
+
+                    string path = @"C:\Program Files\WCT\";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    path = Path.Combine(path, "settings.json");
+
+                    if (File.Exists(path))
+                    { File.Delete(path); }
+
+                    FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                    StreamWriter sWriter = new StreamWriter(fs);
+                    sWriter.BaseStream.Seek(0, SeekOrigin.End);
+                    sWriter.WriteLine(JsonConvert.SerializeObject(wsSettings));
+                    sWriter.Flush();
+                    sWriter.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteTextFile(nameof(WriteSetting), ex.Message);
             }
         }
 
@@ -168,12 +195,11 @@ namespace TimeTrackerService
         {
             try
             {
-                Data.SystemLogData systemLogData = new Data.SystemLogData();
                 var log = await systemLogData.GetSystemLog(GetMacAddress());
 
                 if (log != null)
                 {
-                    List<string> filePath = null;
+                    List<string> filePath = new List<string>();
                     var length = (DateTime.Now.Date - log.LogTime.Date).TotalDays;
 
                     filePath.Add(string.Format(@"{0:dd_MM_yy}.txt", log.LogTime));
@@ -187,26 +213,30 @@ namespace TimeTrackerService
 
                     foreach (var file in filePath)
                     {
-                        var data = File.ReadAllLines(@"C:\Program Files\WCT\" + file);
-                        if (data != null)
+                        if (File.Exists(@"C:\Program Files\WCT\" + file))
                         {
-                            foreach (var item in data)
+                            var data = File.ReadAllLines(@"C:\Program Files\WCT\" + file);
+                            if (data != null)
                             {
-                                var logTime = Convert.ToDateTime(item.Split('|')[0].Trim());
-                                var module = Convert.ToInt32(item.Split('|')[1].Trim());
-                                var message = item.Split('|')[2].Trim();
-
-                                if (logTime >= log.LogTime)
+                                foreach (var item in data)
                                 {
-                                    string name = Enum.GetName(typeof(LogTypes), module);
-                                    AddSystemLogModel model = new AddSystemLogModel()
+                                    var logTime = DateTime.ParseExact(item.Split('|')[0].Trim(), "dd-MM-yy hh:mm:ss tt", null);
+                                    //var logTime = Convert.ToDateTime(item.Split('|')[0].Trim());
+                                    var module = Convert.ToInt32(item.Split('|')[1].Trim());
+                                    var message = item.Split('|')[2].Trim();
+
+                                    if (logTime >= log.LogTime)
                                     {
-                                        MacAddress = GetMacAddress(),
-                                        LogType = (LogTypes)module,
-                                        Description = message,
-                                        LogTime = logTime
-                                    };
-                                    await systemLogData.AddSystemLog(model);
+                                        string name = Enum.GetName(typeof(LogTypes), module);
+                                        AddSystemLogModel model = new AddSystemLogModel()
+                                        {
+                                            MacAddress = GetMacAddress(),
+                                            LogType = (LogTypes)module,
+                                            Description = message,
+                                            LogTime = logTime
+                                        };
+                                        await systemLogData.AddSystemLog(model);
+                                    }
                                 }
                             }
                         }
@@ -215,17 +245,47 @@ namespace TimeTrackerService
             }
             catch (Exception ex)
             {
-                throw ex;
+                WriteTextFile(nameof(SyncTextFileInDB), ex.Message);
             }
+        }
+
+        private static void WriteTextFile(string methodName, string message)
+        {
+            try
+            {
+                var logTime = DateTime.Now;
+                string path = @"C:\Program Files\WCT\";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path = Path.Combine(path, string.Format(@"Error_{0:dd_MM_yy}.txt", logTime));
+
+                FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                StreamWriter sWriter = new StreamWriter(fs);
+                sWriter.BaseStream.Seek(0, SeekOrigin.End);
+                sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {methodName} | {message}");
+                sWriter.Flush();
+                sWriter.Close();
+            }
+            catch { }
         }
 
         private static string GetMacAddress()
         {
-            return NetworkInterface.GetAllNetworkInterfaces()
-                    .Where(a => a.NetworkInterfaceType.ToString() == NetworkInterfaceType.Ethernet.ToString()
-                           && a.GetType().Name == "SystemNetworkInterface")
-                    .Select(a => a.GetPhysicalAddress().ToString())
-                    .FirstOrDefault();
+            try
+            {
+                return NetworkInterface.GetAllNetworkInterfaces()
+                            .Where(a => a.NetworkInterfaceType.ToString() == NetworkInterfaceType.Ethernet.ToString()
+                                   && a.GetType().Name == "SystemNetworkInterface")
+                            .Select(a => a.GetPhysicalAddress().ToString())
+                            .FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                WriteTextFile(nameof(GetMacAddress), ex.Message);
+                return "";
+            }
         }
 
         private static string GetConnectedWifi()
@@ -248,8 +308,9 @@ namespace TimeTrackerService
 
                 return s1;
             }
-            catch
+            catch (Exception ex)
             {
+                WriteTextFile(nameof(GetConnectedWifi), ex.Message);
                 return "";
             }
         }

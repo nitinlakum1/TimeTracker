@@ -19,7 +19,12 @@ namespace TimeTrackerService.Data
         {
             try
             {
-                return await Dac.IsServerConnected();
+                var result = await Dac.GetDataAsDatasetAsync("SELECT TOP 1 Id FROM dbo.Settings", CommandType.Text);
+                if (result != null && result.Tables.Count > 0)
+                {
+                    return true;
+                }
+                return false;
             }
             catch (SqlException)
             {
