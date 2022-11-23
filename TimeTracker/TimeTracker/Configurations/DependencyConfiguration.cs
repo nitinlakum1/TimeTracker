@@ -13,6 +13,7 @@ namespace TimeTracker.Configurations
             services.AddTransient<ISystemLogRepo, SystemLogRepo>();
             services.AddTransient<JwtSettingModel>();
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddTransient<UserData>();
             services.AddTransient<SystemLogData>();

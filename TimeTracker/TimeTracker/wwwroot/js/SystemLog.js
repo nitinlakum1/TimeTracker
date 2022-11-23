@@ -32,6 +32,7 @@
                     {
                         targets: 2,
                         render: function (data, type, row) {
+                            debugger
                             if (row.username == 'Dev' || row.username == 'Admin') {
                                 return "";
                             } else {

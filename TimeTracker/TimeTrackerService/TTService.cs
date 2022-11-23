@@ -28,7 +28,7 @@ namespace TimeTrackerService
         #region Events
         protected override void OnStart(string[] args)
         {
-            SetLog("Service is Start", LogTypes.Other);
+            SetLog("Service is Start", LogTypes.ServiceStart);
         }
 
         protected override void OnSessionChange(SessionChangeDescription changeDescription)
@@ -60,12 +60,12 @@ namespace TimeTrackerService
 
         protected override void OnShutdown()
         {
-            SetLog("System Shutdown", LogTypes.Other);
+            SetLog("System Shutdown", LogTypes.SystemShutdown);
         }
 
         protected override void OnStop()
         {
-            SetLog("Service is Stopped", LogTypes.Other);
+            SetLog("Service is Stopped", LogTypes.ServiceStopped);
         }
         #endregion
 

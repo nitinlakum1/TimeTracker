@@ -9,7 +9,7 @@ namespace TimeTracker_Data.Model
         public int Id { get; set; }
 
         [Required]
-        public string UserId { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         public LogTypes LogType { get; set; }

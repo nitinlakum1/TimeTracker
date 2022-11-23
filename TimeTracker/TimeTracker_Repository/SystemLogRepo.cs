@@ -33,6 +33,13 @@ namespace TimeTracker_Repository
             return (systemLogs, totalRecord);
         }
 
+        public async Task<List<SystemLogModel>> GetTodaysSystemLog(int userId)
+        {
+            var result = await _SystemLogData.GetTodaysSystemLog(userId);
+
+            return _mapper.Map<List<SystemLogModel>>(result);
+        }
+
         public async Task<bool> DeleteSystemLog(int id)
         {
             return await _SystemLogData.DeleteSystemLog(id);

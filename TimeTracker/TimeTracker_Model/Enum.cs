@@ -3,10 +3,13 @@
     #region LogTypes
     public enum LogTypes : int
     {
-        SystemLogOn = 1,
-        SystemLock = 2,
-        SystemUnlock = 3,
-        SystemLogOff = 4,
+        ServiceStart = 1,
+        SystemLogOn = 2,
+        SystemLogOff = 3,
+        SystemLock = 4,
+        SystemUnlock = 5,
+        SystemShutdown = 6,
+        ServiceStopped = 7,
     }
     #endregion
 }

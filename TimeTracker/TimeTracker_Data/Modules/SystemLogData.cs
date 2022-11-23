@@ -22,8 +22,19 @@ namespace TimeTracker_Data.Modules
         public async Task<(List<SystemLogs>, int)> GetSystemLog(SystemLogFilterModel model)
         {
             var result = _context.SystemLogs
-                .Where(a => string.IsNullOrWhiteSpace(model.SearchText)
-                       || a.Description.ToLower().Contains(model.SearchText));
+                .Where(a => (model.UserId == 0
+                             || a.UserId == model.UserId)
+                       && (string.IsNullOrWhiteSpace(model.SearchText)
+                           || a.Description.ToLower().Contains(model.SearchText)));
+
+            var aaa = result.ToList();
+
+            if (model.FromDate != null && model.ToDate != null)
+            {
+                result = result
+                    .Where(a => a.LogTime.Date >= model.FromDate.Value.Date
+                           && a.LogTime.Date <= model.ToDate.Value.Date);
+            }
 
             var totalRecord = result.Count();
 
@@ -55,6 +66,16 @@ namespace TimeTracker_Data.Modules
             return (await result.ToListAsync(), totalRecord);
         }
 
+        public async Task<List<SystemLogs>> GetTodaysSystemLog(int userId)
+        {
+            var result = await _context.SystemLogs
+                .Where(a => a.LogTime.Date == DateTime.Now
+                       && a.UserId == userId)
+                .ToListAsync();
+
+            return result;
+        }
+
         public async Task<bool> DeleteSystemLog(int id)
         {
             var result = await _context.SystemLogs.FirstOrDefaultAsync(a => a.Id == id);
@@ -69,5 +90,5 @@ namespace TimeTracker_Data.Modules
             return true;
         }
     }
-            #endregion
+    #endregion
 }
