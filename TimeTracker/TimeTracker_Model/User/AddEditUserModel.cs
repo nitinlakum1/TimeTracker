@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TimeTracker_Model.User
+﻿namespace TimeTracker_Model.User
 {
     public class AddEditUserModel
     {

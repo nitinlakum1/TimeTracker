@@ -52,7 +52,7 @@ namespace TimeTracker_Data.Modules
             result = result
                 .Skip(model.DisplayStart)
                 .Take(model.PageSize);
-           
+
             return (await result.ToListAsync(), totalRecord);
         }
 

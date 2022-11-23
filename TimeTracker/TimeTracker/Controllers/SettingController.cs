@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TimeTracker.Models;
 using TimeTracker.Models.Setting;
-using TimeTracker.Models.User;
-using TimeTracker_Model;
 using TimeTracker_Model.Setting;
-using TimeTracker_Model.User;
 using TimeTracker_Repository;
 
 namespace TimeTracker.Controllers

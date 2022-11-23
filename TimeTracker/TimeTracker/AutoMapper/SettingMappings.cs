@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using TimeTracker.Models;
 using TimeTracker.Models.Setting;
-using TimeTracker.Models.SystemLog;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Setting;
-using TimeTracker_Model.SystemLog;
 
 namespace TimeTracker.AutoMapper
 {

@@ -10,7 +10,10 @@ namespace TimeTracker.AutoMapper
     {
         public static void Map(Profile profile)
         {
-            profile.CreateMap<SystemLogs, SystemLogModel>();
+            profile.CreateMap<SystemLogs, SystemLogModel>()
+                .ForMember(source => source.Username, dest => dest.MapFrom(x => x.Users.Username))
+                .ForMember(source => source.FullName, dest => dest.MapFrom(x => x.Users.FullName));
+
             profile.CreateMap<SystemLogModel, SystemLogListModel>();
             profile.CreateMap<DatatableParamViewModel, SystemLogFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))

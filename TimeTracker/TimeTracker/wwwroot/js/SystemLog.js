@@ -19,58 +19,40 @@
                 "fnServerParams": function (aoData) {
                 },
                 "aoColumns": [
+                    { "data": "username", width: 150 },
+                    { "data": "logTypeName", width: 130 },
                     { "data": "description" },
-                    { "data": "logType" },
                     {
-                        "data": "logTime", "render": function (data) {
+                        "data": "logTime", width: 140, "render": function (data) {
                             return setDateTimeFormat(data);
                         }
                     },
-                    { "data": "id", "bSortable": false },
-                ],
-                columnDefs: [
-                    {
-                        targets: 2,
-                        render: function (data, type, row) {
-                            debugger
-                            if (row.username == 'Dev' || row.username == 'Admin') {
-                                return "";
-                            } else {
-                                return '<a onclick="deleteUser(' + row.id + ')"><i class="fas fa-trash text-danger" style="cursor:pointer; width: 20px !important;"></i></a>';
-                            }
-                        },
-                        className: "text-center",
-                    }
+                    { "data": "id", "bSortable": false, width: 70 },
                 ],
                 processing: true,
             });
 }
 
-function deleteUser(id) {
-    $("#comformdelete").show();
-    $("#deleteId").val(id);
-}
+function startTimeLog() {
+    var lastTime = $('#spnLastTime').text();
+    var hour = parseInt(lastTime.split(':')[0]);
+    var min = parseInt(lastTime.split(':')[1]);
+    var second = parseInt(lastTime.split(':')[2]);
 
-function conformDelete() {
-    var id = $("#deleteId").val();
-    if (id > 0) {
-        $.ajax({
-            url: '/SystemLog/DeleteSystemLog/',
-            type: 'POST',
-            data: { id: id },
-            success: function (result) {
-                setStatusMsg(result);
-                Close();
-                $('#tblUsers').DataTable().ajax.reload();
-            },
-            error: function (result) {
-                alert("User not Delete!");
-            },
-        })
-    }
-}
+    setInterval(function () {
+        second++;
+        if (second == 60) {
+            min++;
+        }
+        second = second == 60 ? 0 : second;
+        if (min == 60) {
+            hour++;
+        }
+        min = min == 60 ? 0 : min;
 
-function Close() {
-    $("#deleteId").val(0);
-    $("#comformdelete").hide();
+        var h = hour.toString().padStart(2, "0");
+        var m = min.toString().padStart(2, "0");
+        var s = second.toString().padStart(2, "0");
+        $('#spnLastTime').text(`${h}:${m}:${s}`);
+    }, 1000)
 }

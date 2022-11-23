@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using System.ComponentModel.DataAnnotations;
 using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.User;

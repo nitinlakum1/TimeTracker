@@ -76,7 +76,7 @@ namespace TimeTracker.Controllers
             return View(model);
         }
 
-        [HttpPost] 
+        [HttpPost]
         public async Task<IActionResult> Update(EditUserViewModel model)
         {
             try

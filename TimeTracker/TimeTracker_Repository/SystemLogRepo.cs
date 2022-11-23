@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using System.ComponentModel.DataAnnotations;
-using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.SystemLog;
-using TimeTracker_Model.User;
 
 namespace TimeTracker_Repository
 {
@@ -38,11 +35,6 @@ namespace TimeTracker_Repository
             var result = await _SystemLogData.GetTodaysSystemLog(userId);
 
             return _mapper.Map<List<SystemLogModel>>(result);
-        }
-
-        public async Task<bool> DeleteSystemLog(int id)
-        {
-            return await _SystemLogData.DeleteSystemLog(id);
         }
         #endregion
     }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TimeTracker.Models.SystemLog;
 
 namespace TimeTracker.Controllers
 {
@@ -9,7 +8,7 @@ namespace TimeTracker.Controllers
     {
         public IActionResult Index()
         {
-                return View();
+            return View();
         }
     }
 }

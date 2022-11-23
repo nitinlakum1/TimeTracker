@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TimeTracker_Model;
 
 namespace TimeTracker_Data.Model
@@ -9,6 +10,7 @@ namespace TimeTracker_Data.Model
         public int Id { get; set; }
 
         [Required]
+        [ForeignKey("Users")]
         public int UserId { get; set; }
 
         [Required]
@@ -19,5 +21,7 @@ namespace TimeTracker_Data.Model
 
         [Required]
         public DateTime LogTime { get; set; }
+
+        public Users Users { get; set; }
     }
 }

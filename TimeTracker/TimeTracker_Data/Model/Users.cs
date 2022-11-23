@@ -20,7 +20,7 @@ namespace TimeTracker_Data.Model
 
         [Required]
         public string Email { get; set; }
-        
+
         public string? Designation { get; set; }
 
         public string? Education { get; set; }
@@ -54,7 +54,7 @@ namespace TimeTracker_Data.Model
 
         public string? MacAddress { get; set; }
 
-        
+
         public Roles Roles { get; set; }
     }
 }

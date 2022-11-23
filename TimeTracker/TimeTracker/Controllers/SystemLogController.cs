@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Sockets;
 using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.SystemLog;
@@ -28,51 +27,18 @@ namespace TimeTracker.Controllers
         #endregion
 
         #region Action
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             try
             {
-                var name = string.Format(@"{0:dd_MM_yy}.txt", DateTime.Now);
-                string[] data = System.IO.File.ReadAllLines(@"C:\Program Files\WCT\" + name);
-
-                if (data == null || !data.Any())
-                {
-                    //TODO: Set validation
-                    throw new Exception("Record not found.");
-                }
-
-                var logs = data.Select(a => new SystemLogListModel()
-                {
-                    LogTime = Convert.ToDateTime(a.Split("|")[0].Trim()),
-                    Description = a.Split("|")[1].Trim(),
-                }).ToList();
-
-                return View(logs);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-        }
-
-        public async Task<IActionResult> GetSystemLog(DatatableParamViewModel param)
-        {
-            try
-            {
-                var dtParam = _mapper.Map<SystemLogFilterModel>(param);
+                string lastTime = "00:00:00";
                 int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
-                dtParam.UserId = userId ?? 0;
-
-                var (systemLogs, totalRecord) = await _systemlogRepo.GetSystemLog(dtParam);
-
-                var lst = _mapper.Map<List<SystemLogListModel>>(systemLogs);
-
-                string lastTime = "";
                 var todaysSystemLog = await _systemlogRepo.GetTodaysSystemLog(userId ?? 0);
                 if (todaysSystemLog is { Count: > 0 })
                 {
                     var logOn = todaysSystemLog
-                        .First(a => a.LogType == LogTypes.SystemLogOn);
+                        .First(a => a.LogType == LogTypes.SystemLogOn
+                               || a.LogType == LogTypes.ServiceStart);
 
                     var data = todaysSystemLog.Skip(1).ToList();
 
@@ -95,6 +61,26 @@ namespace TimeTracker.Controllers
                     var todaysHour = DateTime.Now - logOn.LogTime - deduction;
                     lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
                 }
+                ViewBag.LastTime = lastTime;
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IActionResult> GetSystemLog(DatatableParamViewModel param)
+        {
+            try
+            {
+                var dtParam = _mapper.Map<SystemLogFilterModel>(param);
+                int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
+                dtParam.UserId = userId ?? 0;
+
+                var (systemLogs, totalRecord) = await _systemlogRepo.GetSystemLog(dtParam);
+
+                var lst = _mapper.Map<List<SystemLogListModel>>(systemLogs);
 
                 return Json(new
                 {
@@ -109,26 +95,6 @@ namespace TimeTracker.Controllers
                 throw;
             }
         }
-
-        public async Task<IActionResult> DeleteSystemLog(int id)
-        {
-            bool isSuccess = false;
-            string message = "";
-            try
-            {
-                if (id > 0)
-                {
-                    isSuccess = await _systemlogRepo.DeleteSystemLog(id);
-                    message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
-                }
-            }
-            catch (Exception ex)
-            {
-                //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
-            }
-            return Json(new { isSuccess, message });
-        }
-
         #endregion
     }
 }
