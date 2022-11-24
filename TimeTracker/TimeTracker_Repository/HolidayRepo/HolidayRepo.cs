@@ -1,0 +1,56 @@
+﻿using AutoMapper;
+using TimeTracker_Data.Model;
+using TimeTracker_Data.Modules;
+using TimeTracker_Model.Holiday;
+using TimeTracker_Model.User;
+
+namespace TimeTracker_Repository
+{
+    public class HolidayRepo : IHolidayRepo
+    {
+        #region Declaration
+        private readonly HolidayData _holidayData;
+        private readonly IMapper _mapper;
+        #endregion
+
+        #region Const
+        public HolidayRepo(HolidayData HolidayData, IMapper mapper)
+        {
+            _holidayData = HolidayData;
+            _mapper = mapper;
+        }
+        #endregion
+
+        #region Methods
+        public async Task<(List<HolidayModel>, int)> GetHolidayList(HolidayFilterModel model)
+        {
+            var (userList, totalRecord) = await _holidayData.GetHolidayList(model);
+            return (_mapper.Map<List<HolidayModel>>(userList), totalRecord);
+        }
+
+        public async Task<HolidayModel> GetHolidayById(int id)
+        {
+            var result = await _holidayData.GetHolidayById(id);
+            return _mapper.Map<HolidayModel>(result);
+        }
+
+        public async Task<bool> AddHoliday(HolidayModel model)
+        {
+            var user = _mapper.Map<Holidays>(model);
+            return await _holidayData.AddHoliday(user);
+        }
+
+        public async Task<bool> UpdateHoliday(HolidayModel model)
+        {
+            var user = _mapper.Map<Holidays>(model);
+            return await _holidayData.UpdateHoliday(user);
+        }
+
+        public async Task<bool> DeleteHoliday(int id)
+        {
+            return await _holidayData.DeleteHoliday(id);
+        }
+
+        #endregion
+    }
+}

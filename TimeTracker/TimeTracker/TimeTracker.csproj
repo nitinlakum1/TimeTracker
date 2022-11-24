@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\MonthlyReport\" />
     <Folder Include="wwwroot\Template\" />
   </ItemGroup>
 

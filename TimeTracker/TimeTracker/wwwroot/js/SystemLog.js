@@ -25,9 +25,9 @@
                     {
                         "data": "logTime", width: 140, "render": function (data) {
                             return setDateTimeFormat(data);
-                        }
+                        },
                     },
-                    { "data": "id", "bSortable": false, width: 70 },
+                    //{ "data": "id", "bSortable": false, width: 70 },
                 ],
                 processing: true,
             });

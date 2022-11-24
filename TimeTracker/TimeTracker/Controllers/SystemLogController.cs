@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeTracker.Helper;
 using TimeTracker.Models;
@@ -9,6 +10,7 @@ using TimeTracker_Repository;
 
 namespace TimeTracker.Controllers
 {
+    [Authorize]
     public class SystemLogController : Controller
     {
         #region Declaration

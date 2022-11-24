@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TimeTracker_Data.Modules;
-using TimeTracker_Model.Setting;
+using TimeTracker_Model.Holiday;
 
 namespace TimeTracker_Repository
 {

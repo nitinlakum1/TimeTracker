@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeTracker.Models;
 using TimeTracker.Models.Setting;
-using TimeTracker_Model.Setting;
+using TimeTracker_Model.Holiday;
 using TimeTracker_Repository;
 
 namespace TimeTracker.Controllers
 {
+    [Authorize]
     public class SettingController : Controller
     {
         #region Declaration

@@ -37,6 +37,13 @@ function setDateTimeFormat(data) {
     return moment(data).format('DD-MM-yyyy hh:mm A');
 }
 
+function setDateFormat(data,aaa) {
+    if (data == null || data == undefined) {
+        return "";
+    }
+    return moment(data).format('DD-MM-yyyy');
+}
+
 function SelectedMenu(mainMenu, subMenu) {
     $('#' + mainMenu).addClass("active");
     $('#' + mainMenu).parent().addClass("menu-is-opening");

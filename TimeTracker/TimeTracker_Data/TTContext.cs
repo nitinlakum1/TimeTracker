@@ -13,5 +13,6 @@ namespace TimeTracker_Data
         public DbSet<Settings> Settings { get; set; }
         public DbSet<SystemLogs> SystemLogs { get; set; }
         public DbSet<Roles> Roles { get; set; }
+        public DbSet<Holidays> Holidays { get; set; }
     }
 }

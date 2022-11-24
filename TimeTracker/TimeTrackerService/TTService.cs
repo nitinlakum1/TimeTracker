@@ -122,7 +122,8 @@ namespace TimeTrackerService
                 #endregion
 
                 TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
-                if (writeLog && curentTime >= startTiming && curentTime <= endTiming)
+                //if (writeLog && curentTime >= startTiming && curentTime <= endTiming)
+                if (writeLog)
                 {
                     //HH:mm  // 13:55
                     var logTime = DateTime.Now;

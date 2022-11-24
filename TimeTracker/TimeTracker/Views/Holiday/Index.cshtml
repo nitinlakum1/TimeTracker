@@ -1,17 +1,17 @@
-﻿@model List<TimeTracker_Model.Holiday.SettingModel>
+﻿@model List<TimeTracker_Model.Holiday.HolidayModel>
 
 @{
-    ViewData["Title"] = "Settings";
+    ViewData["Title"] = "Holiday";
 }
 
 @section ContentHeader{
     <div class="col-sm-6">
-        <h4 class="m-0">Settings</h4>
+        <h4 class="m-0">Holiday</h4>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active">Settings</li>
+            <li class="breadcrumb-item active">Holiday</li>
         </ol>
     </div>
 }
@@ -20,10 +20,13 @@
         <div class="col-md-12">
             <div class="card card-lightblue card-outline">
                 <div class="card-header">
-                    <h4 class="card-title font-color">
-                        <i class="fas fa-user"></i>
-                        Settings
-                    </h4>
+                    <h3 class="card-title font-color">
+                        @*<i class="fas fa-user"></i>*@
+                        Holiday
+                    </h3>
+                    <div style="float:right;">
+                        <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -33,9 +36,7 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Key</th>
-                                            <th>Value</th>
-                                            <th>Status</th>
+                                            <th>Date</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -66,11 +67,11 @@
     </div>
 
     @section Scripts{
-    <script src="~/js/setting.js"></script>
+    <script src="~/js/Holiday.js"></script>
 
     <script>
         $(document).ready(function () {
-            SelectedMenu('menuMaster', 'menuSettings');
+            SelectedMenu('menuMaster', 'menuHolidayList');
             bindDataTable();
         });
     </script>

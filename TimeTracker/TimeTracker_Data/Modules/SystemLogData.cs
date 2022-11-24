@@ -28,8 +28,6 @@ namespace TimeTracker_Data.Modules
                        && (string.IsNullOrWhiteSpace(model.SearchText)
                            || a.Description.ToLower().Contains(model.SearchText)));
 
-            var aaa = result.ToList();
-
             if (model.FromDate != null && model.ToDate != null)
             {
                 result = result

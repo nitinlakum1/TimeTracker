@@ -10,6 +10,7 @@ namespace TimeTracker.Helper
             UserMappings.Map(this);
             SystemLogMappings.Map(this);
             SettingMappings.Map(this);
+            HolidayMappings.Map(this);
         }
     }
 }

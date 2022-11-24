@@ -12,7 +12,7 @@ using TimeTracker_Data;
 namespace TimeTracker_Data.Migrations
 {
     [DbContext(typeof(TTContext))]
-    [Migration("20221123101204_SetupDb")]
+    [Migration("20221124124702_SetupDb")]
     partial class SetupDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,26 @@ namespace TimeTracker_Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("TimeTracker_Data.Model.Holidays", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Holidays");
+                });
 
             modelBuilder.Entity("TimeTracker_Data.Model.Roles", b =>
                 {
@@ -99,6 +119,8 @@ namespace TimeTracker_Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("SystemLogs");
                 });
 
@@ -174,6 +196,17 @@ namespace TimeTracker_Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("TimeTracker_Data.Model.SystemLogs", b =>
+                {
+                    b.HasOne("TimeTracker_Data.Model.Users", "Users")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("TimeTracker_Data.Model.Users", b =>
