@@ -286,6 +286,8 @@ namespace TimeTrackerService
         {
             try
             {
+                WriteTextFile(nameof(WriteSetting), "Call", 0);
+
                 var settings = await systemLogData.GetSettings();
                 if (settings != null && settings.Any())
                 {
