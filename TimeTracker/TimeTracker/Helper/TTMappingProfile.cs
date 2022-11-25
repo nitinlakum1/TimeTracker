@@ -11,6 +11,7 @@ namespace TimeTracker.Helper
             SystemLogMappings.Map(this);
             SettingMappings.Map(this);
             HolidayMappings.Map(this);
+            MonthlyReportMapping.Map(this);
         }
     }
 }

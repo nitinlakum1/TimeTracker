@@ -260,7 +260,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link" id="menuAttendance">
                                 <i class="nav-icon fas fa-edit"></i>
                                 <p>
                                     Attendance
@@ -269,19 +269,19 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a asp-controller="SystemLog" asp-action="Index" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Daily Reports</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="Holiday" asp-action="Index" class="nav-link">
+                                    <a asp-controller="MonthlyReport" asp-action="Index" class="nav-link" id="menuMonthlyReports">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Monthly Reports</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="pages/forms/editors.html" class="nav-link">
+                                    <a class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Monthly Reports</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="MonthlyReport" asp-action="Index" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Editors</p>
                                     </a>
