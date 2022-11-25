@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.ServiceProcess;
+using System.Threading;
 using System.Threading.Tasks;
 using TimeTrackerService.DataModel;
 using static TimeTrackerService.Enums;
@@ -28,6 +30,7 @@ namespace TimeTrackerService
         #region Events
         protected override void OnStart(string[] args)
         {
+            Thread.Sleep(5000);
             SetLog("Service is Start", LogTypes.ServiceStart);
         }
 
@@ -39,7 +42,7 @@ namespace TimeTrackerService
                     SetLog("System Log On", LogTypes.SystemLogOn);
                     break;
                 case SessionChangeReason.SessionLogoff:
-                    SetLog("System Log Off", LogTypes.SystemLogOff);
+                    SystemLogOff("System Log Off", LogTypes.SystemLogOff);
                     break;
                 //case SessionChangeReason.RemoteConnect:
                 //    SetLog("System Remote Connect");
@@ -75,8 +78,6 @@ namespace TimeTrackerService
         {
             try
             {
-                TimeSpan startTiming = new TimeSpan();
-                TimeSpan endTiming = new TimeSpan();
                 bool writeLog = false;
                 bool serverOnline = await systemLogData.IsServerConnected();
                 if (serverOnline)
@@ -95,37 +96,54 @@ namespace TimeTrackerService
                         settings = JsonConvert.DeserializeObject<List<SettingModel>>(json);
                     }
 
+                    //Validate all settings. (Wifi Connection | Start and End Timing | Working Day | Holiday)
                     if (settings != null && settings.Any())
                     {
                         string wifiName = settings
                             .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
                             .Value;
-                        writeLog = wifiName.Split(',').Contains(GetConnectedWifi());
+                        bool wifiIsConnected = wifiName.Split(',').Contains(GetConnectedWifi());
 
                         var start = settings
                             .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
-                            .Value;
+                            .Value; //HH:mm | 23:59
 
                         var end = settings
                             .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_END_TIMING))
-                            .Value;
+                            .Value; //HH:mm | 23:59
 
-                        startTiming = new TimeSpan(
+                        var startTiming = new TimeSpan(
                             Convert.ToInt32(start.Split(':')[0]),
                             Convert.ToInt32(start.Split(':')[1]), 0);
 
-                        endTiming = new TimeSpan(
+                        var endTiming = new TimeSpan(
                             Convert.ToInt32(end.Split(':')[0]),
                             Convert.ToInt32(end.Split(':')[1]), 0);
+
+                        TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
+
+                        var companyHolidays = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.COMPANY_HOLIDAYS))
+                            .Value; //HH:mm | 23:59
+
+                        writeLog = wifiIsConnected
+                            && DateTime.Now.Hour >= startTiming.Hours
+                            && DateTime.Now.Minute >= startTiming.Minutes
+                            && DateTime.Now.Hour <= endTiming.Hours
+                            && DateTime.Now.Minute <= endTiming.Minutes
+                            && !DateTime.Now.ToString("dddd").Equals("Saturday")
+                            && !DateTime.Now.ToString("dddd").Equals("Sunday");
+
+                        if (!string.IsNullOrWhiteSpace(companyHolidays) && !writeLog)
+                        {
+                            writeLog = !companyHolidays.Split(',').Contains(DateTime.Now.ToString("dd-MM-yyyy"));
+                        }
                     }
                 }
                 #endregion
 
-                TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
-                //if (writeLog && curentTime >= startTiming && curentTime <= endTiming)
                 if (writeLog)
                 {
-                    //HH:mm  // 13:55
                     var logTime = DateTime.Now;
                     if (serverOnline)
                     {
@@ -146,7 +164,7 @@ namespace TimeTrackerService
                         }
                         catch (Exception ex)
                         {
-                            WriteTextFile("AddSystemLog", ex.Message);
+                            WriteTextFile("AddSystemLog", ex.Message, GetErrorLineNumber(ex));
                         }
                     }
 
@@ -166,12 +184,101 @@ namespace TimeTrackerService
                 }
                 else
                 {
-                    WriteTextFile(nameof(SetLog), "Wi-Fi is not configured.");
+                    WriteTextFile(nameof(SetLog), "Settings are not configured.", 0);
                 }
             }
             catch (Exception ex)
             {
-                WriteTextFile(nameof(SetLog), ex.Message);
+                WriteTextFile(nameof(SetLog), ex.Message, GetErrorLineNumber(ex));
+            }
+        }
+
+        private static async void SystemLogOff(string message, LogTypes module)
+        {
+            try
+            {
+                bool writeLog = false;
+                #region Get setting from settings.json
+                if (File.Exists(@"C:\Program Files\WCT\settings.json"))
+                {
+                    List<SettingModel> settings = null;
+                    using (StreamReader r = new StreamReader(@"C:\Program Files\WCT\settings.json"))
+                    {
+                        string json = r.ReadToEnd();
+                        settings = JsonConvert.DeserializeObject<List<SettingModel>>(json);
+                    }
+
+                    //Validate all settings. (Wifi Connection | Start and End Timing | Working Day | Holiday)
+                    if (settings != null && settings.Any())
+                    {
+                        string wifiName = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
+                            .Value;
+                        bool wifiIsConnected = wifiName.Split(',').Contains(GetConnectedWifi());
+
+                        var start = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
+                            .Value; //HH:mm | 23:59
+
+                        var end = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_END_TIMING))
+                            .Value; //HH:mm | 23:59
+
+                        var startTiming = new TimeSpan(
+                            Convert.ToInt32(start.Split(':')[0]),
+                            Convert.ToInt32(start.Split(':')[1]), 0);
+
+                        var endTiming = new TimeSpan(
+                            Convert.ToInt32(end.Split(':')[0]),
+                            Convert.ToInt32(end.Split(':')[1]), 0);
+
+                        TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
+
+                        var companyHolidays = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.COMPANY_HOLIDAYS))
+                            .Value; //HH:mm | 23:59
+
+                        writeLog = wifiIsConnected
+                            && DateTime.Now.Hour >= startTiming.Hours
+                            && DateTime.Now.Minute >= startTiming.Minutes
+                            && DateTime.Now.Hour <= endTiming.Hours
+                            && DateTime.Now.Minute <= endTiming.Minutes
+                            && !DateTime.Now.ToString("dddd").Equals("Saturday")
+                            && !DateTime.Now.ToString("dddd").Equals("Sunday");
+
+                        if (!string.IsNullOrWhiteSpace(companyHolidays) && !writeLog)
+                        {
+                            writeLog = !companyHolidays.Split(',').Contains(DateTime.Now.ToString("dd-MM-yyyy"));
+                        }
+                    }
+                }
+                #endregion
+
+                if (writeLog)
+                {
+                    var logTime = DateTime.Now;
+                    string path = @"C:\Program Files\WCT\";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
+
+                    FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                    StreamWriter sWriter = new StreamWriter(fs);
+                    sWriter.BaseStream.Seek(0, SeekOrigin.End);
+                    await sWriter.WriteLineAsync($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)module} | {message}");
+                    sWriter.Flush();
+                    sWriter.Close();
+                }
+                else
+                {
+                    WriteTextFile(nameof(SystemLogOff), "Settings are not configured.", 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteTextFile(nameof(SystemLogOff), ex.Message, GetErrorLineNumber(ex));
             }
         }
 
@@ -185,6 +292,7 @@ namespace TimeTrackerService
                     var wsSettings = settings
                         .Where(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME)
                                || a.Key.Equals(AppSettings.SYSTEM_LOG_END_TIMING)
+                               || a.Key.Equals(AppSettings.COMPANY_HOLIDAYS)
                                || a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
                         .ToList();
 
@@ -208,7 +316,7 @@ namespace TimeTrackerService
             }
             catch (Exception ex)
             {
-                WriteTextFile(nameof(WriteSetting), ex.Message);
+                WriteTextFile(nameof(WriteSetting), ex.Message, GetErrorLineNumber(ex));
             }
         }
 
@@ -266,11 +374,11 @@ namespace TimeTrackerService
             }
             catch (Exception ex)
             {
-                WriteTextFile(nameof(SyncTextFileInDB), ex.Message);
+                WriteTextFile(nameof(SyncTextFileInDB), ex.Message, GetErrorLineNumber(ex));
             }
         }
 
-        private static void WriteTextFile(string methodName, string message)
+        private static void WriteTextFile(string methodName, string message, int lineNumber)
         {
             try
             {
@@ -285,7 +393,7 @@ namespace TimeTrackerService
                 FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
                 StreamWriter sWriter = new StreamWriter(fs);
                 sWriter.BaseStream.Seek(0, SeekOrigin.End);
-                sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {methodName} | {message}");
+                sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | Line Number: {lineNumber} | {methodName} | {message}");
                 sWriter.Flush();
                 sWriter.Close();
             }
@@ -304,8 +412,25 @@ namespace TimeTrackerService
             }
             catch (Exception ex)
             {
-                WriteTextFile(nameof(GetMacAddress), ex.Message);
+                WriteTextFile(nameof(GetMacAddress), ex.Message, GetErrorLineNumber(ex));
                 return "";
+            }
+        }
+
+        private static int GetErrorLineNumber(Exception exception)
+        {
+            try
+            {
+                // Get stack trace for the exception with source file information
+                var st = new StackTrace(exception, true);
+                // Get the top stack frame
+                var frame = st.GetFrame(0);
+                // Get the line number from the stack frame
+                return frame.GetFileLineNumber();
+            }
+            catch
+            {
+                return 0;
             }
         }
 
@@ -331,7 +456,7 @@ namespace TimeTrackerService
             }
             catch (Exception ex)
             {
-                WriteTextFile(nameof(GetConnectedWifi), ex.Message);
+                WriteTextFile(nameof(GetConnectedWifi), ex.Message, GetErrorLineNumber(ex));
                 return "";
             }
         }
