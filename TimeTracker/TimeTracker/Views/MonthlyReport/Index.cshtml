@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "MonthlyReport";
+}
+
+@section ContentHeader{
+    <div class="col-sm-6">
+        <h4 class="m-0">Monthly Report</h4>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Monthly Report</li>
+        </ol>
+    </div>
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-lightblue card-outline">
+                <div class="card-header">
+                    <h3 class="card-title font-color">
+                        <i class="fas fa-user"></i>
+                        Monthly Report
+                    </h3>
+                    <div style="float:right; display:flex;">
+                        <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
+                        <h5 class="font-color"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-sm table-bordered table-striped" id="tblUsers">
+                                    <thead>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Starting Time</th>
+                                            <th>Closing Time</th>
+                                            <th>Working Hours</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts{
+    <script src="~/js/systemlog.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            startTimeLog();
+            SelectedMenu('menuAttendance', 'menuMonthlyReports');
+            bindDataTable();
+        });
+    </script>
+}

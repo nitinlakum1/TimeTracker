@@ -40,7 +40,8 @@ namespace TimeTracker.Controllers
                 {
                     var logOn = todaysSystemLog
                         .First(a => a.LogType == LogTypes.SystemLogOn
-                               || a.LogType == LogTypes.ServiceStart);
+                               || a.LogType == LogTypes.ServiceStart
+                               || a.LogType == LogTypes.SystemLock);
 
                     var data = todaysSystemLog.Skip(1).ToList();
 
