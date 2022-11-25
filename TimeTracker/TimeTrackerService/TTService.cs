@@ -74,7 +74,6 @@ namespace TimeTrackerService
         #endregion
 
         #region Private Method
-
         private static async Task SetLog(string message, LogTypes module)
         {
             try

@@ -11,7 +11,7 @@ namespace TimeTrackerService.Data
     {
         public SystemLogData()
         {
-            string cnstr = "server=tcp:103.252.109.188,8081; Database=TimeTracker; user ID=sa; Password=dipak@123; Trusted_Connection=False; MultipleActiveResultSets=True; MultipleActiveResultSets=True";
+            string cnstr = "server=tcp:103.252.109.188,8081; Database=TimeTracker; user ID=sa; Password=dipak@123; Trusted_Connection=False; MultipleActiveResultSets=True";
             _ = new Dac(cnstr);
         }
 
