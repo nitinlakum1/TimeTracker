@@ -17,6 +17,7 @@ namespace TimeTrackerService
     {
         #region Declaration
         private static Data.SystemLogData systemLogData;
+        static bool servesStart = false;
         #endregion
 
         #region Const
@@ -28,53 +29,53 @@ namespace TimeTrackerService
         #endregion
 
         #region Events
-        protected override void OnStart(string[] args)
+        protected override async void OnStart(string[] args)
         {
-            Thread.Sleep(5000);
-            SetLog("Service is Start", LogTypes.ServiceStart);
+            string wifiName = "";
+            while (string.IsNullOrWhiteSpace(wifiName))
+            {
+                wifiName = await GetConnectedWifi();
+            }
+            await SetLog("Service is Start", LogTypes.ServiceStart);
+            servesStart = true;
         }
 
-        protected override void OnSessionChange(SessionChangeDescription changeDescription)
+        protected override async void OnSessionChange(SessionChangeDescription changeDescription)
         {
             switch (changeDescription.Reason)
             {
                 case SessionChangeReason.SessionLogon:
-                    SetLog("System Log On", LogTypes.SystemLogOn);
+                    while (!servesStart) { }
+                    await SetLog("System Log On", LogTypes.SystemLogOn);
                     break;
                 case SessionChangeReason.SessionLogoff:
                     SystemLogOff("System Log Off", LogTypes.SystemLogOff);
                     break;
-                //case SessionChangeReason.RemoteConnect:
-                //    SetLog("System Remote Connect");
-                //    break;
-                //case SessionChangeReason.RemoteDisconnect:
-                //    SetLog("System Remote Disconnect");
-                //    break;
                 case SessionChangeReason.SessionLock:
-                    SetLog("System Locked", LogTypes.SystemLock);
+                    await SetLog("System Locked", LogTypes.SystemLock);
                     break;
                 case SessionChangeReason.SessionUnlock:
-                    SetLog("System Unlocked", LogTypes.SystemUnlock);
+                    await SetLog("System Unlocked", LogTypes.SystemUnlock);
                     break;
                 default:
                     break;
             }
         }
 
-        protected override void OnShutdown()
+        protected override async void OnShutdown()
         {
-            SetLog("System Shutdown", LogTypes.SystemShutdown);
+            await SetLog("System Shutdown", LogTypes.SystemShutdown);
         }
 
-        protected override void OnStop()
+        protected override async void OnStop()
         {
-            SetLog("Service is Stopped", LogTypes.ServiceStopped);
+            await SetLog("Service is Stopped", LogTypes.ServiceStopped);
         }
         #endregion
 
         #region Private Method
 
-        private static async void SetLog(string message, LogTypes module)
+        private static async Task SetLog(string message, LogTypes module)
         {
             try
             {
@@ -102,7 +103,7 @@ namespace TimeTrackerService
                         string wifiName = settings
                             .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
                             .Value;
-                        bool wifiIsConnected = wifiName.Split(',').Contains(GetConnectedWifi());
+                        bool wifiIsConnected = wifiName.Split(',').Contains(await GetConnectedWifi());
 
                         var start = settings
                             .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
@@ -214,7 +215,7 @@ namespace TimeTrackerService
                         string wifiName = settings
                             .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
                             .Value;
-                        bool wifiIsConnected = wifiName.Split(',').Contains(GetConnectedWifi());
+                        bool wifiIsConnected = wifiName.Split(',').Contains(await GetConnectedWifi());
 
                         var start = settings
                             .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
@@ -286,8 +287,6 @@ namespace TimeTrackerService
         {
             try
             {
-                WriteTextFile(nameof(WriteSetting), "Call", 0);
-
                 var settings = await systemLogData.GetSettings();
                 if (settings != null && settings.Any())
                 {
@@ -436,18 +435,18 @@ namespace TimeTrackerService
             }
         }
 
-        private static string GetConnectedWifi()
+        private static async Task<string> GetConnectedWifi()
         {
             try
             {
-                System.Diagnostics.Process p = new System.Diagnostics.Process();
+                Process p = new Process();
                 p.StartInfo.FileName = "netsh.exe";
                 p.StartInfo.Arguments = "wlan show interfaces";
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.Start();
 
-                string s = p.StandardOutput.ReadToEnd();
+                string s = await p.StandardOutput.ReadToEndAsync();
                 string s1 = s.Substring(s.IndexOf("SSID"));
                 s1 = s1.Substring(s1.IndexOf(":"));
                 s1 = s1.Substring(2, s1.IndexOf("\n")).Trim();
@@ -456,9 +455,8 @@ namespace TimeTrackerService
 
                 return s1;
             }
-            catch (Exception ex)
+            catch
             {
-                WriteTextFile(nameof(GetConnectedWifi), ex.Message, GetErrorLineNumber(ex));
                 return "";
             }
         }
