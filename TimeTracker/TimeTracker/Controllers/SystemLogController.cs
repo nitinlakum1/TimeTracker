@@ -6,7 +6,7 @@ using TimeTracker.Models;
 using TimeTracker.Models.SystemLog;
 using TimeTracker_Model;
 using TimeTracker_Model.SystemLog;
-using TimeTracker_Repository;
+using TimeTracker_Repository.SystemLogRepo;
 
 namespace TimeTracker.Controllers
 {

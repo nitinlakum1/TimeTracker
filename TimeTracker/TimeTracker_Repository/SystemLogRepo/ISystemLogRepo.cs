@@ -1,6 +1,6 @@
 ﻿using TimeTracker_Model.SystemLog;
 
-namespace TimeTracker_Repository
+namespace TimeTracker_Repository.SystemLogRepo
 {
     public interface ISystemLogRepo
     {

@@ -1,6 +1,8 @@
 ﻿using TimeTracker_Data.Modules;
 using TimeTracker_Model;
 using TimeTracker_Repository;
+using TimeTracker_Repository.SystemLogRepo;
+using TimeTracker_Repository.UserRepo;
 
 namespace TimeTracker.Configurations
 {

@@ -7,34 +7,27 @@ namespace TimeTracker_Repository
     public class MonthlyReportRepo : IMonthlyReportRepo
     {
         #region Declaration
-        private readonly SystemLogData _SystemLogData;
+        private readonly MonthlyReportData _monthlyReportData;
         private readonly IMapper _mapper;
         #endregion
 
         #region Const
-        public MonthlyReportRepo(SystemLogData SystemLogData, IMapper mapper)
+        public MonthlyReportRepo(MonthlyReportData monthlyReportData, IMapper mapper)
         {
-            _SystemLogData = SystemLogData;
+            _monthlyReportData = monthlyReportData;
             _mapper = mapper;
         }
         #endregion
 
         #region Methods
 
-        public async Task<(List<SystemLogModel>, int)> GetSystemLog(SystemLogFilterModel model)
-        {
-            var (userList, totalRecord) = await _SystemLogData.GetSystemLog(model);
-
-            var systemLogs = _mapper.Map<List<SystemLogModel>>(userList);
-
-            return (systemLogs, totalRecord);
-        }
-
-        //public async Task<List<SystemLogModel>> GetTodaysSystemLog(int userId)
+        //public async Task<(List<SystemLogModel>, int)> GetSystemLog(SystemLogFilterModel model)
         //{
-        //    var result = await _SystemLogData.GetTodaysSystemLog(userId);
+        //    var (userList, totalRecord) = await _SystemLogData.GetSystemLog(model);
 
-        //    return _mapper.Map<List<SystemLogModel>>(result);
+        //    var systemLogs = _mapper.Map<List<SystemLogModel>>(userList);
+
+        //    return (systemLogs, totalRecord);
         //}
         #endregion
     }

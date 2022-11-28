@@ -2,19 +2,19 @@
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.SystemLog;
 
-namespace TimeTracker_Repository
+namespace TimeTracker_Repository.SystemLogRepo
 {
     public class SystemLogRepo : ISystemLogRepo
     {
         #region Declaration
-        private readonly SystemLogData _SystemLogData;
+        private readonly SystemLogData _systemLogData;
         private readonly IMapper _mapper;
         #endregion
 
         #region Const
-        public SystemLogRepo(SystemLogData SystemLogData, IMapper mapper)
+        public SystemLogRepo(SystemLogData systemLogData, IMapper mapper)
         {
-            _SystemLogData = SystemLogData;
+            _systemLogData = systemLogData;
             _mapper = mapper;
         }
         #endregion
@@ -23,7 +23,7 @@ namespace TimeTracker_Repository
 
         public async Task<(List<SystemLogModel>, int)> GetSystemLog(SystemLogFilterModel model)
         {
-            var (userList, totalRecord) = await _SystemLogData.GetSystemLog(model);
+            var (userList, totalRecord) = await _systemLogData.GetSystemLog(model);
 
             var systemLogs = _mapper.Map<List<SystemLogModel>>(userList);
 
@@ -32,7 +32,7 @@ namespace TimeTracker_Repository
 
         public async Task<List<SystemLogModel>> GetTodaysSystemLog(int userId)
         {
-            var result = await _SystemLogData.GetTodaysSystemLog(userId);
+            var result = await _systemLogData.GetTodaysSystemLog(userId);
 
             return _mapper.Map<List<SystemLogModel>>(result);
         }

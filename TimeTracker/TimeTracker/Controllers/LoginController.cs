@@ -5,6 +5,7 @@ using TimeTracker.Models;
 using TimeTracker_Model;
 using TimeTracker_Model.User;
 using TimeTracker_Repository;
+using TimeTracker_Repository.UserRepo;
 
 namespace TimeTracker.Controllers
 {
