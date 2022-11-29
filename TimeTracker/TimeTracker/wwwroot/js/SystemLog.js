@@ -56,3 +56,54 @@ function startTimeLog() {
         $('#spnLastTime').text(`${h}:${m}:${s}`);
     }, 1000)
 }
+
+/*
+ * Monthly report
+ */
+
+function bindMRDataTable() {
+    datatable = $('#tblMonthlyReport')
+        .dataTable(
+            {
+                "sAjaxSource": "/SystemLog/GetMonthlyReport",
+                "bServerSide": true,
+                "bProcessing": true,
+                "bSearchable": true,
+                "scrollX": true,
+                "order": [[0, "DESC"]],
+                "paging": false,
+                "searching": false,
+                "bSortable": false,
+                "bAutoWidth": false,
+                "bInfo": false,
+                "language": {
+                    "emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                },
+                "fnServerParams": function (aoData) {
+                },
+                "aoColumns": [
+                    {
+                        "data": "date", width: 100, "bSortable": false, "render": function (data) {
+                            return setDateFormat(data);
+                        }
+                    },
+                    { "data": "username", "bSortable": false, width: 170 },
+                    { "data": "fullName", "bSortable": false },
+                    {
+                        "data": "startingTime", width: 170, "bSortable": false, "render": function (data) {
+                            return setDateTimeFormat(data);
+                        },
+                    },
+                    {
+                        "data": "closingTime", width: 170, "bSortable": false, "render": function (data) {
+                            return setDateTimeFormat(data);
+                        },
+                    },
+                    { "data": "totalTime", width: 100, "bSortable": false },
+                    //{ "data": "id", "bSortable": false, width: 70 },
+                ],
+                processing: true,
+            });
+}

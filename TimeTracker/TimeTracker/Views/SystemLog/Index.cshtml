@@ -1,15 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "SystemLog";
+    ViewData["Title"] = "Daily Log";
 }
 
 @section ContentHeader{
     <div class="col-sm-6">
-        <h4 class="m-0">System Log</h4>
+        <h4 class="m-0">Daily Log</h4>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active">System Log</li>
+            <li class="breadcrumb-item active">Daily Log</li>
         </ol>
     </div>
 }
@@ -20,7 +20,7 @@
                 <div class="card-header">
                     <h3 class="card-title font-color">
                         <i class="fas fa-user"></i>
-                        System Log
+                        Daily Log
                     </h3>
                     <div style="float:right; display:flex;">
                         <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
@@ -57,7 +57,7 @@
     <script>
         $(document).ready(function () {
             startTimeLog();
-            SelectedMenu('menuMaster', 'menuSystemLog');
+            SelectedMenu('menuAttendance', 'menuSystemLog');
             bindDataTable();
         });
     </script>

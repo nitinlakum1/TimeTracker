@@ -222,12 +222,6 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a asp-controller="SystemLog" asp-action="Index" class="nav-link" id="menuSystemLog">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>System Logs</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a asp-controller="Setting" asp-action="Index" class="nav-link" id="menuSettings">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Settings</p>
@@ -237,24 +231,6 @@
                                     <a asp-controller="Holiday" asp-action="Index" class="nav-link" id="menuHolidayList">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Holiday List</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/UI/navbar.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Navbar & Tabs</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/UI/timeline.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Timeline</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/UI/ribbons.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Ribbons</p>
                                     </a>
                                 </li>
                             </ul>
@@ -269,56 +245,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a asp-controller="MonthlyReport" asp-action="Index" class="nav-link" id="menuMonthlyReports">
+                                    <a asp-controller="SystemLog" asp-action="Index" class="nav-link" id="menuSystemLog">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Monthly Reports</p>
+                                        <p>Daily Report</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link">
+                                    <a asp-controller="SystemLog" asp-action="MonthlyReport" class="nav-link" id="menuMonthlyReport">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Monthly Reports</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a asp-controller="MonthlyReport" asp-action="Index" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Editors</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/forms/validation.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Validation</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>
-                                    Tables
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/tables/simple.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Simple Tables</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/tables/data.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>DataTables</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/tables/jsgrid.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>jsGrid</p>
+                                        <p>Monthly Report</p>
                                     </a>
                                 </li>
                             </ul>

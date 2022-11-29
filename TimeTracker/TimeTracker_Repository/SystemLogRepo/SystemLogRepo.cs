@@ -36,6 +36,16 @@ namespace TimeTracker_Repository.SystemLogRepo
 
             return _mapper.Map<List<SystemLogModel>>(result);
         }
+
+        public async Task<List<SystemLogModel>> GetMonthlyReport(SystemLogFilterModel model)
+        {
+            var list= await _systemLogData.GetMonthlyReport(model);
+
+            var systemLogs = _mapper.Map<List<SystemLogModel>>(list);
+
+            return systemLogs;
+        }
+
         #endregion
     }
 }

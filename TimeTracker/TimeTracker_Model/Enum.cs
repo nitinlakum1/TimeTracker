@@ -27,4 +27,15 @@ namespace TimeTracker_Model
         ServiceStopped = 7,
     }
     #endregion
+
+    #region Roles
+    public enum Roles : int
+    {
+        [Description("Admin")]
+        Admin = 1,
+
+        [Description("Employee")]
+        Employee = 2,
+    }
+    #endregion
 }

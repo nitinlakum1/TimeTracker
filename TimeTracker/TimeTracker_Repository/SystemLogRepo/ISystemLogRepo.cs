@@ -7,5 +7,7 @@ namespace TimeTracker_Repository.SystemLogRepo
         Task<(List<SystemLogModel>, int)> GetSystemLog(SystemLogFilterModel model);
 
         Task<List<SystemLogModel>> GetTodaysSystemLog(int userId);
+
+        Task<List<SystemLogModel>> GetMonthlyReport(SystemLogFilterModel model);
     }
 }

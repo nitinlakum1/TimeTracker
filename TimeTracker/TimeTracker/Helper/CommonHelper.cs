@@ -4,7 +4,7 @@ namespace TimeTracker.Helper
 {
     public static class CommonHelper
     {
-        public static string Description(this Enum value)
+        public static string GetEnumDescription(this Enum value)
         {
             // get attributes  
             var field = value.GetType().GetField(value.ToString());

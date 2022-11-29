@@ -17,7 +17,8 @@ namespace TimeTracker_Repository
                 new Claim("Id", user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
                 new Claim(ClaimTypes.Email, user.Email??""),
-                //new Claim(ClaimTypes.Role, user.RoleName),
+                new Claim(ClaimTypes.Role, user.RoleName),
+                new Claim("RoleId", user.RoleId.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
                 new Claim(ClaimTypes.Expiration, expiredTime.ToString("dd MMMM, yyyy : tt"))
             };
