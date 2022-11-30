@@ -15,6 +15,7 @@ namespace TimeTracker.AutoMapper
             profile.CreateMap<EditSettingViewModel, SettingModel>();
             profile.CreateMap<SettingModel, EditSettingViewModel>();
             profile.CreateMap<Settings, SettingModel>();
+            profile.CreateMap<Resources, ResourceModel>();
             //profile.CreateMap<SettingModel, Settings>();
             profile.CreateMap<DatatableParamViewModel, SettingFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))

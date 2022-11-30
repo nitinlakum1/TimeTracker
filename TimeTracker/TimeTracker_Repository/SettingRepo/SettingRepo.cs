@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.Holiday;
 
@@ -43,6 +44,23 @@ namespace TimeTracker_Repository
             result.IsActive = model.IsActive;
 
             return await _settingData.UpdateSetting(result);
+        }
+
+        public async Task<ResourceModel> GetResourceById(string id)
+        {
+            var result = await _settingData.GetResourceById(id);
+            return _mapper.Map<ResourceModel>(result);
+        }
+
+        public async Task<bool> AddResources(string dataId, string preferenceId, string data)
+        {
+            Resources model = new Resources()
+            {
+                DataId = dataId,
+                preferenceId = preferenceId,
+                Data = data
+            };
+            return await _settingData.AddResources(model);
         }
         #endregion
     }

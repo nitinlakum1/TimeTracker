@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TimeTracker_Data;
 
@@ -11,9 +12,10 @@ using TimeTracker_Data;
 namespace TimeTracker_Data.Migrations
 {
     [DbContext(typeof(TTContext))]
-    partial class TTContextModelSnapshot : ModelSnapshot
+    [Migration("20221130090041_AddResourcesTable")]
+    partial class AddResourcesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,17 +46,13 @@ namespace TimeTracker_Data.Migrations
 
             modelBuilder.Entity("TimeTracker_Data.Model.Resources", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<string>("Data")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DataId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -62,7 +60,7 @@ namespace TimeTracker_Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("Resources");
                 });

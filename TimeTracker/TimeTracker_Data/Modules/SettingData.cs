@@ -71,6 +71,22 @@ namespace TimeTracker_Data.Modules
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<Resources> GetResourceById(string id)
+        {
+            var result = await _context.Resources.FirstOrDefaultAsync(a => a.DataId == id);
+            
+            result ??= new Resources();
+
+            return result;
+        }
+
+        public async Task<bool> AddResources(Resources model)
+        {
+            _context.Resources.Add(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
         #endregion
     }
 }
