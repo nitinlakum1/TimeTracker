@@ -104,17 +104,19 @@ function bindMRDataTable() {
                     { "data": "totalTime", width: 100, "bSortable": false },
                     //{ "data": "id", "bSortable": false, width: 70 },
                 ],
-                //columnDefs: [
-                //    {
-                //        targets: 5,
-                //        render: function (data, type, row) {
-                //            if (row.username == '') {
-                //                return "aa";
-                //            }
-                //        },
-                //        className: "text-center",
-                //    }
-                //],
+                columnDefs: [
+                    {
+                        targets: 5,
+                        render: function (data, type, row) {
+                            if (row.totalTime == '00:00') {
+                                return '<span class="new-btn-danger" style="padding: 3px 20px 4px 20px; border-radius:2px;">00:00</span>';
+                            } else {
+                                return row.totalTime;
+                            }
+                        },
+                        className: "text-center",
+                    }
+                ],
                 processing: true,
             });
 }

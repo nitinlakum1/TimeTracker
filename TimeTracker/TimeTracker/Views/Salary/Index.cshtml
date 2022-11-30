@@ -1,15 +1,17 @@
-﻿@{
-    ViewData["Title"] = "Daily Log";
+﻿@model List<TimeTracker_Model.Salary.SalaryModel>
+
+@{
+    ViewData["Title"] = "Salary";
 }
 
 @section ContentHeader{
     <div class="col-sm-6">
-        <h4 class="m-0">Daily Log</h4>
+        <h4 class="m-0">Salary</h4>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active">Daily Log</li>
+            <li class="breadcrumb-item active">Users</li>
         </ol>
     </div>
 }
@@ -19,26 +21,12 @@
             <div class="card card-lightblue card-outline">
                 <div class="card-header">
                     <h3 class="card-title font-color">
-                        <i class="fa-solid fa-user-clock"></i>
-                        Daily Log
+                        <i class="fa-solid fa-users"></i>
+                        Salary
                     </h3>
-                  @*  <div style="float:right; display:flex;">
-                        <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
-                        <h5 class="font-color"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
-                    </div>*@
-
-                    <div style="float:right; display:flex;">
-                        <div style="float:left; display:flex; margin-top: 3px;">
-                            <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
-                            <h5 class="font-color" style="margin-bottom:0px;"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
-                        </div>
-                        <div style="float:right; margin-left:5px;">
-                            <select class="form-control form-control-sm">
-                                <option>Today</option>
-                            </select>
-                        </div>
+                    <div style="float:right;">
+                        <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>
                     </div>
-
                 </div>
                 <div class="card-body">
                     <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -48,9 +36,9 @@
                                     <thead>
                                         <tr>
                                             <th>Username</th>
-                                            <th>Log Type</th>
-                                            <th>Description</th>
-                                            <th>Log Time</th>
+                                            <th>Salary</th>
+                                            <th>FromDate</th>
+                                            <th>ToDate</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -64,13 +52,27 @@
         </div>
     </div>
 
+    <div class="modal" tabindex="-1" role="dialog" id="comformdelete">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure to delete</h5>
+                    <p hidden id="deleteId"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Close()">Close</button>
+                    <button type="button" class="btn btn-danger" onclick="conformDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @section Scripts{
-    <script src="~/js/systemlog.js"></script>
+    <script src="~/js/salary.js"></script>
 
     <script>
         $(document).ready(function () {
-            startTimeLog();
-            SelectedMenu('menuAttendance', 'menuSystemLog');
+            SelectedMenu('menuMaster', 'menuSalary');
             bindDataTable();
         });
     </script>

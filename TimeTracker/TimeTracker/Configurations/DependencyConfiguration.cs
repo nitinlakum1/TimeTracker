@@ -14,6 +14,7 @@ namespace TimeTracker.Configurations
             services.AddTransient<ISettingRepo, SettingRepo>();
             services.AddTransient<ISystemLogRepo, SystemLogRepo>();
             services.AddTransient<IHolidayRepo, HolidayRepo>();
+            services.AddTransient<ISalaryRepo, SalaryRepo>();
             services.AddTransient<JwtSettingModel>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
@@ -22,6 +23,7 @@ namespace TimeTracker.Configurations
             services.AddTransient<SystemLogData>();
             services.AddTransient<SettingData>();
             services.AddTransient<HolidayData>();
+            services.AddTransient<SalaryData>();
         }
     }
 }

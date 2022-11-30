@@ -1,0 +1,122 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using TimeTracker.Models;
+using TimeTracker.Models.User;
+using TimeTracker_Model;
+using TimeTracker_Model.User;
+using TimeTracker_Repository.UserRepo;
+
+namespace TimeTracker.Controllers
+{
+    [Authorize]
+    public class SalaryController : Controller
+    {
+        private readonly ISalaryRepo _salaryRepo;
+        private readonly IMapper _mapper;
+
+        public SalaryController(ISalaryRepo salaryRepo, IMapper mapper)
+        {
+            _salaryRepo = salaryRepo;
+            _mapper = mapper;
+        }
+
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> LoadSalary(DatatableParamViewModel param)
+        {
+            var dtParam = _mapper.Map<SalaryFilterModel>(param);
+
+            var (userList, totalRecord) = await _salaryRepo.GetSalary(dtParam);
+
+            return Json(new
+            {
+                param.sEcho,
+                iTotalRecords = totalRecord,
+                iTotalDisplayRecords = totalRecord,
+                aaData = userList
+            });
+        }
+
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> Create(AddUserViewModel model)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var addUser = _mapper.Map<AddEditUserModel>(model);
+        //            var result = await _userRepo.AddUser(addUser);
+
+        //            if (result)
+        //            {
+        //                return RedirectToAction("Index");
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //    return View();
+        //}
+
+        //public async Task<IActionResult> Update(int id)
+        //{
+        //    var user = await _userRepo.GetUserById(id);
+        //    var model = _mapper.Map<EditUserViewModel>(user);
+        //    return View(model);
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> Update(EditUserViewModel model)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var editUser = _mapper.Map<AddEditUserModel>(model);
+        //            var result = await _userRepo.UpdateUser(editUser);
+
+        //            if (result)
+        //            {
+        //                return RedirectToAction("Index");
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> DeleteUser(int id)
+        //{
+        //    bool isSuccess = false;
+        //    string message = "";
+        //    try
+        //    {
+        //        if (id > 0)
+        //        {
+        //            isSuccess = await _userRepo.DeleteUser(id);
+        //            message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
+        //    }
+        //    return Json(new { isSuccess, message });
+        //}
+    }
+}
