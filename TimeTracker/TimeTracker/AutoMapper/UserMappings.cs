@@ -13,7 +13,7 @@ namespace TimeTracker.AutoMapper
         {
             profile.CreateMap<LoginViewModel, LoginModel>();
             profile.CreateMap<Users, LoginDetailsModel>()
-                .ForMember(source => source.RoleName, dest => dest.MapFrom(x => x.Roles.Name));
+                .ForMember(dest => dest.RoleName, source => source.MapFrom(x => x.Roles.Name));
 
             profile.CreateMap<Users, UserModel>();
             profile.CreateMap<AddEditUserModel, Users>();
