@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Sockets;
 using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.SystemLog;
@@ -33,36 +34,13 @@ namespace TimeTracker.Controllers
         {
             try
             {
-                string lastTime = "00:00:00";
                 int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
                 var todaysSystemLog = await _systemlogRepo.GetTodaysSystemLog(userId ?? 0);
-                if (todaysSystemLog is { Count: > 0 })
-                {
-                    var logOn = todaysSystemLog
-                        .First(a => a.LogType == LogTypes.SystemLogOn
-                               || a.LogType == LogTypes.ServiceStart);
 
-                    var data = todaysSystemLog.Skip(1).ToList();
+                var todaysHour = GetTotalHours(todaysSystemLog);
 
-                    var locked = data
-                        .Where(a => a.LogType == LogTypes.SystemLock)
-                        .Select(a => a.LogTime)
-                        .ToList();
-
-                    var unlocked = data
-                        .Where(a => a.LogType == LogTypes.SystemUnlock
-                               || a.LogType == LogTypes.SystemLogOn)
-                        .Select(a => a.LogTime)
-                        .ToList();
-
-                    TimeSpan deduction = new();
-                    for (int i = 0; i < locked.Count; i++)
-                    {
-                        deduction += (unlocked[i] - locked[i]);
-                    }
-                    var todaysHour = DateTime.Now - logOn.LogTime - deduction;
-                    lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
-                }
+                string lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
+                
                 ViewBag.LastTime = lastTime;
                 return View();
             }
@@ -126,6 +104,10 @@ namespace TimeTracker.Controllers
                 var monthlyReport = new List<MonthlyReportListViewModel>();
                 if (systemLogs is { Count: > 0 })
                 {
+                    //var todaysHour = GetTotalHours(todaysSystemLog);
+
+                    //string lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
+
                     monthlyReport = systemLogs
                         .GroupBy(a => a.LogTime.Date)
                         .Select(a => new MonthlyReportListViewModel()
@@ -135,7 +117,7 @@ namespace TimeTracker.Controllers
                             FullName = a.FirstOrDefault()?.FullName ?? "",
                             StartingTime = a.FirstOrDefault().LogTime,
                             ClosingTime = a.OrderByDescending(x => x.LogTime).FirstOrDefault().LogTime,
-                            TotalTime = GetTotalHours(a.ToList()),
+                            TotalTimeSpan = GetTotalHours(a.ToList()),
                         })
                         .ToList();
                 }
@@ -153,40 +135,63 @@ namespace TimeTracker.Controllers
                 throw;
             }
         }
+        #endregion
 
-        private string GetTotalHours(List<SystemLogModel> lst)
+        #region Private_Methods
+        private TimeSpan GetTotalHours(List<SystemLogModel> todaysSystemLog)
         {
-            if (lst is { Count: > 0 })
+            try
             {
-                var logOn = lst
-                    .First(a => a.LogType == LogTypes.SystemLogOn
-                           || a.LogType == LogTypes.ServiceStart
-                           || a.LogType == LogTypes.SystemLock);
-
-                var data = lst.Skip(1).ToList();
-
-                var locked = data
-                    .Where(a => a.LogType == LogTypes.SystemLock)
-                    .Select(a => a.LogTime)
-                    .ToList();
-
-                var unlocked = data
-                    .Where(a => a.LogType == LogTypes.SystemUnlock
-                           || a.LogType == LogTypes.SystemLogOn)
-                    .Select(a => a.LogTime)
-                    .ToList();
-
-                TimeSpan deduction = new();
-                for (int i = 0; i < locked.Count; i++)
+                if (todaysSystemLog is { Count: > 0 })
                 {
-                    deduction += (unlocked[i] - locked[i]);
+                    var firstLog = todaysSystemLog
+                        .FirstOrDefault(a => a.LogType == LogTypes.SystemLogOn
+                               || a.LogType == LogTypes.ServiceStart);
+
+                    if (firstLog == null)
+                    {
+                        return new TimeSpan();
+                    }
+
+                    var firstTwoIds = todaysSystemLog
+                        .Take(2)
+                        .Where(a => a.LogType == LogTypes.ServiceStart
+                               || a.LogType == LogTypes.SystemLogOn)
+                        .Select(a => a.Id)
+                        .ToList();
+
+
+                    todaysSystemLog = todaysSystemLog
+                        .Where(a => !firstTwoIds.Contains(a.Id))
+                        .ToList();
+
+                    var locked = todaysSystemLog
+                        .Where(a => a.LogType == LogTypes.SystemLock)
+                        .Select(a => a.LogTime)
+                        .ToList();
+
+                    var unlocked = todaysSystemLog
+                        .Where(a => a.LogType == LogTypes.SystemUnlock
+                               || a.LogType == LogTypes.SystemLogOn)
+                        .Select(a => a.LogTime)
+                        .ToList();
+
+                    TimeSpan deduction = new();
+                    for (int i = 0; i < locked.Count; i++)
+                    {
+                        deduction += (unlocked[i] - locked[i]);
+                    }
+
+                    return DateTime.Now - firstLog.LogTime - deduction;
                 }
-                var todaysHour = DateTime.Now - logOn.LogTime - deduction;
-                return string.Format("{0:D2}:{1:D2} Hours", todaysHour.Hours, todaysHour.Minutes);
+
+                return new TimeSpan();
             }
-            return "";
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-        
         #endregion
     }
 }

@@ -7,6 +7,13 @@
         public DateTime Date { get; set; }
         public DateTime StartingTime { get; set; }
         public DateTime ClosingTime { get; set; }
-        public string TotalTime { get; set; }
+        public string TotalTime
+        {
+            get
+            {
+                return string.Format("{0:D2}:{1:D2}", TotalTimeSpan.Hours, TotalTimeSpan.Minutes);
+            }
+        }
+        public TimeSpan TotalTimeSpan { get; set; }
     }
 }

@@ -104,6 +104,17 @@ function bindMRDataTable() {
                     { "data": "totalTime", width: 100, "bSortable": false },
                     //{ "data": "id", "bSortable": false, width: 70 },
                 ],
+                //columnDefs: [
+                //    {
+                //        targets: 5,
+                //        render: function (data, type, row) {
+                //            if (row.username == '') {
+                //                return "aa";
+                //            }
+                //        },
+                //        className: "text-center",
+                //    }
+                //],
                 processing: true,
             });
 }

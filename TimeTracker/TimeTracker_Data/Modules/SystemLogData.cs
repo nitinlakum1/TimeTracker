@@ -71,6 +71,7 @@ namespace TimeTracker_Data.Modules
             var result = await _context.SystemLogs
                 .Where(a => a.LogTime.Date == DateTime.Now.Date
                        && a.UserId == userId)
+                .OrderBy(a => a.LogTime)
                 .ToListAsync();
 
             return result;
