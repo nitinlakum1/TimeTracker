@@ -21,9 +21,11 @@ namespace TimeTracker_Data.Modules
 
         public async Task<Users> ValidateUser(LoginModel model)
         {
-            var result = await _context.Users
-                                       .FirstOrDefaultAsync(a => a.Username.ToLower() == model.Username.ToLower()
-                                                            && a.Password == model.Password);
+            var result = await _context
+                .Users
+                .Include(a => a.Roles)
+                .FirstOrDefaultAsync(a => a.Username.ToLower() == model.Username.ToLower()
+                                     && a.Password == model.Password);
 
             if (result == null)
             {

@@ -35,6 +35,7 @@ namespace TimeTracker_Data.Modules
                            && a.LogTime.Date <= model.ToDate.Value.Date);
             }
 
+            //var name = result.ToListAsync();
             var totalRecord = result.Count();
 
             if (model.SortOrder.ToLower().Equals("desc")
@@ -70,10 +71,37 @@ namespace TimeTracker_Data.Modules
             var result = await _context.SystemLogs
                 .Where(a => a.LogTime.Date == DateTime.Now.Date
                        && a.UserId == userId)
+                .OrderBy(a => a.LogTime)
                 .ToListAsync();
 
             return result;
         }
+
+        public async Task<List<SystemLogs>> GetMonthlyReport(SystemLogFilterModel model)
+        {
+            //var result = _context.SystemLogs
+            //    .Include(a => a.Users)
+            //    .Where(a => (model.UserId == 0
+            //                 || a.UserId == model.UserId)
+            //           && (string.IsNullOrWhiteSpace(model.SearchText)
+            //               || a.Description.ToLower().Contains(model.SearchText))
+            //           && a.LogTime.Date >= model.FromDate.Value.Date
+            //           && a.LogTime.Date <= model.ToDate.Value.Date);
+
+            var result = _context.SystemLogs
+                .Include(a => a.Users)
+                .Where(a => (model.UserId == 0
+                             || a.UserId == model.UserId));
+
+            if (model.FromDate != null && model.ToDate != null)
+            {
+                result = result
+                    .Where(a => a.LogTime.Date >= model.FromDate.Value.Date
+                           && a.LogTime.Date <= model.ToDate.Value.Date);
+            }
+            return await result.ToListAsync();
+        }
+
+        #endregion
     }
-    #endregion
 }

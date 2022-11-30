@@ -127,10 +127,10 @@ namespace TimeTrackerService
                             .Value; //HH:mm | 23:59
 
                         writeLog = wifiIsConnected
-                            && DateTime.Now.Hour >= startTiming.Hours
-                            && DateTime.Now.Minute >= startTiming.Minutes
-                            && DateTime.Now.Hour <= endTiming.Hours
-                            && DateTime.Now.Minute <= endTiming.Minutes
+                            //&& DateTime.Now.Hour >= startTiming.Hours
+                            //&& DateTime.Now.Minute >= startTiming.Minutes
+                            //&& DateTime.Now.Hour <= endTiming.Hours
+                            //&& DateTime.Now.Minute <= endTiming.Minutes
                             && !DateTime.Now.ToString("dddd").Equals("Saturday")
                             && !DateTime.Now.ToString("dddd").Equals("Sunday");
 
@@ -239,10 +239,10 @@ namespace TimeTrackerService
                             .Value; //HH:mm | 23:59
 
                         writeLog = wifiIsConnected
-                            && DateTime.Now.Hour >= startTiming.Hours
-                            && DateTime.Now.Minute >= startTiming.Minutes
-                            && DateTime.Now.Hour <= endTiming.Hours
-                            && DateTime.Now.Minute <= endTiming.Minutes
+                            //&& DateTime.Now.Hour >= startTiming.Hours
+                            //&& DateTime.Now.Minute >= startTiming.Minutes
+                            //&& DateTime.Now.Hour <= endTiming.Hours
+                            //&& DateTime.Now.Minute <= endTiming.Minutes
                             && !DateTime.Now.ToString("dddd").Equals("Saturday")
                             && !DateTime.Now.ToString("dddd").Equals("Sunday");
 

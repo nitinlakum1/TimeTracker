@@ -25,6 +25,23 @@ namespace TimeTracker.Helper
             return Guid.Parse(claim.Value);
         }
 
+        public static int GetLoginRole(this ClaimsPrincipal principal)
+        {
+            if (principal.Identity.IsAuthenticated)
+            {
+                var claim = principal.FindFirst(x => x.Type == "RoleId");
+                if (claim == null)
+                {
+                    throw new ArgumentException("No Role claim found");
+                }
+                return Convert.ToInt32(claim.Value);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public static int GetIdFromClaim(this ClaimsPrincipal principal)
         {
             if (principal.Identity.IsAuthenticated)

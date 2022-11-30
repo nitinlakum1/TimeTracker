@@ -1,6 +1,6 @@
 ﻿using TimeTracker_Model.User;
 
-namespace TimeTracker_Repository
+namespace TimeTracker_Repository.UserRepo
 {
     public interface IUserRepo
     {

@@ -37,7 +37,7 @@ function setDateTimeFormat(data) {
     return moment(data).format('DD-MM-yyyy hh:mm A');
 }
 
-function setDateFormat(data,aaa) {
+function setDateFormat(data) {
     if (data == null || data == undefined) {
         return "";
     }

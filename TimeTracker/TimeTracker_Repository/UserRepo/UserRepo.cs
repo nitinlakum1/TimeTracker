@@ -3,7 +3,7 @@ using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.User;
 
-namespace TimeTracker_Repository
+namespace TimeTracker_Repository.UserRepo
 {
     public class UserRepo : IUserRepo
     {

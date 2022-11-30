@@ -1,15 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Daily Log";
+    ViewData["Title"] = "Monthly Report";
 }
 
 @section ContentHeader{
     <div class="col-sm-6">
-        <h4 class="m-0">Daily Log</h4>
+        <h4 class="m-0">Monthly Report</h4>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active">Daily Log</li>
+            <li class="breadcrumb-item active">Monthly Report</li>
         </ol>
     </div>
 }
@@ -19,25 +19,38 @@
             <div class="card card-lightblue card-outline">
                 <div class="card-header">
                     <h3 class="card-title font-color">
-                        <i class="fa-solid fa-user-clock"></i>
-                        Daily Log
+                        <i class="fa-solid fa-chart-line"></i>
+                        Monthly Report
                     </h3>
                     <div style="float:right; display:flex;">
-                        <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
-                        <h5 class="font-color"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
+                        <div style="float:left;">
+                            <h5 class="font-color"><span id="spnLastTime" style="font-size: 1.1rem;">Total Hours: 35:30 </span></h5>
+                        </div>
+                        <div style="float:right; margin:0px 5px 0px 5px">
+                            <select class="form-control form-control-sm">
+                                <option>Nitin</option>
+                            </select>
+                        </div>
+                        <div style="float:right;">
+                            <select class="form-control form-control-sm">
+                                <option>November, 2022</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table class="table table-sm table-bordered table-striped" id="tblUsers">
+                                <table class="table table-sm table-bordered table-striped" id="tblMonthlyReport">
                                     <thead>
                                         <tr>
+                                            <th>Date</th>
                                             <th>Username</th>
-                                            <th>Log Type</th>
-                                            <th>Description</th>
-                                            <th>Log Time</th>
+                                            <th>FullName</th>
+                                            <th>StartingTime</th>
+                                            <th>ClosingTime</th>
+                                            <th>Total Time</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,9 +69,8 @@
 
     <script>
         $(document).ready(function () {
-            startTimeLog();
-            SelectedMenu('menuAttendance', 'menuSystemLog');
-            bindDataTable();
+            SelectedMenu('menuAttendance', 'menuMonthlyReport');
+            bindMRDataTable();
         });
     </script>
 }

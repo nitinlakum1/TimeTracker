@@ -15,7 +15,7 @@ namespace TimeTracker.Models.SystemLog
         {
             get
             {
-                return CommonHelper.Description(LogType);
+                return CommonHelper.GetEnumDescription(LogType);
             }
         }
     }
