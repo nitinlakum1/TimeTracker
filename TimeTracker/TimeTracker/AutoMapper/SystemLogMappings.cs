@@ -15,6 +15,8 @@ namespace TimeTracker.AutoMapper
                 .ForMember(source => source.FullName, dest => dest.MapFrom(x => x.Users.FullName));
 
             profile.CreateMap<SystemLogModel, SystemLogListModel>();
+            profile.CreateMap<SystemLogViewModel, SystemLogAdddModel>();
+            profile.CreateMap<SystemLogAdddModel, SystemLogs>();
             profile.CreateMap<DatatableParamViewModel, SystemLogFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))
                 .ForMember(source => source.PageSize, dest => dest.MapFrom(x => x.iDisplayLength))

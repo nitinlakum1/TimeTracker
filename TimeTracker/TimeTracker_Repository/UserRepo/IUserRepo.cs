@@ -15,5 +15,7 @@ namespace TimeTracker_Repository.UserRepo
         Task<bool> UpdateUser(AddEditUserModel model);
 
         Task<bool> DeleteUser(int id);
+
+        Task<List<UserModel>> GetUserLookup();
     }
 }

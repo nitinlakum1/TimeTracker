@@ -110,6 +110,15 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
+        public async Task<List<Users>> GetUserLookup()
+        {
+            return await _context.Users.Select(a => new Users()
+            {
+                Id = a.Id,
+                Username = a.Username,
+            }).ToListAsync();
+        }
+
         #endregion
     }
 }

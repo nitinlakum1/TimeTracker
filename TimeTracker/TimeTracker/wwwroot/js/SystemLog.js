@@ -17,6 +17,14 @@
                         '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
                 },
                 "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "filter", "value": JSON.stringify({
+                            UserId: $('#cmbUser').val(),
+                            FromDate: $('#txtDate').val(),
+                            ToDate: $('#txtDate').val(),
+                        })
+                    });
+                    perm = aoData;
                 },
                 "aoColumns": [
                     { "data": "username", width: 150 },
@@ -32,6 +40,14 @@
                 processing: true,
             });
 }
+
+$('#cmbUser').change(function () {
+    $('#tblUsers').DataTable().draw();
+});
+
+$('#txtDate').change(function () {
+    $('#tblUsers').DataTable().draw();
+});
 
 function startTimeLog() {
     var lastTime = $('#spnLastTime').text();

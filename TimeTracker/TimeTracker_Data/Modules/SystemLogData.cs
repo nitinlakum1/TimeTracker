@@ -102,6 +102,13 @@ namespace TimeTracker_Data.Modules
             return await result.ToListAsync();
         }
 
+        public async Task<bool> AddLog(SystemLogs model)
+        {
+            _context.SystemLogs.Add(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         #endregion
     }
 }

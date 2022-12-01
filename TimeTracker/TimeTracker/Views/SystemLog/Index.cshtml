@@ -22,23 +22,20 @@
                         <i class="fa-solid fa-user-clock"></i>
                         Daily Log
                     </h3>
-                  @*  <div style="float:right; display:flex;">
-                        <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
-                        <h5 class="font-color"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
-                    </div>*@
-
                     <div style="float:right; display:flex;">
-                        <div style="float:left; display:flex; margin-top: 3px;">
+                        <div style="display:flex;float:left;margin-top:2px;">
                             <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
                             <h5 class="font-color" style="margin-bottom:0px;"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
                         </div>
-                        <div style="float:right; margin-left:5px;">
-                            <select class="form-control form-control-sm">
-                                <option>Today</option>
+                        <div style="float:right; margin:0px 5px 0px 5px">
+                            <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbUser">
+                                <option value="0">Select User</option>
                             </select>
                         </div>
+                        <div style="float:right;">
+                            <input type="date" class="form-control form-control-sm" value="@DateTime.Now.Date" id="txtDate" />
+                        </div>
                     </div>
-
                 </div>
                 <div class="card-body">
                     <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">

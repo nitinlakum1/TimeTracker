@@ -74,6 +74,12 @@ namespace TimeTracker_Repository.UserRepo
             return await _userData.DeleteUser(id);
         }
 
+        public async Task<List<UserModel>> GetUserLookup()
+        {
+            var userList = await _userData.GetUserLookup();
+            return _mapper.Map<List<UserModel>>(userList);
+        }
+
         #endregion
     }
 }

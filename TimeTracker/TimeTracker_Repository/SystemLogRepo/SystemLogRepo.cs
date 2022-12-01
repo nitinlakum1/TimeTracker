@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.SystemLog;
+using TimeTracker_Model.User;
 
 namespace TimeTracker_Repository.SystemLogRepo
 {
@@ -44,6 +46,12 @@ namespace TimeTracker_Repository.SystemLogRepo
             var systemLogs = _mapper.Map<List<SystemLogModel>>(list);
 
             return systemLogs;
+        }
+
+        public async Task<bool> AddLog(SystemLogAdddModel model)
+        {
+            var log = _mapper.Map<SystemLogs>(model);
+            return await _systemLogData.AddLog(log);
         }
 
         #endregion

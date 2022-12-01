@@ -1,13 +1,19 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System.Net.Sockets;
+using System.Text.Json.Serialization;
 using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.SystemLog;
+using TimeTracker.Models.User;
 using TimeTracker_Model;
 using TimeTracker_Model.SystemLog;
+using TimeTracker_Model.User;
 using TimeTracker_Repository.SystemLogRepo;
+using TimeTracker_Repository.UserRepo;
 
 namespace TimeTracker.Controllers
 {
@@ -16,16 +22,18 @@ namespace TimeTracker.Controllers
     {
         #region Declaration
         private readonly ISystemLogRepo _systemlogRepo;
+        private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         #endregion
 
         #region Constructor
-        public SystemLogController(ISystemLogRepo systemlogRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public SystemLogController(ISystemLogRepo systemlogRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepo userRepo)
         {
             _systemlogRepo = systemlogRepo;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _userRepo = userRepo;
         }
         #endregion
 
@@ -40,8 +48,12 @@ namespace TimeTracker.Controllers
                 var todaysHour = GetTotalHours(todaysSystemLog);
 
                 string lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
-                
+
                 ViewBag.LastTime = lastTime;
+
+                var users = await _userRepo.GetUserLookup();
+                ViewBag.Users = new SelectList(users, "Id", "Username");
+
                 return View();
             }
             catch (Exception ex)
@@ -50,13 +62,21 @@ namespace TimeTracker.Controllers
             }
         }
 
-        public async Task<IActionResult> GetSystemLog(DatatableParamViewModel param)
+        public async Task<IActionResult> GetSystemLog(DatatableParamViewModel param, string filter)
         {
             try
             {
                 var dtParam = _mapper.Map<SystemLogFilterModel>(param);
                 int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
                 dtParam.UserId = userId ?? 0;
+
+                if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
+                {
+                    var filterData = JsonConvert.DeserializeObject<SystemLogFilterModel>(filter);
+                    dtParam.UserId = filterData?.UserId ?? 0;
+                    dtParam.FromDate = filterData?.FromDate ?? DateTime.Now;
+                    dtParam.ToDate = filterData?.ToDate ?? DateTime.Now;
+                }
 
                 var (systemLogs, totalRecord) = await _systemlogRepo.GetSystemLog(dtParam);
 
@@ -80,6 +100,9 @@ namespace TimeTracker.Controllers
         {
             try
             {
+                var users = await _userRepo.GetUserLookup();
+                ViewBag.Users = new SelectList(users, "Id", "Username");
+
                 return View();
             }
             catch (Exception)
@@ -88,16 +111,19 @@ namespace TimeTracker.Controllers
             }
         }
 
-        public async Task<IActionResult> GetMonthlyReport(MonthlyReportFilterViewModel param)
+        public async Task<IActionResult> GetMonthlyReport(MonthlyReportFilterViewModel param, string filter)
         {
             try
             {
                 var dtParam = _mapper.Map<SystemLogFilterModel>(param);
+                dtParam.UserId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
 
-                var roleId = _httpContextAccessor?.HttpContext?.User.GetLoginRole();
-                if (roleId != (int)Roles.Admin)
+                if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
                 {
-                    dtParam.UserId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
+                    var filterData = JsonConvert.DeserializeObject<SystemLogFilterModel>(filter);
+                    dtParam.UserId = filterData?.UserId ?? 0;
+                    dtParam.FromDate = filterData?.FromDate ?? DateTime.Now;
+                    dtParam.ToDate = filterData?.ToDate ?? DateTime.Now;
                 }
 
                 var systemLogs = await _systemlogRepo.GetMonthlyReport(dtParam);
@@ -134,6 +160,46 @@ namespace TimeTracker.Controllers
             {
                 throw;
             }
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            try
+            {
+                SystemLogViewModel model = new();
+
+                var users = await _userRepo.GetUserLookup();
+                model.Users = new SelectList(users, "Id", "Username");
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(SystemLogViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var addLog = _mapper.Map<SystemLogAdddModel>(model);
+                    var result = await _systemlogRepo.AddLog(addLog);
+
+                    if (result)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
         }
         #endregion
 
