@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System.Net.Http.Headers;
 using System.Text;
+using TimeTracker.Models.Setting;
 using TimeTracker_Repository;
 
 namespace TimeTracker.Controllers
@@ -17,16 +18,23 @@ namespace TimeTracker.Controllers
         {
             _settingRepo = settingRepo;
         }
+
         public async Task<IActionResult> Index()
         {
-            await ListOfResources();
             return View();
         }
 
-        private async Task ListOfResources()
+        [HttpPost]
+        public async Task<IActionResult> AddResource(ResourceViewModel model)
+        {
+            await ListOfResources(model);
+            return RedirectToAction("Index");
+        }
+
+        private async Task ListOfResources(ResourceViewModel model)
         {
             HttpClient _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://prod.hirect.ai/hirect/candidate-service/candidates/search?searchDirect=true&cityId=356&qs=Flutter&pageNum=0&pageSize=20");
+            _httpClient.BaseAddress = new Uri($"https://prod.hirect.ai/hirect/candidate-service/candidates/search?searchDirect=true&cityId=356&qs={model.Designation}&pageNum=0&pageSize=20");
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -55,11 +63,11 @@ namespace TimeTracker.Controllers
 
             var content = JsonContent.Create(new
             {
-                education = new string[] { "1" },
-                experience = new string[] { "4" },
-                salary = new string[] { "1" },
+                education = new string[] { model.education },
+                experience = new string[] { model.experience },
+                salary = new string[] { model.salary },
                 gender = 0,
-                minAge = 22,
+                minAge = model.minAge,
             });
 
             var response = await _httpClient.PostAsync("", content);
