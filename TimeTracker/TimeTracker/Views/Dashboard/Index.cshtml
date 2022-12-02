@@ -1,5 +1,4 @@
-﻿@*@model List<TimeTracker.Models.SystemLog.SystemLogListModel>*@
-@model TimeTracker.Models.Setting.ResourceViewModel
+﻿@model TimeTracker.Models.Setting.ResourceViewModel
 @{
     ViewData["Title"] = "Dashboard";
 
@@ -49,9 +48,9 @@
     @*<div class="col-md-12">
         @foreach (var item in Model)
         {
-            <p>@item.LogTime | @item.Description </p>
+        <p>@item.LogTime | @item.Description </p>
         }
-    </div>*@
+        </div>*@
 </div>
 
 
@@ -70,27 +69,30 @@
                     <div class="row">
                         <div class="form-group col-md-4">
                             <label asp-for="Designation">Designation</label>
-                            <input asp-for="Designation" type="text" class="form-control form-control-sm" placeholder="Designation">
+                            <select class="form-control form-control-sm" asp-for="Designation">
+                                <option value="NET Developer">NET Developer</option>
+                                <option value="Flutter">Flutter</option>
+                            </select>
                         </div>
-
                         <div class="form-group col-md-4">
-                            <label asp-for="education">education</label>
-                            <input asp-for="education" type="text" class="form-control form-control-sm" placeholder="education">
+                            <label asp-for="education">Education</label>
+                            <input asp-for="education" type="text" class="form-control form-control-sm" value="1,2">
                         </div>
-
                         <div class="form-group col-md-4">
-                            <label asp-for="experience">experience</label>
-                            <input asp-for="experience" type="text" class="form-control form-control-sm" placeholder="experience">
+                            <label asp-for="experience">Experience (1=Any | 2=Fresher | 3=0-1 Year | 4=1-3 Years | 5=3-5 Years | 6=5-10 Years | 7=10+ Years)</label>
+                            <input asp-for="experience" type="text" class="form-control form-control-sm" value="3,4">
                         </div>
-
                         <div class="form-group col-md-4">
-                            <label asp-for="salary">salary</label>
-                            <input asp-for="salary" type="text" class="form-control form-control-sm" placeholder="salary">
+                            <label asp-for="salary">Salary</label>
+                            <input asp-for="salary" type="text" class="form-control form-control-sm" value="1">
                         </div>
-
                         <div class="form-group col-md-4">
-                            <label asp-for="minAge">minAge</label>
-                            <input asp-for="minAge" type="text" class="form-control form-control-sm" placeholder="minAge">
+                            <label asp-for="CityId">City Id</label>
+                            <input asp-for="CityId" type="text" class="form-control form-control-sm" value="356">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label asp-for="Token">Token</label>
+                            <input asp-for="Token" type="text" class="form-control form-control-sm" value="eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWIwMmY0OTgwYTg1NDZhMmFkOTFmMjNlNTM5OCIsImNyZWF0ZVRpbWUiOjE2Njk4NzUxMjk0MzcsImlhdCI6MTY2OTg3NTEyOSwiaXNzIjoiaGlyZWN0X2FwcF9pc3N1ZXIifQ.M55wSdi9ibYyc0TaD2M19dfu1dX0_nOueXsOsc022Qg">
                         </div>
                     </div>
                 </div>
@@ -106,10 +108,10 @@
 
 
 @section Scripts{
-    <script>
-        $(document).ready(function () {
-            SelectedMenu('menuDashboard', '');
-            bindDataTable();
-        });
-    </script>
+<script>
+    $(document).ready(function () {
+        SelectedMenu('menuDashboard', '');
+        bindDataTable();
+    });
+</script>
 }
