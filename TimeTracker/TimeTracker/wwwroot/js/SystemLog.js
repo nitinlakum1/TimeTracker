@@ -54,23 +54,24 @@ function startTimeLog() {
     var hour = parseInt(lastTime.split(':')[0]);
     var min = parseInt(lastTime.split(':')[1]);
     var second = parseInt(lastTime.split(':')[2]);
+    if (lastTime != "00:00:00") {
+        setInterval(function () {
+            second++;
+            if (second == 60) {
+                min++;
+            }
+            second = second == 60 ? 0 : second;
+            if (min == 60) {
+                hour++;
+            }
+            min = min == 60 ? 0 : min;
 
-    setInterval(function () {
-        second++;
-        if (second == 60) {
-            min++;
-        }
-        second = second == 60 ? 0 : second;
-        if (min == 60) {
-            hour++;
-        }
-        min = min == 60 ? 0 : min;
-
-        var h = hour.toString().padStart(2, "0");
-        var m = min.toString().padStart(2, "0");
-        var s = second.toString().padStart(2, "0");
-        $('#spnLastTime').text(`${h}:${m}:${s}`);
-    }, 1000)
+            var h = hour.toString().padStart(2, "0");
+            var m = min.toString().padStart(2, "0");
+            var s = second.toString().padStart(2, "0");
+            $('#spnLastTime').text(`${h}:${m}:${s}`);
+        }, 1000)
+    }
 }
 
 /*
@@ -98,15 +99,22 @@ function bindMRDataTable() {
                         '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
                 },
                 "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "filter", "value": JSON.stringify({
+                            UserId: $('#cmbUser').val(),
+                            FromDate: $('#txtDate').val(),
+                            ToDate: $('#txtDate').val(),
+                        })
+                    });
+                    perm = aoData;
                 },
                 "aoColumns": [
                     {
-                        "data": "date", width: 100, "bSortable": false, "render": function (data) {
-                            return setDateFormat(data);
+                        "data": "date", width: 170, "bSortable": false, "render": function (data) {
+                            return setDateDayFormat(data);
                         }
                     },
                     { "data": "username", "bSortable": false, width: 170 },
-                    { "data": "fullName", "bSortable": false },
                     {
                         "data": "startingTime", width: 170, "bSortable": false, "render": function (data) {
                             return setDateTimeFormat(data);
@@ -122,7 +130,7 @@ function bindMRDataTable() {
                 ],
                 columnDefs: [
                     {
-                        targets: 5,
+                        targets: 4,
                         render: function (data, type, row) {
                             if (row.totalTime == '00:00') {
                                 return '<span class="new-btn-danger" style="padding: 3px 20px 4px 20px; border-radius:2px;">00:00</span>';
@@ -136,3 +144,11 @@ function bindMRDataTable() {
                 processing: true,
             });
 }
+
+$('#cmbUser').change(function () {
+    $('#tblMonthlyReport').DataTable().draw();
+});
+
+$('#txtDate').change(function () {
+    $('#tblMonthlyReport').DataTable().draw();
+});

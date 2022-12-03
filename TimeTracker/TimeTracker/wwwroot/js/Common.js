@@ -44,6 +44,13 @@ function setDateFormat(data) {
     return moment(data).format('DD-MM-yyyy');
 }
 
+function setDateDayFormat(data) {
+    if (data == null || data == undefined) {
+        return "";
+    }
+    return moment(data).format('DD-MM-yyyy (dddd)');
+}
+
 function SelectedMenu(mainMenu, subMenu) {
     $('#' + mainMenu).addClass("active");
     $('#' + mainMenu).parent().addClass("menu-is-opening");

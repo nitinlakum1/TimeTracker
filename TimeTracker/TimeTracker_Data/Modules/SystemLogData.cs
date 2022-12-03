@@ -23,8 +23,7 @@ namespace TimeTracker_Data.Modules
         {
             var result = _context.SystemLogs
                 .Include(a => a.Users)
-                .Where(a => (model.UserId == 0
-                             || a.UserId == model.UserId)
+                .Where(a => a.UserId == model.UserId
                        && (string.IsNullOrWhiteSpace(model.SearchText)
                            || a.Description.ToLower().Contains(model.SearchText)));
 
@@ -63,7 +62,7 @@ namespace TimeTracker_Data.Modules
                 .Skip(model.DisplayStart)
                 .Take(model.PageSize);
 
-            return (await result.ToListAsync(), totalRecord);
+            return (await result.OrderBy(a => a.LogTime).ToListAsync(), totalRecord);
         }
 
         public async Task<List<SystemLogs>> GetTodaysSystemLog(int userId)
@@ -79,19 +78,11 @@ namespace TimeTracker_Data.Modules
 
         public async Task<List<SystemLogs>> GetMonthlyReport(SystemLogFilterModel model)
         {
-            //var result = _context.SystemLogs
-            //    .Include(a => a.Users)
-            //    .Where(a => (model.UserId == 0
-            //                 || a.UserId == model.UserId)
-            //           && (string.IsNullOrWhiteSpace(model.SearchText)
-            //               || a.Description.ToLower().Contains(model.SearchText))
-            //           && a.LogTime.Date >= model.FromDate.Value.Date
-            //           && a.LogTime.Date <= model.ToDate.Value.Date);
-
             var result = _context.SystemLogs
                 .Include(a => a.Users)
-                .Where(a => (model.UserId == 0
-                             || a.UserId == model.UserId));
+                .Where(a => a.UserId == model.UserId
+                       && (string.IsNullOrWhiteSpace(model.SearchText)
+                           || a.Description.ToLower().Contains(model.SearchText)));
 
             if (model.FromDate != null && model.ToDate != null)
             {
@@ -99,7 +90,8 @@ namespace TimeTracker_Data.Modules
                     .Where(a => a.LogTime.Date >= model.FromDate.Value.Date
                            && a.LogTime.Date <= model.ToDate.Value.Date);
             }
-            return await result.ToListAsync();
+
+            return await result.OrderBy(a => a.LogTime).ToListAsync();
         }
 
         public async Task<bool> AddLog(SystemLogs model)

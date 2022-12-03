@@ -54,6 +54,8 @@ namespace TimeTracker.Controllers
                 var users = await _userRepo.GetUserLookup();
                 ViewBag.Users = new SelectList(users, "Id", "Username");
 
+                ViewBag.RoleId = _httpContextAccessor?.HttpContext?.User.GetLoginRole() ?? 0;
+
                 return View();
             }
             catch (Exception ex)
@@ -67,13 +69,14 @@ namespace TimeTracker.Controllers
             try
             {
                 var dtParam = _mapper.Map<SystemLogFilterModel>(param);
-                int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
-                dtParam.UserId = userId ?? 0;
+                int userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
+                dtParam.UserId = userId;
 
                 if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
                 {
                     var filterData = JsonConvert.DeserializeObject<SystemLogFilterModel>(filter);
-                    dtParam.UserId = filterData?.UserId ?? 0;
+                    dtParam.UserId = filterData?.UserId == null || filterData?.UserId == 0 ? userId : filterData?.UserId;
+
                     dtParam.FromDate = filterData?.FromDate ?? DateTime.Now;
                     dtParam.ToDate = filterData?.ToDate ?? DateTime.Now;
                 }
@@ -81,7 +84,6 @@ namespace TimeTracker.Controllers
                 var (systemLogs, totalRecord) = await _systemlogRepo.GetSystemLog(dtParam);
 
                 var lst = _mapper.Map<List<SystemLogListModel>>(systemLogs);
-
                 return Json(new
                 {
                     param.sEcho,
@@ -103,6 +105,8 @@ namespace TimeTracker.Controllers
                 var users = await _userRepo.GetUserLookup();
                 ViewBag.Users = new SelectList(users, "Id", "Username");
 
+                ViewBag.RoleId = _httpContextAccessor?.HttpContext?.User.GetLoginRole() ?? 0;
+
                 return View();
             }
             catch (Exception)
@@ -111,38 +115,38 @@ namespace TimeTracker.Controllers
             }
         }
 
-        public async Task<IActionResult> GetMonthlyReport(MonthlyReportFilterViewModel param, string filter)
+        public async Task<IActionResult> GetMonthlyReport(MonthlyReportFilterViewModel param,
+            string filter)
         {
             try
             {
                 var dtParam = _mapper.Map<SystemLogFilterModel>(param);
-                dtParam.UserId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
+                var userId = _httpContextAccessor?.HttpContext?.User
+                    .GetIdFromClaim() ?? 0;
+                dtParam.UserId = userId;
 
                 if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
                 {
+                    var curentDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                     var filterData = JsonConvert.DeserializeObject<SystemLogFilterModel>(filter);
-                    dtParam.UserId = filterData?.UserId ?? 0;
-                    dtParam.FromDate = filterData?.FromDate ?? DateTime.Now;
-                    dtParam.ToDate = filterData?.ToDate ?? DateTime.Now;
+                    dtParam.UserId = filterData?.UserId == null || filterData?.UserId == 0 ? userId : filterData?.UserId;
+                    dtParam.FromDate = filterData?.FromDate ?? curentDay;
+                    dtParam.ToDate = (filterData?.ToDate ?? curentDay).AddMonths(1).AddDays(-1);
                 }
 
                 var systemLogs = await _systemlogRepo.GetMonthlyReport(dtParam);
                 var monthlyReport = new List<MonthlyReportListViewModel>();
                 if (systemLogs is { Count: > 0 })
                 {
-                    //var todaysHour = GetTotalHours(todaysSystemLog);
-
-                    //string lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
-
                     monthlyReport = systemLogs
-                        .GroupBy(a => a.LogTime.Date)
+                        .GroupBy(a => new { a.Username, a.LogTime.Date })
                         .Select(a => new MonthlyReportListViewModel()
                         {
-                            Date = a.Key,
-                            Username = a.FirstOrDefault()?.Username ?? "",
-                            FullName = a.FirstOrDefault()?.FullName ?? "",
-                            StartingTime = a.FirstOrDefault().LogTime,
-                            ClosingTime = a.OrderByDescending(x => x.LogTime).FirstOrDefault().LogTime,
+                            Date = a.Key.Date,
+                            Username = a.Key.Username,
+                            StartingTime = a.FirstOrDefault()?.LogTime ?? DateTime.Now,
+                            ClosingTime = a.OrderByDescending(x => x.LogTime)
+                                           .FirstOrDefault()?.LogTime ?? DateTime.Now,
                             TotalTimeSpan = GetTotalHours(a.ToList()),
                         })
                         .ToList();
@@ -169,9 +173,9 @@ namespace TimeTracker.Controllers
                 SystemLogViewModel model = new();
 
                 var users = await _userRepo.GetUserLookup();
-                model.Users = new SelectList(users, "Id", "Username");
+                ViewBag.Users = new SelectList(users, "Id", "Username");
 
-                return View(model);
+                return View();
             }
             catch (Exception)
             {
@@ -214,6 +218,10 @@ namespace TimeTracker.Controllers
                         .FirstOrDefault(a => a.LogType == LogTypes.SystemLogOn
                                || a.LogType == LogTypes.ServiceStart);
 
+                    var lastLog = todaysSystemLog
+                        .OrderByDescending(a => a.LogTime)
+                        .FirstOrDefault();
+
                     if (firstLog == null)
                     {
                         return new TimeSpan();
@@ -248,7 +256,14 @@ namespace TimeTracker.Controllers
                         deduction += (unlocked[i] - locked[i]);
                     }
 
-                    return DateTime.Now - firstLog.LogTime - deduction;
+                    if (firstLog.LogTime.Date == DateTime.Now.Date)
+                    {
+                        return DateTime.Now - firstLog.LogTime - deduction;
+                    }
+                    else
+                    {
+                        return lastLog.LogTime - firstLog.LogTime - deduction;
+                    }
                 }
 
                 return new TimeSpan();

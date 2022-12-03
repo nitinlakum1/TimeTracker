@@ -1,4 +1,5 @@
-﻿@{
+﻿@using TimeTracker_Model
+@{
     ViewData["Title"] = "Daily Log";
 }
 
@@ -27,41 +28,50 @@
                             <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
                             <h5 class="font-color" style="margin-bottom:0px;"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
                         </div>
-                        <div style="float:right; margin:0px 5px 0px 5px">
+                    @if ((int)ViewBag.RoleId == (int)Roles.Admin)
+                    {
+                        <div style="float:right; margin-left:5px;">
                             <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbUser">
                                 <option value="0">Select User</option>
                             </select>
                         </div>
-                        <div style="float:right;">
-                            <input type="date" class="form-control form-control-sm" value="@DateTime.Now.Date" id="txtDate" />
-                        </div>
+                    }
+                    <div style="float:right; margin-left:5px;">
+                        <input type="date" class="form-control form-control-sm" value="@DateTime.Now.Date" id="txtDate" />
                     </div>
+                    @if ((int)ViewBag.RoleId == (int)Roles.Admin)
+                    {
+                        <div style="float:right;margin-left:5px;">
+                            <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>
+                        </div>
+                    }
                 </div>
-                <div class="card-body">
-                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-sm table-bordered table-striped" id="tblUsers">
-                                    <thead>
-                                        <tr>
-                                            <th>Username</th>
-                                            <th>Log Type</th>
-                                            <th>Description</th>
-                                            <th>Log Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+            </div>
+            <div class="card-body">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-sm table-bordered table-striped" id="tblUsers">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Log Type</th>
+                                        <th>Description</th>
+                                        <th>Log Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts{
+@section Scripts{
     <script src="~/js/systemlog.js"></script>
 
     <script>

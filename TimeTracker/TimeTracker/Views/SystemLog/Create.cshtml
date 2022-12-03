@@ -1,18 +1,18 @@
 ﻿@model TimeTracker.Models.SystemLog.SystemLogViewModel
 @using TimeTracker_Model;
 @{
-    ViewData["Title"] = "Create User";
+    ViewData["Title"] = "Create SystemLog";
 }
 
 @section ContentHeader{
     <div class="col-sm-6">
-        <h4 class="m-0">Create User</h4>
+        <h4 class="m-0">Create Log</h4>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item"><a asp-action="Index">Users</a></li>
-            <li class="breadcrumb-item active">Create User</li>
+            <li class="breadcrumb-item"><a asp-action="Index">Log</a></li>
+            <li class="breadcrumb-item active">Create Log</li>
         </ol>
     </div>
 }
@@ -22,21 +22,20 @@
             <div class="card card-lightblue card-outline">
                 <div class="card-header">
                     <h3 class="card-title font-color">
-                        <i class="fa-solid fa-user-plus"></i>
-                        Create User
+                        <i class="fa-solid fa-user-clock"></i>
+                        Create Log
                     </h3>
                 </div>
                 <form asp-action="Create">
                     <div class="card-body">
                         <div class="row">
-
                             <div class="form-group col-md-3">
                                 <label asp-for="UserId">Username</label>
-                                <select asp-for="UserId" asp-items="Model.Users" class="form-control form-control-sm">
+                                <select asp-for="UserId" asp-items="ViewBag.Users" class="form-control form-control-sm">
+                                <option value="">Select Username</option>
                                 </select>
                                 <span asp-validation-for="UserId" class="text-danger"></span>
                             </div>
-
                             <div class="form-group col-md-2">
                                 <label asp-for="LogType">Log Type</label>
                                 <select asp-for="LogType" class="form-control form-control-sm" asp-items="Html.GetEnumSelectList<LogTypes>()">
@@ -55,7 +54,6 @@
                                 <input asp-for="Description" type="text" class="form-control form-control-sm" placeholder="Description">
                                 <span asp-validation-for="Description" class="text-danger"></span>
                             </div>
-
                             
                         </div>
                     </div>

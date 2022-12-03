@@ -1,5 +1,8 @@
-﻿@{
+﻿@using TimeTracker_Model
+@{
     ViewData["Title"] = "Monthly Report";
+
+    int? userId = 0;
 }
 
 @section ContentHeader{
@@ -24,53 +27,61 @@
                     </h3>
                     <div style="float:right; display:flex;">
                         <div style="float:left;">
-                            <h5 class="font-color"><span id="spnLastTime" style="font-size: 1.1rem;">Total Hours: 35:30 </span></h5>
+                            <h5 class="font-color" style="margin:3px 0px;"><span id="spnLastTime" style="font-size: 1.1rem;">Total Hours: 00:00 </span></h5>
                         </div>
-                        <div style="float:right; margin:0px 5px 0px 5px">
-                            <select class="form-control form-control-sm">
-                                <option>Nitin</option>
+                    @if ((int)ViewBag.RoleId == (int)Roles.Admin)
+                    {
+                        <div style="float:right; margin-left:5px;">
+                            <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbUser">
+                                <option value="0">Select User</option>
                             </select>
                         </div>
-                        <div style="float:right;">
-                            <select class="form-control form-control-sm">
-                                <option>November, 2022</option>
-                            </select>
-                        </div>
+                    }
+                    <div style="float:right;margin-left:5px;">
+                        <input class="form-control form-control-sm datepicker" data-date-format="MM-yyyy" id="txtDate" style="width: 120px;">
                     </div>
                 </div>
-                <div class="card-body">
-                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-sm table-bordered table-striped" id="tblMonthlyReport">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Username</th>
-                                            <th>FullName</th>
-                                            <th>StartingTime</th>
-                                            <th>ClosingTime</th>
-                                            <th>Total Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+            </div>
+            <div class="card-body">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-sm table-bordered table-striped" id="tblMonthlyReport">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Username</th>
+                                        <th>StartingTime</th>
+                                        <th>ClosingTime</th>
+                                        <th>Total Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts{
+@section Scripts{
     <script src="~/js/systemlog.js"></script>
 
     <script>
         $(document).ready(function () {
             SelectedMenu('menuAttendance', 'menuMonthlyReport');
             bindMRDataTable();
+
+            $('.datepicker').datepicker({
+                format: "MM-yyyy",
+                minViewMode: "months",
+                viewMode: "months",
+            }).on('changeDate', function (ev) {
+                $(this).datepicker('hide');
+            }).datepicker("setDate", 'now');
         });
     </script>
 }
