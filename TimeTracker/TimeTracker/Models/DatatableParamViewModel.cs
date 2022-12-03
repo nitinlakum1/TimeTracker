@@ -11,5 +11,6 @@ namespace TimeTracker.Models
         public string sSortDir_0 { get; set; }
         public int iSortingCols { get; set; }
         public string sColumns { get; set; }
+        public string name { get; set; }
     }
 }

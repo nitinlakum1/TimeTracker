@@ -9,5 +9,9 @@ namespace TimeTracker_Repository
         Task<SettingModel> GetSettingById(int id);
 
         Task<bool> UpdateSetting(SettingModel model);
+
+        Task<ResourceModel> GetResourceById(string id);
+
+        Task<bool> AddResources(string dataId, string preferenceId, string data);
     }
 }

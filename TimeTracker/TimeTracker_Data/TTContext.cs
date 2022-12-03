@@ -15,5 +15,6 @@ namespace TimeTracker_Data
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Holidays> Holidays { get; set; }
         public DbSet<Salarys> Salarys { get; set; }
+        public DbSet<Resources> Resources { get; set; }
     }
 }
