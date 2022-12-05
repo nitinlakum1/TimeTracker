@@ -1,5 +1,5 @@
 ﻿function bindDataTable() {
-    datatable = $('#tblUsers')
+    datatable = $('#tblSystemLogs')
         .dataTable(
             {
                 "sAjaxSource": "/SystemLog/GetSystemLog",
@@ -42,11 +42,11 @@
 }
 
 $('#cmbUser').change(function () {
-    $('#tblUsers').DataTable().draw();
+    $('#tblSystemLogs').DataTable().draw();
 });
 
 $('#txtDate').change(function () {
-    $('#tblUsers').DataTable().draw();
+    $('#tblSystemLogs').DataTable().draw();
 });
 
 function startTimeLog() {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text.Json.Serialization;
 using TimeTracker.Helper;
@@ -107,6 +108,7 @@ namespace TimeTracker.Controllers
 
                 ViewBag.RoleId = _httpContextAccessor?.HttpContext?.User.GetLoginRole() ?? 0;
 
+
                 return View();
             }
             catch (Exception)
@@ -152,12 +154,19 @@ namespace TimeTracker.Controllers
                         .ToList();
                 }
 
+                var MonthlyTime = monthlyReport.Select(a => a.TotalTimeSpan).ToList();
+                TimeSpan totalMonthlyTime = new();
+                for (int i = 0; i < MonthlyTime.Count; i++)
+                {
+                    totalMonthlyTime += MonthlyTime[i];
+                }
+
                 return Json(new
                 {
                     param.sEcho,
                     iTotalRecords = 0,
                     iTotalDisplayRecords = 0,
-                    aaData = monthlyReport
+                    aaData = monthlyReport,
                 });
             }
             catch (Exception)
@@ -214,56 +223,92 @@ namespace TimeTracker.Controllers
             {
                 if (todaysSystemLog is { Count: > 0 })
                 {
-                    var firstLog = todaysSystemLog
-                        .FirstOrDefault(a => a.LogType == LogTypes.SystemLogOn
-                               || a.LogType == LogTypes.ServiceStart);
-
-                    var lastLog = todaysSystemLog
-                        .OrderByDescending(a => a.LogTime)
-                        .FirstOrDefault();
-
-                    if (firstLog == null)
-                    {
-                        return new TimeSpan();
-                    }
-
-                    var firstTwoIds = todaysSystemLog
+                    var removeExtra = todaysSystemLog
                         .Take(2)
-                        .Where(a => a.LogType == LogTypes.ServiceStart
-                               || a.LogType == LogTypes.SystemLogOn)
-                        .Select(a => a.Id)
+                        .Where(a => a.LogType == LogTypes.SystemLogOn
+                               || a.LogType == LogTypes.ServiceStart)
                         .ToList();
 
-
-                    todaysSystemLog = todaysSystemLog
-                        .Where(a => !firstTwoIds.Contains(a.Id))
-                        .ToList();
-
-                    var locked = todaysSystemLog
-                        .Where(a => a.LogType == LogTypes.SystemLock)
-                        .Select(a => a.LogTime)
-                        .ToList();
-
-                    var unlocked = todaysSystemLog
-                        .Where(a => a.LogType == LogTypes.SystemUnlock
-                               || a.LogType == LogTypes.SystemLogOn)
-                        .Select(a => a.LogTime)
-                        .ToList();
-
-                    TimeSpan deduction = new();
-                    for (int i = 0; i < locked.Count; i++)
+                    if (removeExtra.Count > 1)
                     {
-                        deduction += (unlocked[i] - locked[i]);
+                        int id = removeExtra.FirstOrDefault()?.Id ?? 0;
+                        todaysSystemLog = todaysSystemLog
+                        .Where(a => a.Id != id)
+                        .ToList();
                     }
 
-                    if (firstLog.LogTime.Date == DateTime.Now.Date)
+                    var start = todaysSystemLog.Where(a => a.LogType == LogTypes.ServiceStart
+                                       || a.LogType == LogTypes.SystemLogOn
+                                       || a.LogType == LogTypes.SystemUnlock)
+                                 .Select(a => a.LogTime)
+                                 .ToList();
+
+                    var end = todaysSystemLog.Where(a => a.LogType == LogTypes.SystemLock
+                                     || a.LogType == LogTypes.SystemLogOff)
+                               .Select(a => a.LogTime)
+                               .ToList();
+
+                    TimeSpan totalTime = new();
+
+                    for (int i = 0; i < start.Count; i++)
                     {
-                        return DateTime.Now - firstLog.LogTime - deduction;
+                        totalTime += ((end.Count < i + 1 ? DateTime.Now : end[i]) - start[i]);
                     }
-                    else
-                    {
-                        return lastLog.LogTime - firstLog.LogTime - deduction;
-                    }
+                    return totalTime;
+
+
+
+                    //var firstLog = todaysSystemLog
+                    //    .FirstOrDefault(a => a.LogType == LogTypes.SystemLogOn
+                    //           || a.LogType == LogTypes.ServiceStart);
+
+                    //var lastLog = todaysSystemLog
+                    //    .OrderByDescending(a => a.LogTime)
+                    //    .FirstOrDefault();
+
+                    //if (firstLog == null)
+                    //{
+                    //    return new TimeSpan();
+                    //}
+
+                    //var firstTwoIds = todaysSystemLog
+                    //    .Take(2)
+                    //    .Where(a => a.LogType == LogTypes.ServiceStart
+                    //           || a.LogType == LogTypes.SystemLogOn)
+                    //    .Select(a => a.Id)
+                    //    .ToList();
+
+
+                    //todaysSystemLog = todaysSystemLog
+                    //    .Where(a => !firstTwoIds.Contains(a.Id))
+                    //    .ToList();
+
+                    //var locked = todaysSystemLog
+                    //    .Where(a => a.LogType == LogTypes.SystemLock
+                    //            || a.LogType == LogTypes.SystemLogOff)
+                    //    .Select(a => a.LogTime)
+                    //    .ToList();
+
+                    //var unlocked = todaysSystemLog
+                    //    .Where(a => a.LogType == LogTypes.SystemUnlock
+                    //           || a.LogType == LogTypes.SystemLogOn)
+                    //    .Select(a => a.LogTime)
+                    //    .ToList();
+
+                    //TimeSpan deduction = new();
+                    //for (int i = 0; i < locked.Count; i++)
+                    //{
+                    //    deduction += (unlocked[i] - locked[i]);
+                    //}
+
+                    //if (firstLog.LogTime.Date == DateTime.Now.Date)
+                    //{
+                    //    return DateTime.Now - firstLog.LogTime - deduction;
+                    //}
+                    //else
+                    //{
+                    //    return lastLog.LogTime - firstLog.LogTime - deduction;
+                    //}
                 }
 
                 return new TimeSpan();

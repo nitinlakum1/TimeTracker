@@ -66,11 +66,12 @@
                                 <input asp-for="ContactNo" type="text" class="form-control form-control-sm" placeholder="Contact No.">
                                 <span asp-validation-for="ContactNo" class="text-danger"></span>
                             </div>
-                            @*<div class="form-group col-md-2">
-                        <label asp-for="RoleId">Roles</label>
-                        <select asp-for="RoleId" asp-items="" class="form-control form-control-sm">
-                        </select>
-                        </div>*@
+                            <div class="form-group col-md-2">
+                                <label asp-for="RoleId">Roles</label>
+                                <select asp-for="RoleId" class="form-control form-control-sm">
+                                    <option value="2">Employee</option>
+                                </select>
+                            </div>
                             <div class="form-group col-md-2">
                                 <label asp-for="Gender">Gender</label>
                                 <select asp-for="Gender" class="form-control form-control-sm">

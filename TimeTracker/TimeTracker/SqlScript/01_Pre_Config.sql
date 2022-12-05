@@ -4,6 +4,10 @@ INSERT INTO dbo.Roles (Id, [Name], DisplayName, Deleted) VALUES (1, 'Admin', 'Ad
 INSERT INTO dbo.Roles (Id, [Name], DisplayName, Deleted) VALUES (2, 'Employee', 'Employee', 0)
 SET IDENTITY_INSERT dbo.Roles OFF;
 
+INSERT INTO dbo.Users (RoleId,Username,FullName,Email,Designation,Education,Experience,ContactNo,Gender,Password,Address,DOB,
+JoiningDate,CreateAt,BankName,AccountNo,IFSC,MacAddress)
+VALUES (1,'lakumpankaj','LakumPankaj','lakumpankaj666@gmail.com','Developer','Bcom','1 Year','8758989031',0,123,surat,12-07-1997,01-01-2022,01-01-2022,'BOB',1254521254,'AHJHD154','E0D55E662AA0')
+
 /*** Added a preloaded Settings. ***/
 IF NOT EXISTS(SELECT 1 FROM dbo.Settings WHERE [Key]='SYSTEM_WIFI_NAME')
 BEGIN

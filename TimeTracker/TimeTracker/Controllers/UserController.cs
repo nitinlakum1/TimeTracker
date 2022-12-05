@@ -43,6 +43,7 @@ namespace TimeTracker.Controllers
 
         public IActionResult Create()
         {
+
             return View();
         }
 
