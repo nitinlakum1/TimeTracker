@@ -1,0 +1,166 @@
+﻿@model TimeTracker.Models.User.EditUserViewModel
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+@section ContentHeader{
+    <div class="col-sm-6">
+        <h4 class="m-0">User Profile</h4>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index">Users</a></li>
+            <li class="breadcrumb-item active">Profile</li>
+        </ol>
+    </div>
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-lightblue card-outline">
+            <div class="card-header">
+                <h3 class="card-title font-color">
+                    <i class="fa-solid fa-user-pen"></i>
+                        User Profile
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card card-primary card-outline">
+                                <div class="card-body box-profile">
+                                <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" src="~/images/pp.jpg" alt="User profile picture" >
+                                </div>
+                                <h3 class="profile-username text-center">Nina Mcintire</h3>
+                                <p class="text-muted text-center">Software Engineer</p>
+                                <ul class="list-group list-group-unbordered mb-3">
+                                    <li class="list-group-item">
+                                        <b>Followers</b> <a class="float-right">1,322</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Following</b> <a class="float-right">543</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Friends</b> <a class="float-right">13,287</a>
+                                    </li>
+                                </ul>
+                                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                            </div>
+
+                        </div>
+                        </div>
+                    <div class="col-md-9">
+                        <div class="card">
+                            <form asp-action="Update">
+                                <input asp-for="Id" type="hidden" />
+                                <div class="card-body">
+                                    <h5 class="font-color">Personal Details</h5>
+                                    <div class="row">
+                                        <div class="form-group col-md-5">
+                                            <label asp-for="FullName">Full Name</label>
+                                            <input asp-for="FullName" type="text" class="form-control form-control-sm" placeholder="Full Name">
+                                            <span asp-validation-for="FullName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label asp-for="Email">Email</label>
+                                            <input asp-for="Email" type="email" class="form-control form-control-sm" placeholder="Email">
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="Username">Username</label>
+                                            <input asp-for="Username" type="text" class="form-control form-control-sm" placeholder="Username">
+                                            <span asp-validation-for="Username" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-2">
+                                            <label asp-for="Gender">Gender</label>
+                                            <select asp-for="Gender" class="form-control form-control-sm">
+                                                <option value="true">Male</option>
+                                                <option value="false">Female</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="ContactNo">Contact No.</label>
+                                            <input asp-for="ContactNo" type="text" class="form-control form-control-sm" placeholder="Contact No.">
+                                            <span asp-validation-for="ContactNo" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="DOB">DOB</label>
+                                            <input asp-for="DOB" type="date" class="form-control form-control-sm" placeholder="DOB">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="MacAddress">MAC Address</label>
+                                            <input asp-for="MacAddress" type="text" class="form-control form-control-sm" placeholder="MAC Address">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Address">Address</label>
+                                            <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <h5 class="font-color">Bank Details</h5>
+                                    <div class="row">
+                                        <div class="form-group col-md-5">
+                                            <label asp-for="BankName">BankName</label>
+                                            <input asp-for="BankName" type="text" class="form-control form-control-sm" placeholder="BankName">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label asp-for="AccountNo">AccountNo</label>
+                                            <input asp-for="AccountNo" type="text" class="form-control form-control-sm" placeholder="AccountNo">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="IFSC">IFSC</label>
+                                            <input asp-for="IFSC" type="text" class="form-control form-control-sm" placeholder="IFSC">
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    <h5 class="font-color">Other Details</h5>
+                                    <div class="row">
+                                        <div class="form-group col-md-5">
+                                            <label asp-for="Designation">Designation</label>
+                                            <input asp-for="Designation" type="text" class="form-control form-control-sm" placeholder="Designation">
+                                            <span asp-validation-for="Designation" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="JoiningDate">JoiningDate</label>
+                                            <input asp-for="JoiningDate" type="date" class="form-control form-control-sm" placeholder="JoiningDate">
+                                            <span asp-validation-for="JoiningDate" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="Experience">Experience</label>
+                                            <input asp-for="Experience" type="text" class="form-control form-control-sm" placeholder="Experience">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label asp-for="Education">Education</label>
+                                            <input asp-for="Education" type="text" class="form-control form-control-sm" placeholder="Education">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <input type="submit" class="btn btn-info theme-color" value="Update" />
+                                    <button type="reset" class="btn btn-secondary ml-1">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+        @section Scripts{
+        <script>
+            $(document).ready(function () {
+                SelectedMenu('menuMaster', 'menuUsers');
+            });
+        </script>
+    }

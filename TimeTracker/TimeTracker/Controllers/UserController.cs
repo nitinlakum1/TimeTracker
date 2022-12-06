@@ -119,5 +119,10 @@ namespace TimeTracker.Controllers
             }
             return Json(new { isSuccess, message });
         }
+
+        public IActionResult UserProfile()
+        {
+            return View();
+        }
     }
 }
