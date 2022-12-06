@@ -1,4 +1,5 @@
-﻿@model List<TimeTracker_Model.Holiday.HolidayModel>
+﻿@using TimeTracker_Model
+@model List<TimeTracker_Model.Holiday.HolidayModel>
 
 @{
     ViewData["Title"] = "Holiday";
@@ -24,9 +25,11 @@
                         <i class="fa-solid fa-calendar-days"></i>
                         Holiday
                     </h3>
+                @if ((int)ViewBag.RoleId == (int)Roles.Admin){
                     <div style="float:right;">
                         <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>
                     </div>
+                    }
                 </div>
                 <div class="card-body">
                     <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">

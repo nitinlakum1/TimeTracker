@@ -67,7 +67,6 @@ namespace TimeTracker_Repository.UserRepo
             result.BankName = model.BankName;
             result.AccountNo = model.AccountNo;
             result.IFSC = model.IFSC;
-            result.MacAddress = model.MacAddress;
 
             return await _userData.UpdateUser(result);
         }
@@ -83,6 +82,11 @@ namespace TimeTracker_Repository.UserRepo
             return _mapper.Map<List<UserModel>>(userList);
         }
 
+        public async Task<List<UserModel>> GetUserDetails(int userId)
+        {
+            var userDetails = await _userData.GetUserDetails(userId);
+            return _mapper.Map<List<UserModel>>(userDetails);
+        }
         #endregion
     }
 }

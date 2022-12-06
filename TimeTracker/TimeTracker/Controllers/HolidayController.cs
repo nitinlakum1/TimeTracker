@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.Holiday;
 using TimeTracker.Models.User;
@@ -16,15 +17,18 @@ namespace TimeTracker.Controllers
     {
         private readonly IHolidayRepo _holidayRepo;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public HolidayController(IHolidayRepo holidayRepo, IMapper mapper)
+        public HolidayController(IHolidayRepo holidayRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _holidayRepo = holidayRepo;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
         {
+            ViewBag.RoleId = _httpContextAccessor?.HttpContext?.User.GetLoginRole() ?? 0;
             return View();
         }
 
@@ -80,8 +84,8 @@ namespace TimeTracker.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            var user = await _holidayRepo.GetHolidayById(id);
-            var model = _mapper.Map<HolidayViewModel>(user);
+            var holiday = await _holidayRepo.GetHolidayById(id);
+            var model = _mapper.Map<HolidayViewModel>(holiday);
             return View(model);
         }
 

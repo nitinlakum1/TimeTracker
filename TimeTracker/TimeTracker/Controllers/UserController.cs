@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.User;
 using TimeTracker_Model;
@@ -14,11 +15,13 @@ namespace TimeTracker.Controllers
     {
         private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserController(IUserRepo userRepo, IMapper mapper)
+        public UserController(IUserRepo userRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _userRepo = userRepo;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -120,8 +123,11 @@ namespace TimeTracker.Controllers
             return Json(new { isSuccess, message });
         }
 
-        public IActionResult UserProfile()
+        public async Task<IActionResult> UserProfile()
         {
+            int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
+            var userDetails = await _userRepo.GetUserDetails(userId ?? 0);
+            var Name = userDetails.Select(a => a.FullName);
             return View();
         }
     }

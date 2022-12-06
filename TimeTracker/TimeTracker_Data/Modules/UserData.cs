@@ -119,6 +119,15 @@ namespace TimeTracker_Data.Modules
             }).ToListAsync();
         }
 
+        public async Task<List<Users>> GetUserDetails(int userId)
+        {
+            var result = await _context.Users
+                .Where(a => a.Id == userId)
+                .ToListAsync();
+
+            return result;
+        }
+
         #endregion
     }
 }

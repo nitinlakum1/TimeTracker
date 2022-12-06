@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using TimeTracker.Helper;
+@{
+    int Id = 0;
+    if (User != null)
+    {
+        Id = User.GetIdFromClaim();
+    }
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
