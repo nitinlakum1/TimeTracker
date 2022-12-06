@@ -65,6 +65,18 @@ namespace TimeTracker.Controllers
             }
         }
 
+        public int GetRoleId()
+        {
+            try
+            {
+                return _httpContextAccessor?.HttpContext?.User.GetLoginRole() ?? 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public async Task<IActionResult> GetSystemLog(DatatableParamViewModel param, string filter)
         {
             try
