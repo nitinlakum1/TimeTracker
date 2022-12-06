@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
+using TimeTracker_Model;
 using TimeTracker_Model.User;
 
 namespace TimeTracker_Repository.UserRepo
@@ -24,6 +25,7 @@ namespace TimeTracker_Repository.UserRepo
 
         public async Task<LoginDetailsModel> ValidateUser(LoginModel model)
         {
+            model.Password = Common.Encrypt(model.Password);
             var result = await _userData.ValidateUser(model);
             return _mapper.Map<LoginDetailsModel>(result);
         }
@@ -42,6 +44,7 @@ namespace TimeTracker_Repository.UserRepo
 
         public async Task<bool> AddUser(AddEditUserModel model)
         {
+            model.Password = Common.Encrypt(model.Password);
             var user = _mapper.Map<Users>(model);
             user.CreateAt = DateTime.Now;
             return await _userData.AddUser(user);

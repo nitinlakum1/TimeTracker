@@ -77,7 +77,9 @@ function startTimeLog() {
 /*
  * Monthly report
  */
-
+var totalMonthTime = "";
+var totalHours = 0;
+var totalMinutes = 0;
 function bindMRDataTable() {
     datatable = $('#tblMonthlyReport')
         .dataTable(
@@ -126,8 +128,10 @@ function bindMRDataTable() {
                         },
                     },
                     { "data": "totalTime", width: 100, "bSortable": false },
-                    //{ "data": "id", "bSortable": false, width: 70 },
                 ],
+                "drawCallback": function (settings) {
+                    $('#spnTotalMonthTime').text(totalMonthTime);
+                },
                 columnDefs: [
                     {
                         targets: 4,
@@ -135,6 +139,15 @@ function bindMRDataTable() {
                             if (row.totalTime == '00:00') {
                                 return '<span class="new-btn-danger" style="padding: 3px 20px 4px 20px; border-radius:2px;">00:00</span>';
                             } else {
+                                totalHours += parseInt(row.totalTime.split(':')[0]);
+                                totalMinutes += parseInt(row.totalTime.split(':')[1]);
+
+                                if (totalMinutes > 59) {
+                                    totalHours++;
+                                    totalMinutes = totalMinutes - 60;
+                                }
+
+                                totalMonthTime = `${totalHours}:${totalMinutes}`;
                                 return row.totalTime;
                             }
                         },
