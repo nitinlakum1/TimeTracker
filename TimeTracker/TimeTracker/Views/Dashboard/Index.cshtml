@@ -1,10 +1,8 @@
-﻿@model List<TimeTracker.Models.SystemLog.SystemLogListModel>
-
+﻿@model TimeTracker.Models.Setting.ResourceViewModel
 @{
     ViewData["Title"] = "Dashboard";
 
 }
-
 
 <div class="row">
     <div class="col-12 col-sm-6 col-md-3">
@@ -46,19 +44,13 @@
             </div>
         </div>
     </div>
-    @*<div class="col-md-12">
-        @foreach (var item in Model)
-        {
-            <p>@item.LogTime | @item.Description </p>
-        }
-    </div>*@
 </div>
 
 @section Scripts{
-    <script>
-        $(document).ready(function () {
-            SelectedMenu('menuDashboard', '');
-            bindDataTable();
-        });
-    </script>
+<script>
+    $(document).ready(function () {
+        SelectedMenu('menuDashboard', '');
+        bindDataTable();
+    });
+</script>
 }
