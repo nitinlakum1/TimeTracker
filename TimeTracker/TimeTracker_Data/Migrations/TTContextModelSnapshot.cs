@@ -44,25 +44,47 @@ namespace TimeTracker_Data.Migrations
 
             modelBuilder.Entity("TimeTracker_Data.Model.Resources", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Data")
-                        .IsRequired()
+                    b.Property<string>("birthDate")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DataId")
-                        .IsRequired()
+                    b.Property<string>("city")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("companyExperiences")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("degree")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("mobile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("preferenceId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("workStartDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("workYears")
+                        .HasColumnType("int");
+
+                    b.HasKey("id");
 
                     b.ToTable("Resources");
                 });

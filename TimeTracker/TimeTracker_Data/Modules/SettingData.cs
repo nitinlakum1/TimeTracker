@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Holiday;
+using TimeTracker_Model.Setting;
 
 namespace TimeTracker_Data.Modules
 {
@@ -74,9 +75,18 @@ namespace TimeTracker_Data.Modules
 
         public async Task<Resources> GetResourceById(string id)
         {
-            var result = await _context.Resources.FirstOrDefaultAsync(a => a.DataId == id);
-            
+            var result = await _context.Resources.FirstOrDefaultAsync(a => a.id == id);
+
             result ??= new Resources();
+
+            return result;
+        }
+
+        public async Task<List<Resources>> GetResources()
+        {
+            var result = await _context.Resources.ToListAsync();
+
+            result ??= new List<Resources>();
 
             return result;
         }
@@ -84,6 +94,13 @@ namespace TimeTracker_Data.Modules
         public async Task<bool> AddResources(Resources model)
         {
             _context.Resources.Add(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> EditResource(Resources model)
+        {
+            _context.Resources.Update(model);
             await _context.SaveChangesAsync();
             return true;
         }

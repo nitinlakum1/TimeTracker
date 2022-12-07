@@ -3,6 +3,7 @@ using TimeTracker.Models;
 using TimeTracker.Models.Setting;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Holiday;
+using TimeTracker_Model.Setting;
 
 namespace TimeTracker.AutoMapper
 {

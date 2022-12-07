@@ -1,4 +1,4 @@
-﻿namespace TimeTracker_Model.Holiday
+﻿namespace TimeTracker_Model.Setting
 {
     public class SettingModel
     {

@@ -1,4 +1,5 @@
 ﻿using TimeTracker_Model.Holiday;
+using TimeTracker_Model.Setting;
 
 namespace TimeTracker_Repository
 {
@@ -12,6 +13,10 @@ namespace TimeTracker_Repository
 
         Task<ResourceModel> GetResourceById(string id);
 
-        Task<bool> AddResources(string dataId, string preferenceId, string data);
+        Task<List<ResourceModel>> GetResources();
+
+        Task<bool> AddResources(ResourceModel model);
+
+        Task<bool> EditResource(ResourceModel model);
     }
 }

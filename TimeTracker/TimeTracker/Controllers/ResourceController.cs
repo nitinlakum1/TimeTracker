@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using TimeTracker.Models.Setting;
+using TimeTracker_Model.Holiday;
+using TimeTracker_Model.Setting;
 using TimeTracker_Repository;
 
 namespace TimeTracker.Controllers
@@ -93,7 +95,7 @@ namespace TimeTracker.Controllers
                         string preferenceId = item["preferenceId"];
 
                         var resource = await _settingRepo.GetResourceById(id);
-                        if (resource == null || resource.Id == 0)
+                        if (string.IsNullOrWhiteSpace(resource.id))
                         {
                             await GetResourceDetails(id, preferenceId, model.Token);
                         }
@@ -140,9 +142,20 @@ namespace TimeTracker.Controllers
             if (response.IsSuccessStatusCode)
             {
                 var result = response.Content.ReadAsStringAsync().Result;
-                var deserializeObject = JsonConvert.DeserializeObject<dynamic>(result);
-                var data = JsonConvert.SerializeObject(deserializeObject["data"]);
-                await _settingRepo.AddResources(id, preferenceId, data);
+                var deserializeResult = JsonConvert.DeserializeObject<dynamic>(result);
+                var data = JsonConvert.SerializeObject(deserializeResult["data"]);
+                var deserializeObject = JsonConvert.DeserializeObject<ResourceModel>(data);
+
+                if (deserializeObject != null)
+                {
+                    deserializeObject.preferenceId = preferenceId;
+
+                    deserializeObject.companyExperiences = JsonConvert.SerializeObject(deserializeObject.experiences);
+
+                    deserializeObject.city = JsonConvert.SerializeObject(deserializeObject.preferences);
+
+                    await _settingRepo.AddResources(deserializeObject);
+                }
             }
         }
     }
