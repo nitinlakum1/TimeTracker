@@ -31,7 +31,12 @@
                     {
                         targets: 2,
                         render: function (data, type, row) {
-                            return '<a href="/holiday/update/' + row.id + '" style="margin-right: 10px;" class="justify-content-center"><i class="fas fa-edit text-success"></i></a><a onclick="deleteUser(' + row.id + ')"><i class="fas fa-trash text-danger" style="cursor:pointer; margin-left:8px;"></i></a>';
+                            var roleId = $("#roleId").text();
+                            if (roleId == 1) { // Admin = 1 , Employee = 2
+                                return '<a href="/holiday/update/' + row.id + '" style="margin-right: 10px;" class="justify-content-center"><i class="fas fa-edit text-success"></i></a><a onclick="deleteUser(' + row.id + ')"><i class="fas fa-trash text-danger" style="cursor:pointer; margin-left:8px;"></i></a>';
+                            } else {
+                                return 'N/A';
+                            }
                         },
                         className: "text-center",
                     }

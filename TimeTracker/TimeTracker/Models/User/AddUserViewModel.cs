@@ -31,5 +31,8 @@ namespace TimeTracker.Models.User
 
         [Required(ErrorMessage = "Role is required.")]
         public int RoleId { get; set; }
+
+        [Required(ErrorMessage = "Mac Address is required.")]
+        public string MacAddress { get; set; }
     }
 }

@@ -32,13 +32,13 @@
                     @if ((int)ViewBag.RoleId == (int)Roles.Admin)
                     {
                         <div style="float:right; margin-left:5px;">
-                            <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbUser">
+                            <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbUserMonth">
                                 <option value="0">Select User</option>
                             </select>
                         </div>
                     }
                     <div style="float:right;margin-left:5px;">
-                        <input class="form-control form-control-sm datepicker" data-date-format="MM-yyyy" id="txtDate" style="width: 120px;">
+                        <input class="form-control form-control-sm datepicker" data-date-format="MM-yyyy" id="txtDateMonth" style="width: 120px;">
                     </div>
                 </div>
             </div>
@@ -51,8 +51,8 @@
                                     <tr>
                                         <th>Date</th>
                                         <th>Username</th>
-                                        <th>StartingTime</th>
-                                        <th>ClosingTime</th>
+                                        <th>Starting Time</th>
+                                        <th>Closing Time</th>
                                         <th>Total Time</th>
                                     </tr>
                                 </thead>

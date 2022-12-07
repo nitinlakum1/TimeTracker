@@ -45,5 +45,7 @@ namespace TimeTracker.Models.User
         public string? IFSC { get; set; }
 
         public string? MacAddress { get; set; }
+
+        public bool FromProfile { get; set; } = false;
     }
 }

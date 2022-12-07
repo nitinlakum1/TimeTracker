@@ -88,19 +88,26 @@ namespace TimeTracker.Controllers
                 if (ModelState.IsValid)
                 {
                     var editUser = _mapper.Map<AddEditUserModel>(model);
-                    var result = await _userRepo.UpdateUser(editUser);
+                    editUser.RoleId = _httpContextAccessor?.HttpContext?.User?.GetLoginRole() ?? 0;
 
+                    var result = await _userRepo.UpdateUser(editUser);
                     if (result)
                     {
-                        return RedirectToAction("Index");
+                        if (model.FromProfile)
+                        { return RedirectToAction("UserProfile"); }
+                        else
+                        { return RedirectToAction("Index"); }
                     }
                 }
+                if (model.FromProfile)
+                { return View("UserProfile"); }
+                else
+                { return View(); }
             }
             catch (Exception)
             {
                 throw;
             }
-            return View();
         }
 
         [HttpPost]
@@ -126,9 +133,9 @@ namespace TimeTracker.Controllers
         public async Task<IActionResult> UserProfile()
         {
             int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
-            var userDetails = await _userRepo.GetUserDetails(userId ?? 0);
-            var Name = userDetails.Select(a => a.FullName);
-            return View();
+            var user = await _userRepo.GetUserById(userId ?? 0);
+            var model = _mapper.Map<EditUserViewModel>(user);
+            return View(model);
         }
     }
 }

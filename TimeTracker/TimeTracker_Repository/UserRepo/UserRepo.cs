@@ -56,17 +56,22 @@ namespace TimeTracker_Repository.UserRepo
             result.Username = model.Username;
             result.FullName = model.FullName;
             result.Email = model.Email;
-            result.Designation = model.Designation;
-            result.Education = model.Education;
-            result.Experience = model.Experience;
             result.ContactNo = model.ContactNo;
             result.Gender = model.Gender;
             result.Address = model.Address;
             result.DOB = model.DOB;
-            result.JoiningDate = model.JoiningDate;
             result.BankName = model.BankName;
             result.AccountNo = model.AccountNo;
             result.IFSC = model.IFSC;
+
+            if (model.RoleId == (int)TimeTracker_Model.Roles.Admin)
+            {
+                result.JoiningDate = model.JoiningDate;
+                result.Education = model.Education;
+                result.Experience = model.Experience;
+                result.Designation = model.Designation;
+                result.MacAddress = model.MacAddress;
+            }
 
             return await _userData.UpdateUser(result);
         }
@@ -80,12 +85,6 @@ namespace TimeTracker_Repository.UserRepo
         {
             var userList = await _userData.GetUserLookup();
             return _mapper.Map<List<UserModel>>(userList);
-        }
-
-        public async Task<List<UserModel>> GetUserDetails(int userId)
-        {
-            var userDetails = await _userData.GetUserDetails(userId);
-            return _mapper.Map<List<UserModel>>(userDetails);
         }
         #endregion
     }

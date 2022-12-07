@@ -163,6 +163,7 @@ namespace TimeTracker.Controllers
                                            .FirstOrDefault()?.LogTime ?? DateTime.Now,
                             TotalTimeSpan = GetTotalHours(a.ToList()),
                         })
+                        .OrderByDescending(a => a.Date)
                         .ToList();
                 }
 

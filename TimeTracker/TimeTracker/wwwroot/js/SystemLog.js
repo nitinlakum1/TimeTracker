@@ -103,9 +103,9 @@ function bindMRDataTable() {
                 "fnServerParams": function (aoData) {
                     aoData.push({
                         "name": "filter", "value": JSON.stringify({
-                            UserId: $('#cmbUser').val(),
-                            FromDate: $('#txtDate').val(),
-                            ToDate: $('#txtDate').val(),
+                            UserId: $('#cmbUserMonth').val(),
+                            FromDate: $('#txtDateMonth').val(),
+                            ToDate: $('#txtDateMonth').val(),
                         })
                     });
                     perm = aoData;
@@ -141,13 +141,13 @@ function bindMRDataTable() {
                             } else {
                                 totalHours += parseInt(row.totalTime.split(':')[0]);
                                 totalMinutes += parseInt(row.totalTime.split(':')[1]);
-
                                 if (totalMinutes > 59) {
                                     totalHours++;
                                     totalMinutes = totalMinutes - 60;
                                 }
-
-                                totalMonthTime = `${totalHours}:${totalMinutes}`;
+                                var Hours = ("0" + totalHours).slice(-2);
+                                var Minutes = ("0" + totalMinutes).slice(-2);
+                                totalMonthTime = `${Hours}:${Minutes}`;
                                 return row.totalTime;
                             }
                         },
@@ -158,10 +158,14 @@ function bindMRDataTable() {
             });
 }
 
-$('#cmbUser').change(function () {
-    $('#tblMonthlyReport').DataTable().draw();
+$('#cmbUserMonth').change(function () {
+    totalHours = 0;
+    totalMinutes = 0;
+    $('#tblMonthlyReport').DataTable().clear().draw();
 });
 
-$('#txtDate').change(function () {
-    $('#tblMonthlyReport').DataTable().draw();
+$('#txtDateMonth').change(function () {
+    totalHours = 0;
+    totalMinutes = 0;
+    $('#tblMonthlyReport').DataTable().clear().draw();
 });

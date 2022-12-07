@@ -1,7 +1,13 @@
 ﻿@model TimeTracker.Models.User.EditUserViewModel
 @using TimeTracker_Model;
+@using TimeTracker.Helper;
 @{
     ViewData["Title"] = "User Profile";
+    int roleId = 0;
+    if (User != null)
+    {
+        roleId = User.GetLoginRole();
+    }
 }
 
 @section ContentHeader{
@@ -20,81 +26,99 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-lightblue card-outline">
-            <div class="card-header">
-                <h3 class="card-title font-color">
-                    <i class="fa-solid fa-user"></i>
+                <div class="card-header">
+                    <h3 class="card-title font-color">
+                        <i class="fa-solid fa-user"></i>
                         User Profile
-                </h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3">
-                            <div class="card card-lightblue card-outline">
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card">
                                 <div class="card-body box-profile">
-                                <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle" src="~/images/pp.jpg" alt="User profile picture" >
-                                </div>
-                                    <h3 class="profile-username text-center">11</h3>
-                                <p class="text-muted text-center">Software Engineer</p>
-                                <ul class="list-group list-group-unbordered mb-3">
-                                    <li class="list-group-item">
-                                        <b>Followers</b> <a class="float-right">1,322</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>Following</b> <a class="float-right">543</a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b>Friends</b> <a class="float-right">13,287</a>
-                                    </li>
-                                </ul>
-                                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
-                            </div>
-
-                        </div>
-                        </div>
-                    <div class="col-md-9">
-                            <div class="card card-lightblue card-outline">
-                            <form asp-action="Update">
-                                <input asp-for="Id" type="hidden" />
-                                <div class="card-body">
-                                    <h5 class="font-color">Personal Details</h5>
-                                    <div class="row">
-                                        <div class="form-group col-md-5">
-                                            <label asp-for="FullName">Full Name</label>
-                                            <input asp-for="FullName" type="text" class="form-control form-control-sm" placeholder="Full Name">
-                                            <span asp-validation-for="FullName" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label asp-for="Email">Email</label>
-                                            <input asp-for="Email" type="email" class="form-control form-control-sm" placeholder="Email">
-                                            <span asp-validation-for="Email" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label asp-for="Username">Username</label>
-                                            <input asp-for="Username" type="text" class="form-control form-control-sm" placeholder="Username">
-                                            <span asp-validation-for="Username" class="text-danger"></span>
-                                        </div>
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" src="~/images/pp.jpg" alt="User profile picture">
                                     </div>
-                                    <div class="row">
-                                        <div class="form-group col-md-2">
-                                            <label asp-for="Gender">Gender</label>
-                                            <select asp-for="Gender" class="form-control form-control-sm">
-                                                <option value="true">Male</option>
-                                                <option value="false">Female</option>
-                                            </select>
+                                    <h3 class="profile-username text-center">@Model.FullName</h3>
+                                    <p class="text-muted text-center">@Model.Designation</p>
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                        <li class="list-group-item">
+                                            <b>Joining Date</b>
+                                            <a class="float-right" style="color:black !important;">
+                                                @string.Format("{0}-{1}-{2}", Model.JoiningDate.Day,Model.JoiningDate.Month,Model.JoiningDate.Year)
+                                            </a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Experience</b>
+                                            <a class="float-right" style="color:black !important;">@Model.Experience</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Education</b>
+                                            <a class="float-right" style="color:black !important;">@Model.Education</a>
+                                        </li>
+                                    </ul>
+                                    @*<a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>*@
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card">
+                                <form asp-action="Update">
+                                    <input asp-for="Id" type="hidden" />
+                                    <input asp-for="MacAddress" type="hidden" />
+                                    <input asp-for="Designation" type="hidden" />
+                                    <input asp-for="JoiningDate" type="hidden" />
+                                    <input asp-for="Experience" type="hidden" />
+                                    <input asp-for="FromProfile" type="hidden" value="true" />
+                                    <div class="card-body">
+                                        <h5 class="font-color">Personal Details</h5>
+                                        <div class="row">
+                                            <div class="form-group col-md-5">
+                                                <label asp-for="FullName">Full Name</label>
+                                                <input asp-for="FullName" type="text" class="form-control form-control-sm" placeholder="Full Name">
+                                                <span asp-validation-for="FullName" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label asp-for="Email">Email</label>
+                                                <input asp-for="Email" type="email" class="form-control form-control-sm" placeholder="Email">
+                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label asp-for="Username">Username</label>
+                                                <input asp-for="Username" type="text" class="form-control form-control-sm" placeholder="Username">
+                                                <span asp-validation-for="Username" class="text-danger"></span>
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label asp-for="ContactNo">Contact No.</label>
-                                            <input asp-for="ContactNo" type="text" class="form-control form-control-sm" placeholder="Contact No.">
-                                            <span asp-validation-for="ContactNo" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label asp-for="DOB">DOB</label>
-                                            <input asp-for="DOB" type="date" class="form-control form-control-sm" placeholder="DOB">
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label asp-for="MacAddress">MAC Address</label>
-                                            <input asp-for="MacAddress" type="text" class="form-control form-control-sm" placeholder="MAC Address">
+                                        <div class="row">
+                                            <div class="form-group col-md-2">
+                                                <label asp-for="Gender">Gender</label>
+                                                <select asp-for="Gender" class="form-control form-control-sm">
+                                                    <option value="true">Male</option>
+                                                    <option value="false">Female</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label asp-for="ContactNo">Contact No.</label>
+                                                <input asp-for="ContactNo" type="text" class="form-control form-control-sm" placeholder="Contact No.">
+                                                <span asp-validation-for="ContactNo" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label asp-for="DOB">DOB</label>
+                                                <input asp-for="DOB" type="date" class="form-control form-control-sm" placeholder="DOB">
+                                            </div>
+
+                                            <div class="form-group col-md-3">
+                                                <label asp-for="MacAddress">MAC Address</label>
+                                            @if (roleId == (int)Roles.Admin)
+                                            {
+                                                <input asp-for="MacAddress" type="text" class="form-control form-control-sm" placeholder="MAC Address">
+                                            }
+                                            else
+                                            {
+                                                <input asp-for="MacAddress" type="text" class="form-control form-control-sm" placeholder="MAC Address" disabled>
+                                            }
                                         </div>
                                     </div>
                                     <div class="row">
@@ -120,28 +144,30 @@
                                         </div>
 
                                     </div>
-                                    <hr />
-                                    <h5 class="font-color">Other Details</h5>
-                                    <div class="row">
-                                        <div class="form-group col-md-5">
-                                            <label asp-for="Designation">Designation</label>
-                                            <input asp-for="Designation" type="text" class="form-control form-control-sm" placeholder="Designation">
-                                            <span asp-validation-for="Designation" class="text-danger"></span>
+                                    @if (roleId == (int)Roles.Admin)
+                                    {
+                                        <h5 class="font-color">Other Details</h5>
+                                        <div class="row">
+                                            <div class="form-group col-md-5">
+                                                <label asp-for="Designation">Designation</label>
+                                                <input asp-for="Designation" type="text" class="form-control form-control-sm" placeholder="Designation">
+                                                <span asp-validation-for="Designation" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label asp-for="JoiningDate">JoiningDate</label>
+                                                <input asp-for="JoiningDate" type="date" class="form-control form-control-sm" placeholder="JoiningDate">
+                                                <span asp-validation-for="JoiningDate" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label asp-for="Experience">Experience</label>
+                                                <input asp-for="Experience" type="text" class="form-control form-control-sm" placeholder="Experience">
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label asp-for="Education">Education</label>
+                                                <input asp-for="Education" type="text" class="form-control form-control-sm" placeholder="Education">
+                                            </div>
                                         </div>
-                                        <div class="form-group col-md-3">
-                                            <label asp-for="JoiningDate">JoiningDate</label>
-                                            <input asp-for="JoiningDate" type="date" class="form-control form-control-sm" placeholder="JoiningDate">
-                                            <span asp-validation-for="JoiningDate" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <label asp-for="Experience">Experience</label>
-                                            <input asp-for="Experience" type="text" class="form-control form-control-sm" placeholder="Experience">
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label asp-for="Education">Education</label>
-                                            <input asp-for="Education" type="text" class="form-control form-control-sm" placeholder="Education">
-                                        </div>
-                                    </div>
+                                    }
                                 </div>
                                 <div class="card-footer">
                                     <input type="submit" class="btn btn-info theme-color" value="Update" />
@@ -149,18 +175,16 @@
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-        </div>
+    </div>
+</div>
 
-        @section Scripts{
-        <script>
-            $(document).ready(function () {
-                SelectedMenu('menuMaster', 'menuUsers');
-            });
-        </script>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+        });
+    </script>
     }
