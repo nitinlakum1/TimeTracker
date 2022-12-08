@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using TimeTracker.Configurations;
 using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.User;
 using TimeTracker_Model;
 using TimeTracker_Model.User;
+using TimeTracker_Repository.AWSRepo;
 using TimeTracker_Repository.UserRepo;
 
 namespace TimeTracker.Controllers
@@ -16,12 +19,17 @@ namespace TimeTracker.Controllers
         private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IAWSS3BucketService _awsS3BucketService;
 
-        public UserController(IUserRepo userRepo, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public UserController(IUserRepo userRepo,
+                              IMapper mapper,
+                              IHttpContextAccessor httpContextAccessor,
+                              IOptions<AwsConfiguration> awsConfiguration)
         {
             _userRepo = userRepo;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _awsS3BucketService = new AWSS3BucketService(awsConfiguration.Value);
         }
 
         public IActionResult Index()
@@ -57,6 +65,7 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    model.Url = await _awsS3BucketService.UploadFile(model.AvatarFile, "");
                     var addUser = _mapper.Map<AddEditUserModel>(model);
                     var result = await _userRepo.AddUser(addUser);
 

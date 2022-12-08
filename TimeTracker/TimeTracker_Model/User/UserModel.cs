@@ -20,5 +20,6 @@
         public string? AccountNo { get; set; }
         public string? IFSC { get; set; }
         public string? MacAddress { get; set; }
+        public string Url { get; set; }
     }
 }
