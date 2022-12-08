@@ -16,6 +16,8 @@ namespace TimeTracker.Configurations
             services.AddTransient<IHolidayRepo, HolidayRepo>();
             services.AddTransient<ISalaryRepo, SalaryRepo>();
             services.AddTransient<JwtSettingModel>();
+            services.AddSingleton<AwsConfiguration>();
+            //services.AddTransient<IAWSS3BucketService, AWSS3BucketService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 

@@ -34,5 +34,11 @@ namespace TimeTracker.Models.User
 
         [Required(ErrorMessage = "Mac Address is required.")]
         public string MacAddress { get; set; }
+
+        public string Url { get; set; }
+
+        public IFormFile AvatarFile { get; set; }
+
+        public long? Avatar { get; set; }
     }
 }

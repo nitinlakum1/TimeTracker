@@ -18,6 +18,15 @@ namespace TimeTracker.Configurations
                 options.ValidateLifetime = Convert.ToBoolean(configuration.GetSection("JWTKeys:ValidateLifetime").Value);
                 options.ExpiryDurationMinutes = Convert.ToInt32(configuration.GetSection("JWTKeys:ExpiryDurationMinutes").Value);
             });
+
+            services.Configure<AwsConfiguration>(options =>
+            {
+                options.AwsAccessKey = configuration.GetSection("AWSKeys:AwsAccessKey").Value;
+                options.AwsSecretAccessKey = configuration.GetSection("AWSKeys:AwsSecretAccessKey").Value;
+                options.Region = configuration.GetSection("AWSKeys:Region").Value;
+                options.BucketName = configuration.GetSection("AWSKeys:BucketName").Value;
+                options.RootPath = configuration.GetSection("AWSKeys:RootPath").Value;
+            });
         }
     }
 }
