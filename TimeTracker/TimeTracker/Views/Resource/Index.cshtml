@@ -32,54 +32,53 @@
                             <select class="form-control form-control-sm" id="cmbExperience">
                                 <option value="">Select Experience</option>
                                 @{
-                                    for (int i = 1; i <= 10; i++)
+                                for (int i = 1; i <= 10; i++)
                                 {
                                     <option value="@i">@i-Years</option>
                                 }
-                                }
-                            </select>
-                        </div>
-                        <div style="float:right; margin-left:5px;">
-                            <a asp-action="AddResource" class="btn btn-block btn-info btn-sm theme-color">Create</a>
-                        </div>
-
+                            }
+                        </select>
+                    </div>
+                    <div style="float:right; margin-left:5px;">
+                        <a asp-action="AddResource" class="btn btn-block btn-info btn-sm theme-color">Create</a>
                     </div>
 
                 </div>
-                <div class="card-body">
-                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table class="table table-sm table-bordered table-striped" id="tblUsers">
-                                    <thead>
-                                        <tr>
-                                            <th>preference Id</th>
-                                            <th>name</th>
-                                            <th>gender</th>
-                                            <th>mobile</th>
-                                            <th>email</th>
-                                            <th>work Years</th>
-                                            <th>designation</th>
-                                            <th>degree</th>
-                                            <th>birth Date</th>
-                                            <th>work Start Date</th>
-                                            <th>company Experiences</th>
-                                            <th>city</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+
+            </div>
+            <div class="card-body">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-sm table-bordered table-striped" id="tblUsers">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 120px">Name</th>
+                                        <th style="min-width: 70px">Gender</th>
+                                        <th style="min-width: 65px">Mobile</th>
+                                        <th style="min-width: 120px">Email</th>
+                                        <th style="min-width: 85px">Ecperience</th>
+                                        <th style="min-width: 120px">Designation</th>
+                                        <th style="min-width: 70px">Degree</th>
+                                        <th style="min-width: 80px">Birth Date</th>
+                                        <th style="min-width: 120px">Work Start Date</th>
+                                        <th style="min-width: 150px">Comp. Exp.</th>
+                                        <th style="min-width: 150px">City</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
-    @section Scripts{
+@section Scripts{
     <script src="~/js/resources.js"></script>
 
     <script>
