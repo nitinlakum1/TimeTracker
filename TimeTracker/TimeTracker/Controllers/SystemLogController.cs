@@ -55,8 +55,6 @@ namespace TimeTracker.Controllers
                 var users = await _userRepo.GetUserLookup();
                 ViewBag.Users = new SelectList(users, "Id", "Username");
 
-                ViewBag.RoleId = _httpContextAccessor?.HttpContext?.User.GetLoginRole() ?? 0;
-
                 return View();
             }
             catch (Exception ex)
@@ -117,9 +115,6 @@ namespace TimeTracker.Controllers
             {
                 var users = await _userRepo.GetUserLookup();
                 ViewBag.Users = new SelectList(users, "Id", "Username");
-
-                ViewBag.RoleId = _httpContextAccessor?.HttpContext?.User.GetLoginRole() ?? 0;
-
 
                 return View();
             }

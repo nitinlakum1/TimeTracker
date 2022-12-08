@@ -1,11 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using TimeTracker.Models;
 using TimeTracker.Models.Setting;
+using TimeTracker.Models.SystemLog;
+using TimeTracker_Data.Model;
+using TimeTracker_Model;
 using TimeTracker_Model.Holiday;
+using TimeTracker_Model.Resources;
 using TimeTracker_Model.Setting;
+using TimeTracker_Model.SystemLog;
+using TimeTracker_Model.User;
 using TimeTracker_Repository;
+using TimeTracker_Repository.ResourcesRepo;
 
 namespace TimeTracker.Controllers
 {
@@ -13,13 +22,22 @@ namespace TimeTracker.Controllers
     public class ResourceController : Controller
     {
         private readonly ISettingRepo _settingRepo;
+        private readonly IMapper _mapper;
+        private readonly IResourcesRepo _resourcesRepo;
 
-        public ResourceController(ISettingRepo settingRepo)
+        public ResourceController(ISettingRepo settingRepo, IMapper mapper, IResourcesRepo resourcesRepo)
         {
             _settingRepo = settingRepo;
+            _mapper = mapper;
+            _resourcesRepo = resourcesRepo;
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult AddResource()
         {
             return View();
         }
@@ -156,6 +174,34 @@ namespace TimeTracker.Controllers
 
                     await _settingRepo.AddResources(deserializeObject);
                 }
+            }
+        }
+
+        public async Task<IActionResult> GetResourcesList(DatatableParamViewModel param, string filter)
+        {
+            try
+            {
+                var dtParam = _mapper.Map<ResourcesFilterModel>(param);
+
+                if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
+                {
+                    var filterData = JsonConvert.DeserializeObject<ResourcesFilterModel>(filter);
+                    dtParam.Experience = filterData?.Experience == null || filterData?.Experience == 0 ? 0 : filterData?.Experience;
+                }
+
+                var (systemLogs, totalRecord) = await _resourcesRepo.GetResourcesList(dtParam);
+
+                return Json(new
+                {
+                    param.sEcho,
+                    iTotalRecords = totalRecord,
+                    iTotalDisplayRecords = totalRecord,
+                    aaData = systemLogs,
+                });
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

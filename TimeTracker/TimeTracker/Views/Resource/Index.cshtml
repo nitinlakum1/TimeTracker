@@ -1,72 +1,91 @@
-﻿@model TimeTracker.Models.Setting.ResourceViewModel
+﻿@using TimeTracker.Helper
+@using TimeTracker_Model
+@model List<TimeTracker_Model.Resources.ResourcesModel>
+
 @{
     ViewData["Title"] = "Resources";
-
 }
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="card card-lightblue card-outline">
-            <div class="card-header">
-                <h3 class="card-title font-color">
-                    <i class="fa-solid fa-user-plus"></i>
-                    Add Resource
-                </h3>
-            </div>
-            <form asp-action="AddResource">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="form-group col-md-4">
-                            <label asp-for="Designation">Designation</label>
-                            <select class="form-control form-control-sm" asp-for="Designation">
-                                <option value="NET Developer">NET Developer</option>
-                                <option value="Flutter">Flutter</option>
-                                <option value="Android Engineer">Android Engineer</option>
-                                <option value="Android App Designer">Android App Designer</option>
-                                <option value="React JS">React JS</option>
-                                <option value="React Native">React Native</option>
-                                <option value="Node JS Engineer">Node JS Engineer</option>
-                                <option value="Business Development Executive">Business Development Executive</option>
+@section ContentHeader{
+    <div class="col-sm-6">
+        <h4 class="m-0">Resources</h4>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">Resources</li>
+        </ol>
+    </div>
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-lightblue card-outline">
+                <div class="card-header">
+                    <h3 class="card-title font-color">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        Resources
+                    </h3>
+                    <div style="float:right; display:flex;">
+
+                        <div style="float:right;">
+                            <select class="form-control form-control-sm" id="cmbExperience">
+                                <option value="">Select Experience</option>
+                                @{
+                                    for (int i = 1; i <= 10; i++)
+                                {
+                                    <option value="@i">@i-Years</option>
+                                }
+                                }
                             </select>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label asp-for="education">Education</label>
-                            <input asp-for="education" type="text" class="form-control form-control-sm" value="1,2">
+                        <div style="float:right; margin-left:5px;">
+                            <a asp-action="AddResource" class="btn btn-block btn-info btn-sm theme-color">Create</a>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label asp-for="experience">Experience (1=Any | 2=Fresher | 3=0-1 Year | 4=1-3 Years | 5=3-5 Years | 6=5-10 Years | 7=10+ Years)</label>
-                            <input asp-for="experience" type="text" class="form-control form-control-sm" value="1">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label asp-for="salary">Salary</label>
-                            <input asp-for="salary" type="text" class="form-control form-control-sm" value="1">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label asp-for="CityId">City Id</label>
-                            <input asp-for="CityId" type="text" class="form-control form-control-sm" value="356">
-                        </div>
-                        <div class="form-group col-md-12">
-                            <label asp-for="Token">Token</label>
-                            <input asp-for="Token" type="text" class="form-control form-control-sm" value="eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWIwMmY0OTgwYTg1NDZhMmFkOTFmMjNlNTM5OCIsImNyZWF0ZVRpbWUiOjE2NzAyNDEyNTg3NDYsImlhdCI6MTY3MDI0MTI1OCwiaXNzIjoiaGlyZWN0X2FwcF9pc3N1ZXIifQ.Qnj5gRDY65GUqWJ9QdvqSl6MWJm-g3usx8E7xbNtqZ8">
+
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-sm table-bordered table-striped" id="tblUsers">
+                                    <thead>
+                                        <tr>
+                                            <th>preference Id</th>
+                                            <th>name</th>
+                                            <th>gender</th>
+                                            <th>mobile</th>
+                                            <th>email</th>
+                                            <th>work Years</th>
+                                            <th>designation</th>
+                                            <th>degree</th>
+                                            <th>birth Date</th>
+                                            <th>work Start Date</th>
+                                            <th>company Experiences</th>
+                                            <th>city</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <input type="submit" class="btn btn-info theme-color" value="Submit" />
-                    <button type="reset" class="btn btn-secondary ml-1">Reset</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
 
 
+    @section Scripts{
+    <script src="~/js/resources.js"></script>
 
-@section Scripts{
-<script>
-    $(document).ready(function () {
-        SelectedMenu('menuMaster', 'menuResource');
-        bindDataTable();
-    });
-</script>
+    <script>
+        $(document).ready(function () {
+            SelectedMenu('menuMaster', 'menuResource');
+            bindDataTable();
+        });
+    </script>
 }

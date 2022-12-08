@@ -1,6 +1,12 @@
-﻿@using TimeTracker_Model
+﻿@using TimeTracker.Helper
+@using TimeTracker_Model
 @{
     ViewData["Title"] = "Daily Log";
+    int roleId = 0;
+    if (User != null)
+    {
+        roleId = User.GetLoginRole();
+    }
 }
 
 @section ContentHeader{
@@ -28,7 +34,7 @@
                             <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
                             <h5 class="font-color" style="margin-bottom:0px;"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
                         </div>
-                    @if ((int)ViewBag.RoleId == (int)Roles.Admin)
+                    @if (roleId == (int)Roles.Admin)
                     {
                         <div style="float:right; margin-left:5px;">
                             <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbUser">
@@ -39,7 +45,7 @@
                     <div style="float:right; margin-left:5px;">
                         <input type="date" class="form-control form-control-sm" value="@DateTime.Now.Date" id="txtDate" />
                     </div>
-                    @if ((int)ViewBag.RoleId == (int)Roles.Admin)
+                    @if (roleId == (int)Roles.Admin)
                     {
                         <div style="float:right;margin-left:5px;">
                             <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>

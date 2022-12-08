@@ -28,7 +28,6 @@ namespace TimeTracker.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.RoleId = _httpContextAccessor?.HttpContext?.User.GetLoginRole() ?? 0;
             return View();
         }
 
