@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Resources;
-using TimeTracker_Model.SystemLog;
-using TimeTracker_Model.User;
 
 namespace TimeTracker_Data.Modules
 {

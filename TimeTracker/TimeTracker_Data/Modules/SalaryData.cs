@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracker_Data.Model;
-using TimeTracker_Model.User;
+using TimeTracker_Model.Salary;
 
 namespace TimeTracker_Data.Modules
 {
@@ -34,41 +34,29 @@ namespace TimeTracker_Data.Modules
             return (await result.ToListAsync(), totalRecord);
         }
 
-        //public async Task<Users> GetUserById(int id)
-        //{
-        //    var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
+        public async Task<Salarys> GetSalaryById(int id)
+        {
+            var result = await _context.Salarys
+                .Include(a => a.Users)
+                .FirstOrDefaultAsync(a => a.Id == id);
 
-        //    result ??= new Users();
-        //    return result;
-        //}
+            result ??= new Salarys();
+            return result;
+        }
 
-        //public async Task<bool> AddUser(Users model)
-        //{
-        //    _context.Users.Add(model);
-        //    await _context.SaveChangesAsync();
-        //    return true;
-        //}
+        public async Task<bool> AddSalary(Salarys model)
+        {
+            _context.Salarys.Add(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
-        //public async Task<bool> UpdateUser(Users model)
-        //{
-        //    _context.Users.Update(model);
-        //    await _context.SaveChangesAsync();
-        //    return true;
-        //}
-
-        //public async Task<bool> DeleteUser(int id)
-        //{
-        //    var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
-
-        //    if (result == null)
-        //    {
-        //        return false;
-        //    }
-        //    _context.Users.Remove(result);
-        //    await _context.SaveChangesAsync();
-
-        //    return true;
-        //}
+        public async Task<bool> UpdateSalary(Salarys model)
+        {
+            _context.Salarys.Update(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
         #endregion
     }

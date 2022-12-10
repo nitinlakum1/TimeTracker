@@ -1,10 +1,10 @@
 ﻿namespace TimeTracker_Model.Salary
 {
-    public class AddEditSalaryModel
+    public class SalaryModel
     {
         public int Id { get; set; }
 
-        public string UserId { get; set; }
+        public string Username { get; set; }
 
         public decimal Salary { get; set; }
 

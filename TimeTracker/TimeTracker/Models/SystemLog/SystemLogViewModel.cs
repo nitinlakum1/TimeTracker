@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using TimeTracker.Helper;
-using TimeTracker_Model;
+﻿using TimeTracker_Model;
 
 namespace TimeTracker.Models.SystemLog
 {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TimeTracker.Models;
+using TimeTracker.Models.Salary;
 using TimeTracker.Models.User;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Salary;
@@ -12,8 +13,12 @@ namespace TimeTracker.AutoMapper
 
         public static void Map(Profile profile)
         {
-            profile.CreateMap<Salarys, AddEditSalaryModel>()
-               .ForMember(source => source.Username, dest => dest.MapFrom(x => x.Users.Username));
+            profile.CreateMap<SalaryModel, EditSalaryViewModel>();
+            profile.CreateMap<EditSalaryViewModel, AddEditSalaryModel>();
+            profile.CreateMap<SalaryViewModel, AddEditSalaryModel>();
+            profile.CreateMap<AddEditSalaryModel, Salarys>();
+            profile.CreateMap<Salarys, SalaryModel>()
+               .ForMember(dest => dest.Username, source => source.MapFrom(x => x.Users.Username));
 
             profile.CreateMap<DatatableParamViewModel, SalaryFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))

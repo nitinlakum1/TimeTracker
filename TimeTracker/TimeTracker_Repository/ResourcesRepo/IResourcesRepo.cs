@@ -1,6 +1,4 @@
 ﻿using TimeTracker_Model.Resources;
-using TimeTracker_Model.Setting;
-using TimeTracker_Model.User;
 
 namespace TimeTracker_Repository.ResourcesRepo
 {

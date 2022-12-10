@@ -1,19 +1,19 @@
 ﻿using TimeTracker_Model.Salary;
-using TimeTracker_Model.User;
 
-namespace TimeTracker_Repository.UserRepo
+namespace TimeTracker_Repository.SalaryRepo
 {
     public interface ISalaryRepo
     {
 
-        Task<(List<AddEditSalaryModel>, int)> GetSalary(SalaryFilterModel model);
+        #region Signature
+        Task<(List<SalaryModel>, int)> GetSalary(SalaryFilterModel model);
 
-        //Task<UserModel> GetUserById(int id);
+        Task<SalaryModel> GetSalaryById(int id);
 
-        //Task<bool> AddUser(AddEditUserModel model);
+        Task<bool> AddSalary(AddEditSalaryModel model);
 
-        //Task<bool> UpdateUser(AddEditUserModel model);
+        Task<bool> UpdateSalary(AddEditSalaryModel model); 
+        #endregion
 
-        //Task<bool> DeleteUser(int id);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TimeTracker_Model.Resources
+﻿namespace TimeTracker_Model.Resources
 {
     public class ResourcesModel
     {

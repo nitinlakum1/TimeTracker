@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TimeTracker.Models;
-using TimeTracker.Models.User;
-using TimeTracker_Model;
-using TimeTracker_Model.User;
+using TimeTracker.Models.Salary;
+using TimeTracker_Data.Migrations;
+using TimeTracker_Model.Salary;
+using TimeTracker_Repository.SalaryRepo;
 using TimeTracker_Repository.UserRepo;
 
 namespace TimeTracker.Controllers
@@ -12,15 +14,22 @@ namespace TimeTracker.Controllers
     [Authorize]
     public class SalaryController : Controller
     {
+        #region Declaration
         private readonly ISalaryRepo _salaryRepo;
         private readonly IMapper _mapper;
+        private readonly IUserRepo _userRepo; 
+        #endregion
 
-        public SalaryController(ISalaryRepo salaryRepo, IMapper mapper)
+        #region Const
+        public SalaryController(ISalaryRepo salaryRepo, IMapper mapper, IUserRepo userRepo)
         {
             _salaryRepo = salaryRepo;
             _mapper = mapper;
-        }
+            _userRepo = userRepo;
+        } 
+        #endregion
 
+        #region Method
         public IActionResult Index()
         {
             return View();
@@ -30,93 +39,77 @@ namespace TimeTracker.Controllers
         {
             var dtParam = _mapper.Map<SalaryFilterModel>(param);
 
-            var (userList, totalRecord) = await _salaryRepo.GetSalary(dtParam);
+            var (salaryList, totalRecord) = await _salaryRepo.GetSalary(dtParam);
 
             return Json(new
             {
                 param.sEcho,
                 iTotalRecords = totalRecord,
                 iTotalDisplayRecords = totalRecord,
-                aaData = userList
+                aaData = salaryList
             });
         }
 
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
+        public async Task<IActionResult> Create()
+        {
+            var users = await _userRepo.GetUserLookup();
+            ViewBag.Users = new SelectList(users, "Id", "Username");
+            return View();
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Create(AddUserViewModel model)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            var addUser = _mapper.Map<AddEditUserModel>(model);
-        //            var result = await _userRepo.AddUser(addUser);
+        [HttpPost]
+        public async Task<IActionResult> Create(SalaryViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var addSalary = _mapper.Map<AddEditSalaryModel>(model);
+                    var result = await _salaryRepo.AddSalary(addSalary);
 
-        //            if (result)
-        //            {
-        //                return RedirectToAction("Index");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //    return View();
-        //}
+                    if (result)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
+        }
 
-        //public async Task<IActionResult> Update(int id)
-        //{
-        //    var user = await _userRepo.GetUserById(id);
-        //    var model = _mapper.Map<EditUserViewModel>(user);
-        //    return View(model);
-        //}
+        public async Task<IActionResult> Update(int id)
+        {
+            var salary = await _salaryRepo.GetSalaryById(id);
+            var model = _mapper.Map<EditSalaryViewModel>(salary);
+            return View(model);
+        }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Update(EditUserViewModel model)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            var editUser = _mapper.Map<AddEditUserModel>(model);
-        //            var result = await _userRepo.UpdateUser(editUser);
+        [HttpPost]
+        public async Task<IActionResult> Update(EditSalaryViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var editSalary = _mapper.Map<AddEditSalaryModel>(model);
+                    var result = await _salaryRepo.UpdateSalary(editSalary);
 
-        //            if (result)
-        //            {
-        //                return RedirectToAction("Index");
-        //            }
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //    return View();
-        //}
+                    if (result)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
+        } 
+        #endregion
 
-        //[HttpPost]
-        //public async Task<IActionResult> DeleteUser(int id)
-        //{
-        //    bool isSuccess = false;
-        //    string message = "";
-        //    try
-        //    {
-        //        if (id > 0)
-        //        {
-        //            isSuccess = await _userRepo.DeleteUser(id);
-        //            message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
-        //    }
-        //    return Json(new { isSuccess, message });
-        //}
     }
 }

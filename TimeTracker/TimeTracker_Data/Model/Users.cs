@@ -54,7 +54,8 @@ namespace TimeTracker_Data.Model
 
         public string? MacAddress { get; set; }
 
-
         public Roles Roles { get; set; }
+
+        public string? Url { get; set; }
     }
 }

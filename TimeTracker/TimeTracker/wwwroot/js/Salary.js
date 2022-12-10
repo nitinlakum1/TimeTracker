@@ -20,39 +20,32 @@
                 },
                 "aoColumns": [
                     { "data": "username" },
-                    { "data": "salary" },
-                    { "data": "fromDate" },
-                    { "data": "toDate" },
+                    { "data": "salary", width: 120 },
+                    {
+                        "data": "fromDate", width: 120, "render": function (data) {
+                            return setDateFormat(data);
+                        },
+                    },
+                    {
+                        "data": "toDate", width: 120, "render": function (data) {
+                            return setDateFormat(data);
+                        },
+                    },
+                    { "data": "id", "bSortable": false , width: 70},
+                ],
+                columnDefs: [
+                    {
+                        targets: 4,
+                        render: function (data, type, row) {
+                            if (row.username == 'Dev' || row.username == 'Admin') {
+                                return "";
+                            } else {
+                                return '<a href="/salary/update/' + row.id + '" style="margin-right: 10px;" class="justify-content-center"><i class="fas fa-edit text-success"></i>';
+                            }
+                        },
+                        className: "text-center",
+                    }
                 ],
                 processing: true,
             });
-}
-
-function deleteUser(id) {
-    $("#comformdelete").show();
-    $("#deleteId").val(id);
-}
-
-function conformDelete() {
-    var id = $("#deleteId").val();
-    if (id > 0) {
-        $.ajax({
-            url: '/User/DeleteUser/',
-            type: 'POST',
-            data: { id: id },
-            success: function (result) {
-                setStatusMsg(result);
-                Close();
-                $('#tblUsers').DataTable().ajax.reload();
-            },
-            error: function (result) {
-                alert("User not Delete!");
-            },
-        })
-    }
-}
-
-function Close() {
-    $("#deleteId").val(0);
-    $("#comformdelete").hide();
 }

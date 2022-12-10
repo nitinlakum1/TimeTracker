@@ -2,6 +2,7 @@
 using TimeTracker_Model;
 using TimeTracker_Repository;
 using TimeTracker_Repository.ResourcesRepo;
+using TimeTracker_Repository.SalaryRepo;
 using TimeTracker_Repository.SystemLogRepo;
 using TimeTracker_Repository.UserRepo;
 

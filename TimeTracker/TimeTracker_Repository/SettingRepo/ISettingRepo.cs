@@ -1,5 +1,4 @@
-﻿using TimeTracker_Model.Holiday;
-using TimeTracker_Model.Setting;
+﻿using TimeTracker_Model.Setting;
 
 namespace TimeTracker_Repository
 {

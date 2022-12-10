@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TimeTracker_Model.Holiday
+﻿namespace TimeTracker_Model.Holiday
 {
     public class HolidayModel
     {

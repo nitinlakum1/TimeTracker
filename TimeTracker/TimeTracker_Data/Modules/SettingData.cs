@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracker_Data.Model;
-using TimeTracker_Model.Holiday;
 using TimeTracker_Model.Setting;
 
 namespace TimeTracker_Data.Modules

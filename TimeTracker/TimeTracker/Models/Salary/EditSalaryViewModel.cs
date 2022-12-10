@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TimeTracker.Models.Salary
 {
-    public class AddSalaryViewModel
+    public class EditSalaryViewModel
     {
-        [Required(ErrorMessage = "UserId is required.")]
-        [ForeignKey("Users")]
-        public int Username { get; set; }
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Username is required.")]
+        public string Username { get; set; }
 
         [Required(ErrorMessage = "Salary is required.")]
         public decimal Salary { get; set; }

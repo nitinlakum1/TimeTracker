@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.Salary;
-using TimeTracker_Model.User;
 
-namespace TimeTracker_Repository.UserRepo
+namespace TimeTracker_Repository.SalaryRepo
 {
     public class SalaryRepo : ISalaryRepo
     {
@@ -22,51 +22,37 @@ namespace TimeTracker_Repository.UserRepo
 
         #region Methods
 
-        public async Task<(List<AddEditSalaryModel>, int)> GetSalary(SalaryFilterModel model)
+        public async Task<(List<SalaryModel>, int)> GetSalary(SalaryFilterModel model)
         {
-            var (userList, totalRecord) = await _salaryData.GetSalary(model);
-            return (_mapper.Map<List<AddEditSalaryModel>>(userList), totalRecord);
+            var (salary, totalRecord) = await _salaryData.GetSalary(model);
+
+            var salaryList = _mapper.Map<List<SalaryModel>>(salary);
+            return (salaryList, totalRecord);
         }
 
-        //public async Task<UserModel> GetUserById(int id)
-        //{
-        //    var result = await _userData.GetUserById(id);
-        //    return _mapper.Map<UserModel>(result);
-        //}
+        public async Task<SalaryModel> GetSalaryById(int id)
+        {
+            var result = await _salaryData.GetSalaryById(id);
+            return _mapper.Map<SalaryModel>(result);
+        }
 
-        //public async Task<bool> AddUser(AddEditUserModel model)
-        //{
-        //    var user = _mapper.Map<Users>(model);
-        //    user.CreateAt = DateTime.Now;
-        //    return await _userData.AddUser(user);
-        //}
+        public async Task<bool> AddSalary(AddEditSalaryModel model)
+        {
+            var salary = _mapper.Map<Salarys>(model);
+            return await _salaryData.AddSalary(salary);
 
-        //public async Task<bool> UpdateUser(AddEditUserModel model)
-        //{
-        //    var result = await _userData.GetUserById(model.Id);
-        //    result.Username = model.Username;
-        //    result.FullName = model.FullName;
-        //    result.Email = model.Email;
-        //    result.Designation = model.Designation;
-        //    result.Education = model.Education;
-        //    result.Experience = model.Experience;
-        //    result.ContactNo = model.ContactNo;
-        //    result.Gender = model.Gender;
-        //    result.Address = model.Address;
-        //    result.DOB = model.DOB;
-        //    result.JoiningDate = model.JoiningDate;
-        //    result.BankName = model.BankName;
-        //    result.AccountNo = model.AccountNo;
-        //    result.IFSC = model.IFSC;
-        //    result.MacAddress = model.MacAddress;
 
-        //    return await _userData.UpdateUser(result);
-        //}
+        }
 
-        //public async Task<bool> DeleteUser(int id)
-        //{
-        //    return await _userData.DeleteUser(id);
-        //}
+        public async Task<bool> UpdateSalary(AddEditSalaryModel model)
+        {
+            var result = await _salaryData.GetSalaryById(model.Id);
+            result.Salary = model.Salary;
+            result.FromDate = model.FromDate;
+            result.ToDate = model.ToDate;
+
+            return await _salaryData.UpdateSalary(result);
+        }
 
         #endregion
     }
