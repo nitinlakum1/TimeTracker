@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="TimeTrackerService\" />
     <Folder Include="wwwroot\Template\" />
   </ItemGroup>
 

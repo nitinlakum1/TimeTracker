@@ -18,20 +18,20 @@
     </div>
 }
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-lightblue card-outline">
-                <div class="card-header">
-                    <h3 class="card-title font-color">
-                        <i class="fa-solid fa-calendar-days"></i>
-                        Resources
-                    </h3>
-                    <div style="float:right; display:flex;">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-lightblue card-outline">
+            <div class="card-header">
+                <h3 class="card-title font-color">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Resources
+                </h3>
+                <div style="float:right; display:flex;">
 
-                        <div style="float:right;">
-                            <select class="form-control form-control-sm" id="cmbExperience">
-                                <option value="">Select Experience</option>
-                                @{
+                    <div style="float:right;">
+                        <select class="form-control form-control-sm" id="cmbExperience">
+                            <option value="">Select Experience</option>
+                            @{
                                 for (int i = 1; i <= 10; i++)
                                 {
                                     <option value="@i">@i-Years</option>
@@ -64,6 +64,7 @@
                                         <th style="min-width: 120px">Work Start Date</th>
                                         <th style="min-width: 150px">Comp. Exp.</th>
                                         <th style="min-width: 150px">City</th>
+                                        <th style="min-width: 150px">Remarks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,6 +78,31 @@
     </div>
 </div>
 
+<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <form>
+        <div class="modal-content">
+            <div class="row mt-1">
+                <div class="form-group col-md-11 mx-auto">
+                    <label>Remarks</label>
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-11 mx-auto">
+                    <label>Date Time</label>
+                    <input type="datetime-local" class="form-control form-control-sm">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-sm btn-primary">Add Remarks</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
 
 @section Scripts{
     <script src="~/js/resources.js"></script>

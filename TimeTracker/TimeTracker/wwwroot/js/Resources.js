@@ -36,6 +36,20 @@
                     { "data": "workStartDate" },
                     { "data": "companyExperiences" },
                     { "data": "city" },
+                    { "data": "Remarks" },
+                ],
+                columnDefs: [
+                    {
+                        targets: 11,
+                        render: function (data, type, row) {
+                            if (row.username == 'Dev' || row.username == 'Admin') {
+                                return "";
+                            } else {
+                                return '<a data-toggle="modal" data-target="#basicModal""><i class="fas fa-trash text-danger" style="cursor:pointer;"></i></a>';
+                            }
+                        },
+                        className: "text-center",
+                    }
                 ],
                 processing: true,
             });
@@ -44,3 +58,7 @@
 $('#cmbExperience').change(function () {
     $('#tblUsers').DataTable().draw();
 });
+
+function deleteUser() {
+
+}

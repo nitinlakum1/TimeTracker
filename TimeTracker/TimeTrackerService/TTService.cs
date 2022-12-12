@@ -18,6 +18,7 @@ namespace TimeTrackerService
         #region Declaration
         private static Data.SystemLogData systemLogData;
         static bool servesStart = false;
+        static bool callRunning = false;
         #endregion
 
         #region Const
@@ -42,6 +43,8 @@ namespace TimeTrackerService
 
         protected override async void OnSessionChange(SessionChangeDescription changeDescription)
         {
+            while (callRunning) { }
+            callRunning = true;
             switch (changeDescription.Reason)
             {
                 case SessionChangeReason.SessionLogon:
@@ -60,6 +63,7 @@ namespace TimeTrackerService
                 default:
                     break;
             }
+            callRunning = false;
         }
 
         protected override async void OnShutdown()
@@ -122,19 +126,17 @@ namespace TimeTrackerService
 
                         TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
 
-                        var companyHolidays = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.COMPANY_HOLIDAYS))
-                            .Value; //HH:mm | 23:59
-
                         writeLog = wifiIsConnected
-                            //&& DateTime.Now.Hour >= startTiming.Hours
-                            //&& DateTime.Now.Minute >= startTiming.Minutes
-                            //&& DateTime.Now.Hour <= endTiming.Hours
-                            //&& DateTime.Now.Minute <= endTiming.Minutes
+                            && curentTime >= startTiming
+                            && curentTime <= endTiming
                             && !DateTime.Now.ToString("dddd").Equals("Saturday")
                             && !DateTime.Now.ToString("dddd").Equals("Sunday");
 
-                        if (!string.IsNullOrWhiteSpace(companyHolidays) && !writeLog)
+                        var companyHolidays = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.COMPANY_HOLIDAYS))
+                            .Value;
+
+                        if (!string.IsNullOrWhiteSpace(companyHolidays) && writeLog)
                         {
                             writeLog = !companyHolidays.Split(',').Contains(DateTime.Now.ToString("dd-MM-yyyy"));
                         }
