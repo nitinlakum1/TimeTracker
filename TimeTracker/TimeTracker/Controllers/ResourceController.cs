@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using TimeTracker.Models;
+using TimeTracker.Models.Holiday;
+using TimeTracker.Models.ResourcesRemarks;
 using TimeTracker.Models.Setting;
 using TimeTracker.Models.SystemLog;
 using TimeTracker_Data.Model;
@@ -203,6 +205,29 @@ namespace TimeTracker.Controllers
             {
                 throw;
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRemarks(ResourcesRemarksViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var addRemarks = _mapper.Map<ResourcerRemarksModel>(model);
+                    var result = await _resourcesRepo.AddRemarks(addRemarks);
+
+                    if (result)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
         }
     }
 }

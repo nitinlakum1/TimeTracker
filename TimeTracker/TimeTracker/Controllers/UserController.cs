@@ -54,7 +54,6 @@ namespace TimeTracker.Controllers
 
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -96,6 +95,7 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    model.Url = await _awsS3BucketService.UploadFile(model.AvatarFile, "");
                     var editUser = _mapper.Map<AddEditUserModel>(model);
                     editUser.RoleId = _httpContextAccessor?.HttpContext?.User?.GetLoginRole() ?? 0;
 

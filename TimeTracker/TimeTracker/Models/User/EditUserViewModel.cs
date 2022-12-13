@@ -47,5 +47,9 @@ namespace TimeTracker.Models.User
         public string? MacAddress { get; set; }
 
         public bool FromProfile { get; set; } = false;
+
+        public string? Url { get; set; }
+
+        public IFormFile AvatarFile { get; set; }
     }
 }

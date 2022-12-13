@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TimeTrackerService\**" />
+    <Content Remove="TimeTrackerService\**" />
+    <EmbeddedResource Remove="TimeTrackerService\**" />
+    <None Remove="TimeTrackerService\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="SqlScript\01_Pre_Config.sql" />
   </ItemGroup>
 
@@ -15,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TimeTrackerService\" />
     <Folder Include="wwwroot\Template\" />
   </ItemGroup>
 

@@ -63,6 +63,7 @@ namespace TimeTracker_Repository.UserRepo
             result.BankName = model.BankName;
             result.AccountNo = model.AccountNo;
             result.IFSC = model.IFSC;
+            result.Url = model.Url;
 
             if (model.RoleId == (int)TimeTracker_Model.Roles.Admin)
             {

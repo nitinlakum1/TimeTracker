@@ -15,6 +15,7 @@ namespace TimeTracker.Helper
                 var ff = principal.FindFirst(x => x.Type == ClaimTypes.Role);
                 var gg = principal.FindFirst(x => x.Type == ClaimTypes.Gender);
                 var hh = principal.FindFirst(x => x.Type == "Id");
+                var kk = principal.FindFirst(x => x.Type == "ProfilePic");
             }
 
             if (claim == null)
@@ -56,6 +57,23 @@ namespace TimeTracker.Helper
             else
             {
                 return 0;
+            }
+        }
+
+        public static string GetLoginProfilePic(this ClaimsPrincipal principal)
+        {
+            if (principal.Identity.IsAuthenticated)
+            {
+                var claim = principal.FindFirst(x => x.Type == "ProfilePic");
+                if (claim == null)
+                {
+                    throw new ArgumentException("No ProfilePic claim found");
+                }
+                return (claim.Value);
+            }
+            else
+            {
+                return "";
             }
         }
     }

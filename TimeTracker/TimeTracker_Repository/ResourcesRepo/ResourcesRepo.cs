@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
+using TimeTracker_Model.Holiday;
 using TimeTracker_Model.Resources;
 
 namespace TimeTracker_Repository.ResourcesRepo
@@ -28,6 +30,12 @@ namespace TimeTracker_Repository.ResourcesRepo
             var systemLogs = _mapper.Map<List<ResourcesModel>>(userList);
 
             return (systemLogs, totalRecord);
+        }
+
+        public async Task<bool> AddRemarks(ResourcerRemarksModel model)
+        {
+            var remarks = _mapper.Map<ResourcesRemarks>(model);
+            return await _resourcesData.AddRemarks(remarks);
         }
 
         #endregion

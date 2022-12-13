@@ -82,7 +82,6 @@ namespace TimeTrackerService
         {
             try
             {
-                bool writeLog = false;
                 bool serverOnline = await systemLogData.IsServerConnected();
                 if (serverOnline)
                 {
@@ -90,59 +89,7 @@ namespace TimeTrackerService
                     await WriteSetting();
                 }
 
-                #region Get setting from settings.json
-                if (File.Exists(@"C:\Program Files\WCT\settings.json"))
-                {
-                    List<SettingModel> settings = null;
-                    using (StreamReader r = new StreamReader(@"C:\Program Files\WCT\settings.json"))
-                    {
-                        string json = r.ReadToEnd();
-                        settings = JsonConvert.DeserializeObject<List<SettingModel>>(json);
-                    }
-
-                    //Validate all settings. (Wifi Connection | Start and End Timing | Working Day | Holiday)
-                    if (settings != null && settings.Any())
-                    {
-                        string wifiName = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
-                            .Value;
-                        bool wifiIsConnected = wifiName.Split(',').Contains(await GetConnectedWifi());
-
-                        var start = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
-                            .Value; //HH:mm | 23:59
-
-                        var end = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_END_TIMING))
-                            .Value; //HH:mm | 23:59
-
-                        var startTiming = new TimeSpan(
-                            Convert.ToInt32(start.Split(':')[0]),
-                            Convert.ToInt32(start.Split(':')[1]), 0);
-
-                        var endTiming = new TimeSpan(
-                            Convert.ToInt32(end.Split(':')[0]),
-                            Convert.ToInt32(end.Split(':')[1]), 0);
-
-                        TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
-
-                        writeLog = wifiIsConnected
-                            && curentTime >= startTiming
-                            && curentTime <= endTiming
-                            && !DateTime.Now.ToString("dddd").Equals("Saturday")
-                            && !DateTime.Now.ToString("dddd").Equals("Sunday");
-
-                        var companyHolidays = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.COMPANY_HOLIDAYS))
-                            .Value;
-
-                        if (!string.IsNullOrWhiteSpace(companyHolidays) && writeLog)
-                        {
-                            writeLog = !companyHolidays.Split(',').Contains(DateTime.Now.ToString("dd-MM-yyyy"));
-                        }
-                    }
-                }
-                #endregion
+                bool writeLog = await ValidateSettings();
 
                 if (writeLog)
                 {
@@ -199,62 +146,7 @@ namespace TimeTrackerService
         {
             try
             {
-                bool writeLog = false;
-                #region Get setting from settings.json
-                if (File.Exists(@"C:\Program Files\WCT\settings.json"))
-                {
-                    List<SettingModel> settings = null;
-                    using (StreamReader r = new StreamReader(@"C:\Program Files\WCT\settings.json"))
-                    {
-                        string json = r.ReadToEnd();
-                        settings = JsonConvert.DeserializeObject<List<SettingModel>>(json);
-                    }
-
-                    //Validate all settings. (Wifi Connection | Start and End Timing | Working Day | Holiday)
-                    if (settings != null && settings.Any())
-                    {
-                        string wifiName = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
-                            .Value;
-                        bool wifiIsConnected = wifiName.Split(',').Contains(await GetConnectedWifi());
-
-                        var start = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
-                            .Value; //HH:mm | 23:59
-
-                        var end = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_END_TIMING))
-                            .Value; //HH:mm | 23:59
-
-                        var startTiming = new TimeSpan(
-                            Convert.ToInt32(start.Split(':')[0]),
-                            Convert.ToInt32(start.Split(':')[1]), 0);
-
-                        var endTiming = new TimeSpan(
-                            Convert.ToInt32(end.Split(':')[0]),
-                            Convert.ToInt32(end.Split(':')[1]), 0);
-
-                        TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
-
-                        var companyHolidays = settings
-                            .FirstOrDefault(a => a.Key.Equals(AppSettings.COMPANY_HOLIDAYS))
-                            .Value; //HH:mm | 23:59
-
-                        writeLog = wifiIsConnected
-                            //&& DateTime.Now.Hour >= startTiming.Hours
-                            //&& DateTime.Now.Minute >= startTiming.Minutes
-                            //&& DateTime.Now.Hour <= endTiming.Hours
-                            //&& DateTime.Now.Minute <= endTiming.Minutes
-                            && !DateTime.Now.ToString("dddd").Equals("Saturday")
-                            && !DateTime.Now.ToString("dddd").Equals("Sunday");
-
-                        if (!string.IsNullOrWhiteSpace(companyHolidays) && !writeLog)
-                        {
-                            writeLog = !companyHolidays.Split(',').Contains(DateTime.Now.ToString("dd-MM-yyyy"));
-                        }
-                    }
-                }
-                #endregion
+                bool writeLog = await ValidateSettings();
 
                 if (writeLog)
                 {
@@ -460,6 +352,70 @@ namespace TimeTrackerService
             {
                 return "";
             }
+        }
+
+        private static async Task<bool> ValidateSettings()
+        {
+            bool result = false;
+            try
+            {
+                #region Get setting from settings.json
+                if (File.Exists(@"C:\Program Files\WCT\settings.json"))
+                {
+                    List<SettingModel> settings = null;
+                    using (StreamReader r = new StreamReader(@"C:\Program Files\WCT\settings.json"))
+                    {
+                        string json = r.ReadToEnd();
+                        settings = JsonConvert.DeserializeObject<List<SettingModel>>(json);
+                    }
+                    if (settings != null && settings.Any())
+                    {
+                        string wifiName = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_WIFI_NAME))
+                            .Value;
+                        bool wifiIsConnected = wifiName.Split(',').Contains(await GetConnectedWifi());
+
+                        var start = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_START_TIMING))
+                            .Value; //HH:mm | 23:59
+
+                        var end = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.SYSTEM_LOG_END_TIMING))
+                            .Value; //HH:mm | 23:59
+
+                        var startTiming = new TimeSpan(
+                            Convert.ToInt32(start.Split(':')[0]),
+                            Convert.ToInt32(start.Split(':')[1]), 0);
+
+                        var endTiming = new TimeSpan(
+                            Convert.ToInt32(end.Split(':')[0]),
+                            Convert.ToInt32(end.Split(':')[1]), 0);
+
+                        TimeSpan curentTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
+
+                        result = wifiIsConnected
+                            && curentTime >= startTiming
+                            && curentTime <= endTiming
+                            && !DateTime.Now.ToString("dddd").Equals("Saturday")
+                            && !DateTime.Now.ToString("dddd").Equals("Sunday");
+
+                        var companyHolidays = settings
+                            .FirstOrDefault(a => a.Key.Equals(AppSettings.COMPANY_HOLIDAYS))
+                            .Value;
+
+                        if (!string.IsNullOrWhiteSpace(companyHolidays) && result)
+                        {
+                            result = !companyHolidays.Split(',').Contains(DateTime.Now.ToString("dd-MM-yyyy"));
+                        }
+                    }
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                WriteTextFile(nameof(ValidateSettings), ex.Message, GetErrorLineNumber(ex));
+            }
+            return result;
         }
         #endregion
     }

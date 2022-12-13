@@ -12,6 +12,7 @@
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public long Avatar { get; set; }
+        public string? Url { get; set; }
         public string ProfilePic { get; set; }
     }
 }

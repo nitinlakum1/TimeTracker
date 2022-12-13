@@ -1,6 +1,6 @@
 ﻿@using TimeTracker.Helper
 @using TimeTracker_Model
-@model List<TimeTracker_Model.Resources.ResourcesModel>
+@model TimeTracker.Models.ResourcesRemarks.ResourcesRemarksViewModel
 
 @{
     ViewData["Title"] = "Resources";
@@ -80,26 +80,34 @@
 
 <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog">
-        <form>
-        <div class="modal-content">
-            <div class="row mt-1">
-                <div class="form-group col-md-11 mx-auto">
-                    <label>Remarks</label>
-                    <textarea class="form-control" rows="2"></textarea>
+        <form asp-action="AddRemarks" method="post">
+            <div class="modal-content">
+                <div class="row mt-1">
+                    <div class="form-group col-md-11 mx-auto">
+                        <label asp-for="Remarks">Remarks</label>
+                        <textarea asp-for="Remarks" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="Remarks" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-11 mx-auto">
-                    <label>Date Time</label>
-                    <input type="datetime-local" class="form-control form-control-sm">
-                </div>
-            </div>
+                <div class="row">
+                    <div class="form-group col-md-11 mx-auto">
+                        <label asp-for="DateTime">Date Time</label>
+                        <input asp-for="DateTime" type="datetime-local" class="form-control form-control-sm">
+                        <span asp-validation-for="DateTime" class="text-danger"></span>
+                    </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-sm btn-primary">Add Remarks</button>
+                    <div class="form-group col-md-11 mx-auto">
+                        <label asp-for="preferenceId">Date Time</label>
+                        <input asp-for="preferenceId" type="text" class="form-control form-control-sm">
+                        <span asp-validation-for="preferenceId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-info theme-color" value="Add Remarks" />
+                </div>
             </div>
-        </div>
         </form>
     </div>
 </div>

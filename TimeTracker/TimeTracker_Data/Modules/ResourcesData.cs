@@ -61,6 +61,13 @@ namespace TimeTracker_Data.Modules
             return (await result.ToListAsync(), totalRecord);
         }
 
+        public async Task<bool> AddRemarks(ResourcesRemarks model)
+        {
+            _context.ResourcesRemarks.Add(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         #endregion
     }
 }
