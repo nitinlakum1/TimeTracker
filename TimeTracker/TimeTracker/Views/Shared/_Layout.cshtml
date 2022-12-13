@@ -188,18 +188,9 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        @{
-                            if (profilePic == "")
-                            {
-                                <img src="~/images/pp.jpg" class="img-circle elevation-2" alt="User Image" style="width:34px; height:34px;">
-                            }
-                            else
-                            {
                                 <img src="@profilePic" class="img-circle elevation-2" alt="User Image" style="width:34px; height:34px;">
-                            }
-                        }
                     </div>
-                    <div class="info" style="padding-top:3px;">
+                    <div class="info">
                         <a asp-action="UserProfile" asp-controller="User" class="d-block">@name</a>
                     </div>
                 </div>
