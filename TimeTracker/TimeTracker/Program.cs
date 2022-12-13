@@ -25,6 +25,8 @@ builder.Services.AddDbContext<TTContext>(options =>
 
 var app = builder.Build();
 
+builder.Configuration.AddJsonFile($"appsettings.{app.Environment.EnvironmentName}.json", optional: true);
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
