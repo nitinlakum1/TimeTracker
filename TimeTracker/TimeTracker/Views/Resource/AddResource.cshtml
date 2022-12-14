@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group col-md-12">
                             <label asp-for="Token">Token</label>
-                            <input asp-for="Token" type="text" class="form-control form-control-sm" value="eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWIwMmY0OTgwYTg1NDZhMmFkOTFmMjNlNTM5OCIsImNyZWF0ZVRpbWUiOjE2NzAyNDEyNTg3NDYsImlhdCI6MTY3MDI0MTI1OCwiaXNzIjoiaGlyZWN0X2FwcF9pc3N1ZXIifQ.Qnj5gRDY65GUqWJ9QdvqSl6MWJm-g3usx8E7xbNtqZ8">
+                            <input asp-for="Token" type="text" class="form-control form-control-sm" onblur="setToken()">
                         </div>
                     </div>
                 </div>
@@ -63,10 +63,14 @@
 
 
 @section Scripts{
-    <script>
-        $(document).ready(function () {
-            SelectedMenu('menuMaster', 'menuResource');
-            bindDataTable();
-        });
-    </script>
+<script>
+    $(document).ready(function () {
+        SelectedMenu('menuMaster', 'menuResource');
+        $('#Token').val(localStorage.getItem('WCT_Token'));
+    });
+
+    function setToken(){
+        localStorage.setItem('WCT_Token',$('#Token').val());
+    }
+</script>
 }
