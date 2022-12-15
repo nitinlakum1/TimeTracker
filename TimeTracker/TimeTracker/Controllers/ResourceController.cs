@@ -20,7 +20,7 @@ using TimeTracker_Repository.ResourcesRepo;
 
 namespace TimeTracker.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ResourceController : Controller
     {
         private readonly ISettingRepo _settingRepo;

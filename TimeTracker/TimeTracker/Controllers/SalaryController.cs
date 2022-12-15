@@ -50,6 +50,7 @@ namespace TimeTracker.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             var users = await _userRepo.GetUserLookup();
@@ -57,6 +58,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(SalaryViewModel model)
         {
@@ -80,6 +82,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id)
         {
             var salary = await _salaryRepo.GetSalaryById(id);
@@ -87,6 +90,7 @@ namespace TimeTracker.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(EditSalaryViewModel model)
         {

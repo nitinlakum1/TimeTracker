@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimeTracker_Model;
 
 namespace TimeTracker_Data.Model
 {
     public class Resources
     {
         public string id { get; set; }
-
         [Required]
         public string preferenceId { get; set; }
-
         public string? name { get; set; }
         public string? gender { get; set; }
         public string? mobile { get; set; }
@@ -20,5 +19,6 @@ namespace TimeTracker_Data.Model
         public string? workStartDate { get; set; }
         public string? companyExperiences { get; set; }
         public string? city { get; set; }
+        public ResourceStatus? ResourceStatus { get; set; }
     }
 }

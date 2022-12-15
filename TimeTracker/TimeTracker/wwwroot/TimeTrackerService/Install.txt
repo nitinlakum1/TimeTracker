@@ -1,5 +1,21 @@
+==== Install Windows Service Using CMD ====
 "C:\Windows\Microsoft.NET\Framework\v4.0.30319\installutil.exe" "C:\TimeTrackerService\TimeTrackerService.exe"
 
+==== Delete Windows Service Using CMD ====
+sc delete "TTService"
+
+==== Windows Service Start Using CMD ====
+sc start "TTService"
+
+
+
+==== Install Windows Service Using Developer Command Prompt ====
 installutil C:\TimeTrackerService\TimeTrackerService.exe
 
+==== Delete Windows Service Using Developer Command Prompt ====
+installutil /u C:\TimeTrackerService\TimeTrackerService.exe
+
+
+
+==== Windows Service Start Using PowerShell ====
 Start-Service -Name "TTService"

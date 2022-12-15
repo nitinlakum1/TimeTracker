@@ -53,6 +53,7 @@
                             <table class="table table-sm table-bordered table-striped" id="tblUsers">
                                 <thead>
                                     <tr>
+                                        <th style="min-width: 120px">Id</th>
                                         <th style="min-width: 120px">Name</th>
                                         <th style="min-width: 70px">Gender</th>
                                         <th style="min-width: 65px">Mobile</th>
@@ -64,7 +65,7 @@
                                         <th style="min-width: 120px">Work Start Date</th>
                                         <th style="min-width: 150px">Comp. Exp.</th>
                                         <th style="min-width: 150px">City</th>
-                                        <th style="min-width: 150px">Remarks</th>
+                                        <th style="min-width: 90px">Remarks</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -82,6 +83,7 @@
     <div class="modal-dialog">
         <form asp-action="AddRemarks" method="post">
             <div class="modal-content">
+                <input asp-for="PreferenceId" hidden />
                 <div class="row mt-1">
                     <div class="form-group col-md-11 mx-auto">
                         <label asp-for="Remarks">Remarks</label>
@@ -90,22 +92,23 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-11 mx-auto">
+                    <div class="form-group col-md-5 mx-auto">
                         <label asp-for="DateTime">Date Time</label>
                         <input asp-for="DateTime" type="datetime-local" class="form-control form-control-sm">
                         <span asp-validation-for="DateTime" class="text-danger"></span>
                     </div>
-
-                    <div class="form-group col-md-11 mx-auto">
-                        <label asp-for="preferenceId">Date Time</label>
-                        <input asp-for="preferenceId" type="text" class="form-control form-control-sm">
-                        <span asp-validation-for="preferenceId" class="text-danger"></span>
+                    <div class="form-group col-md-5 mx-auto">
+                        <label asp-for="ResourceStatus">Status</label>
+                        <select asp-for="ResourceStatus" class="form-control form-control-sm" asp-items="Html.GetEnumSelectList<ResourceStatus>()">
+                            <option value="">Select Status</option>
+                        </select>
+                        <span asp-validation-for="ResourceStatus" class="validation-color"></span>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-info theme-color" value="Add Remarks" />
+                    <input type="submit" class="btn btn-sm btn-info theme-color" value="Add Remarks" />
                 </div>
             </div>
         </form>

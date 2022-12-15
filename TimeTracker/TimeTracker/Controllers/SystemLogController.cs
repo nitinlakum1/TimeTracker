@@ -183,6 +183,7 @@ namespace TimeTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             try
@@ -200,6 +201,7 @@ namespace TimeTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(SystemLogViewModel model)
         {

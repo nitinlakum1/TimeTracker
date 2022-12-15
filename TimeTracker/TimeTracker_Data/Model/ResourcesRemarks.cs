@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TimeTracker_Data.Model
 {
@@ -9,15 +8,12 @@ namespace TimeTracker_Data.Model
         public int Id { get; set; }
 
         [Required]
-        [ForeignKey("Resources")]
-        public string preferenceId { get; set; }
+        public string PreferenceId { get; set; }
 
         [Required]
         public string Remarks { get; set; }
 
         [Required]
         public DateTime DateTime { get; set; }
-
-        public Resources Resources { get; set; }
     }
 }
