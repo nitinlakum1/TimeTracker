@@ -1,11 +1,12 @@
 ﻿function bindDataTable() {
-    datatable = $('#tblUsers')
+    datatable = $('#tblResource')
         .dataTable(
             {
                 "sAjaxSource": "/Resource/GetResourcesList",
                 "bServerSide": true,
                 "bProcessing": true,
                 "bSearchable": true,
+                "ordering": false,
                 "scrollX": true,
                 "order": [[0, "DESC"]],
                 "paging": true,
@@ -31,22 +32,22 @@
                     { "data": "mobile" },
                     { "data": "email" },
                     { "data": "workYears" },
-                    { "data": "designation" },
+                    { "data": "designationName" },
                     { "data": "degree" },
                     { "data": "birthDate" },
+                    { "data": "cityName" },
                     { "data": "workStartDate" },
-                    { "data": "companyExperiences" },
-                    { "data": "city" },
+                    //{ "data": "companyExperiences" },
                     { "data": "preferenceId" },
                 ],
                 columnDefs: [
                     {
-                        targets: 12,
+                        targets: 11,
                         render: function (data, type, row) {
                             if (row.username == 'Dev' || row.username == 'Admin') {
                                 return "";
                             } else {
-                                return '<a onclick="findId(\'' + row.preferenceId + '\')" data-toggle="modal" data-target="#basicModal""><i class="fa-regular fa-square-plus"  style="cursor:pointer; font-size: 22px;"></i></a><a><i class="fa-solid fa-eye"  style="cursor:pointer; font-size: 22px; margin-left:10px;"></i></a>';
+                                return '<a onclick="openFollowupModel(\'' + row.preferenceId + '\')"><i class="fa-regular fa-square-plus font-color"  style="cursor:pointer; font-size: 16px;"></i></a><a onclick="openDetailsModel(\'' + row.preferenceId + '\')"><i class="fa-solid fa-eye font-color"  style="cursor:pointer; font-size: 16px; margin-left:10px;"></i></a>';
                             }
                         },
                         className: "text-center",
@@ -56,16 +57,57 @@
             });
 }
 
-function findId(preferenceId) {
-    $("#PreferenceId").val(preferenceId);
+$('#cmdColumn').on('change', function (e) {
+    e.preventDefault();
+    $.each($(this).val(), function (index, val) {
+        var column = $('#tblResource').DataTable().column(val);
+        column.visible(!column.visible());
+    });
+});
+
+$('#cmbExperience').change(function () {
+    $('#tblResource').DataTable().draw();
+});
+
+function openFollowupModel(preferenceId) {
+    $('#modalFollowup').modal('show');
+    $("#hdnPreferenceId").val(preferenceId);
 }
 
-//function conformDelete() {
-//    var id = $("#deleteId").val();
-//    if (id > 0) {
-//        $.ajax({
-//            url: '/Resource/AddRemarks/',
-//            type: 'POST',
-//        })
-//    }
-//}
+function openDetailsModel(preferenceId) {
+    if (preferenceId > 0) {
+        $.ajax({
+            url: '/Resource/GetFollowupList/',
+            type: 'GET',
+            data: { id: preferenceId },
+            success: function (result) {
+                $('#loadFollowup').html(result);
+                $('#modalFollowupList').modal('show');
+            },
+            error: function (result) {
+                alert("User not Delete!");
+            },
+        })
+    }
+}
+
+function submitFollowup() {
+    var id = $("#hdnPreferenceId").val();
+    if (id > 0) {
+        $.ajax({
+            url: '/Resource/AddRemarks/',
+            type: 'POST',
+            data: $('#frmFollowup').serialize(),
+            success: function (result) {
+                $('#frmFollowup')[0].reset();
+                $("#hdnPreferenceId").val('');
+                $('#modalFollowup').modal('hide');
+                setStatusMsg(result);
+                $('#tblResource').DataTable().ajax.reload();
+            },
+            error: function (result) {
+                alert("User not Delete!");
+            },
+        })
+    }
+}

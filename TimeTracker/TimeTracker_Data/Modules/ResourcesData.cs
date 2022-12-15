@@ -25,35 +25,13 @@ namespace TimeTracker_Data.Modules
             var result = _context.Resources
                 .Where(a => a.workYears == model.Experience
                        && (string.IsNullOrWhiteSpace(model.SearchText)
+                       || a.preferenceId.ToLower().Contains(model.SearchText)
                        || a.name.ToLower().Contains(model.SearchText)
+                       || a.gender.ToLower().Contains(model.SearchText)
                        || a.mobile.ToLower().Contains(model.SearchText)
-                       || a.email.ToLower().Contains(model.SearchText)
-                       || a.degree.ToLower().Contains(model.SearchText)
-                       || a.designation.ToLower().Contains(model.SearchText)));
+                       || a.email.ToLower().Contains(model.SearchText)));
 
             var totalRecord = result.Count();
-
-            if (model.SortOrder.ToLower().Equals("desc")
-                && model.SortColumn.ToLower().Equals("username"))
-            {
-                result = result.OrderByDescending(a => a.name);
-            }
-            if (model.SortOrder.ToLower().Equals("asc")
-                && model.SortColumn.ToLower().Equals("username"))
-            {
-                result = result.OrderBy(a => a.name);
-            }
-
-            if (model.SortOrder.ToLower().Equals("desc")
-                && model.SortColumn.ToLower().Equals("contactno"))
-            {
-                result = result.OrderByDescending(a => a.mobile);
-            }
-            if (model.SortOrder.ToLower().Equals("asc")
-                && model.SortColumn.ToLower().Equals("contactno"))
-            {
-                result = result.OrderBy(a => a.mobile);
-            }
 
             result = result
                 .Skip(model.DisplayStart)
@@ -80,6 +58,14 @@ namespace TimeTracker_Data.Modules
             _context.Resources.Update(model);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<ResourcesRemarks>> GetFollowupList(string id)
+        {
+            return await _context.ResourcesRemarks
+                .Where(a => a.PreferenceId == id)
+                .OrderByDescending(a => a.DateTime)
+                .ToListAsync();
         }
 
         #endregion

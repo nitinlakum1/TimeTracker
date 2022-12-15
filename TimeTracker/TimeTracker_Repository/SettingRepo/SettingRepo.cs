@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.Setting;
@@ -76,6 +77,17 @@ namespace TimeTracker_Repository
                 companyExperiences = model.companyExperiences,
                 city = model.city,
             };
+
+            if (!string.IsNullOrWhiteSpace(model.city))
+            {
+                var preferences = JsonConvert.DeserializeObject<List<Preferences>>(model.city);
+                if (preferences is { Count: > 0 })
+                {
+                    var data = preferences.FirstOrDefault();
+                    resource.city = data.city;
+                    resource.designation = string.IsNullOrWhiteSpace(resource.designation) ? data.channel : resource.designation;
+                }
+            }
             return await _settingData.AddResources(resource);
         }
 

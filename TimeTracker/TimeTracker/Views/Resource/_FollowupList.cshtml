@@ -1,0 +1,22 @@
+﻿@model List<TimeTracker.Models.ResourcesRemarks.FollowupListViewModel>
+
+<table class="table table-sm table-bordered table-striped" id="tblFollowup">
+    <thead>
+        <tr>
+            <th style="width: 113px;">Followup Date</th>
+            <th>Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model is { Count: > 0 })
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DateTime.ToString("dd, MMM-yyyy")</td>
+                    <td>@item.Remarks</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

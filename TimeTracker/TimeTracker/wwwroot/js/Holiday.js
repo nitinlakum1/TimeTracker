@@ -51,6 +51,7 @@ function deleteUser(id) {
 }
 
 function conformDelete() {
+    
     var id = $("#deleteId").val();
     if (id > 0) {
         $.ajax({

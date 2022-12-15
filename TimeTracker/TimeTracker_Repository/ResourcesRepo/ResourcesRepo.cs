@@ -45,6 +45,12 @@ namespace TimeTracker_Repository.ResourcesRepo
             return await _resourcesData.AddRemarks(remarks);
         }
 
+        public async Task<List<FollowupListModel>> GetFollowupList(string id)
+        {
+            var result = await _resourcesData.GetFollowupList(id);
+
+            return _mapper.Map<List<FollowupListModel>>(result);
+        }
         #endregion
     }
 }

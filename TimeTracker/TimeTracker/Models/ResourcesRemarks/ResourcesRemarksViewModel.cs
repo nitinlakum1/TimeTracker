@@ -12,6 +12,7 @@ namespace TimeTracker.Models.ResourcesRemarks
 
         [Required(ErrorMessage = "DateTime is required.")]
         public DateTime DateTime { get; set; }
+        [Required(ErrorMessage = "ResourceStatus is required.")]
         public ResourceStatus ResourceStatus { get; set; }
     }
 }

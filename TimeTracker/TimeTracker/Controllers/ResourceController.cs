@@ -210,24 +210,45 @@ namespace TimeTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRemarks(ResourcesRemarksViewModel model)
         {
+            bool isSuccess = false;
+            string message = "";
             try
             {
                 if (ModelState.IsValid)
                 {
                     var addRemarks = _mapper.Map<ResourcerRemarksModel>(model);
-                    var result = await _resourcesRepo.AddRemarks(addRemarks);
+                    isSuccess = await _resourcesRepo.AddRemarks(addRemarks);
+                    message = isSuccess ? AppMessages.SAVE_SUCCESS : AppMessages.SOMETHING_WRONG;
 
-                    if (result)
-                    {
-                        return RedirectToAction("Index");
-                    }
+                    //if (isSuccess)
+                    //{
+                    //    return RedirectToAction("Index");
+                    //}
                 }
             }
             catch (Exception)
             {
                 throw;
             }
-            return View();
+            return Json(new { isSuccess, message });
+        }
+
+        public async Task<IActionResult> GetFollowupList(string id)
+        {
+            try
+            {
+                var followupList = new List<FollowupListViewModel>();
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    var result = await _resourcesRepo.GetFollowupList(id);
+                    followupList = _mapper.Map<List<FollowupListViewModel>>(result);
+                }
+                return PartialView("_FollowupList", followupList);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

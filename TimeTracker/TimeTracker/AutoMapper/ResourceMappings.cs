@@ -14,9 +14,14 @@ namespace TimeTracker.AutoMapper
     {
         public static void Map(Profile profile)
         {
+            profile.CreateMap<ResourcesRemarks, ResourcerRemarksModel>();
+
+
             profile.CreateMap<Resources, ResourcesModel>();
             profile.CreateMap<ResourcerRemarksModel, ResourcesRemarks>();
             profile.CreateMap<ResourcesRemarksViewModel, ResourcerRemarksModel>();
+            profile.CreateMap<FollowupListModel, FollowupListViewModel>();
+            profile.CreateMap<ResourcesRemarks, FollowupListModel>();
 
 
             profile.CreateMap<DatatableParamViewModel, ResourcesFilterModel>()

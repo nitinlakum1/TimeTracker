@@ -26,9 +26,29 @@
                     <i class="fa-solid fa-calendar-days"></i>
                     Resources
                 </h3>
-                <div style="float:right; display:flex;">
+                @*<div>
+                Hide Columns: <a class="toggle-vis" data-column="0">name</a> - <a class="toggle-vis" data-column="1">Position</a> - <a class="toggle-vis" data-column="2">Office</a> - <a class="toggle-vis" data-column="3">Age</a> - <a class="toggle-vis" data-column="4">Start date</a> - <a class="toggle-vis" data-column="5">Salary</a>
+                </div>*@
 
+
+                <div style="float:right; display:flex;">
                     <div style="float:right;">
+                        <select class="form-control select2bs4 select2-multi-update" multiple="multiple" data-placeholder="Select Columns" style="width: 200px;" id="cmdColumn">
+                            <option value="0">Preference Id</option>
+                            <option value="1">Name</option>
+                            <option value="2">Gender</option>
+                            <option value="3">Mobile</option>
+                            <option value="4">Email</option>
+                            <option value="5">Ecperience</option>
+                            <option value="6">Designation</option>
+                            <option value="7">Degree</option>
+                            <option value="8">Birth Date</option>
+                            <option value="9">City</option>
+                            <option value="10">Work Start Date</option>
+                        </select>
+                    </div>
+
+                    <div style="float:right;margin-left:5px;">
                         <select class="form-control form-control-sm" id="cmbExperience">
                             <option value="">Select Experience</option>
                             @{
@@ -50,10 +70,10 @@
                 <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
                         <div class="col-sm-12">
-                            <table class="table table-sm table-bordered table-striped" id="tblUsers">
+                            <table class="table table-sm table-bordered table-striped" id="tblResource">
                                 <thead>
                                     <tr>
-                                        <th style="min-width: 120px">Id</th>
+                                        <th style="min-width: 120px">Preference Id</th>
                                         <th style="min-width: 120px">Name</th>
                                         <th style="min-width: 70px">Gender</th>
                                         <th style="min-width: 65px">Mobile</th>
@@ -62,10 +82,10 @@
                                         <th style="min-width: 120px">Designation</th>
                                         <th style="min-width: 70px">Degree</th>
                                         <th style="min-width: 80px">Birth Date</th>
-                                        <th style="min-width: 120px">Work Start Date</th>
-                                        <th style="min-width: 150px">Comp. Exp.</th>
                                         <th style="min-width: 150px">City</th>
-                                        <th style="min-width: 90px">Remarks</th>
+                                        <th style="min-width: 120px">Work Start Date</th>
+                                        @*<th style="min-width: 150px">Comp. Exp.</th>*@
+                                        <th style="min-width: 90px">Follow-up</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -79,39 +99,60 @@
     </div>
 </div>
 
-<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+<div class="modal fade" id="modalFollowup">
     <div class="modal-dialog">
-        <form asp-action="AddRemarks" method="post">
-            <div class="modal-content">
-                <input asp-for="PreferenceId" hidden />
-                <div class="row mt-1">
-                    <div class="form-group col-md-11 mx-auto">
-                        <label asp-for="Remarks">Remarks</label>
-                        <textarea asp-for="Remarks" class="form-control" rows="2"></textarea>
-                        <span asp-validation-for="Remarks" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-5 mx-auto">
-                        <label asp-for="DateTime">Date Time</label>
-                        <input asp-for="DateTime" type="datetime-local" class="form-control form-control-sm">
-                        <span asp-validation-for="DateTime" class="text-danger"></span>
-                    </div>
-                    <div class="form-group col-md-5 mx-auto">
-                        <label asp-for="ResourceStatus">Status</label>
-                        <select asp-for="ResourceStatus" class="form-control form-control-sm" asp-items="Html.GetEnumSelectList<ResourceStatus>()">
-                            <option value="">Select Status</option>
-                        </select>
-                        <span asp-validation-for="ResourceStatus" class="validation-color"></span>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-sm btn-info theme-color" value="Add Remarks" />
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Take a follow-up</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        </form>
+            <div class="modal-body">
+                <form id="frmFollowup">
+                    <input type="hidden" asp-for="PreferenceId" id="hdnPreferenceId" />
+                    <div class="row mt-1">
+                        <div class="form-group col-md-12">
+                            <label asp-for="Remarks">Remarks</label>
+                            <textarea asp-for="Remarks" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="Remarks" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="DateTime">Date Time</label>
+                            <input asp-for="DateTime" type="datetime-local" class="form-control form-control-sm">
+                            <span asp-validation-for="DateTime" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="ResourceStatus">Status</label>
+                            <select asp-for="ResourceStatus" class="form-control form-control-sm" asp-items="Html.GetEnumSelectList<ResourceStatus>()">
+                                <option value="">Select Status</option>
+                            </select>
+                            <span asp-validation-for="ResourceStatus" class="text-danger"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-end">
+                <button type="button" class="btn btn-info btn-sm theme-color" onclick="submitFollowup()">Add Follow-up</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalFollowupList">
+    <div class="modal-dialog" style="max-width: 600px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Follow-up List</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadFollowup">
+            </div>
+        </div>
     </div>
 </div>
 
