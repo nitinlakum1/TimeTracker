@@ -201,6 +201,7 @@ namespace TimeTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(SystemLogViewModel model)
         {

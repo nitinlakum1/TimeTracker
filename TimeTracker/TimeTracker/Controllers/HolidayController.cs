@@ -59,6 +59,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(HolidayViewModel model)
         {
@@ -90,6 +91,7 @@ namespace TimeTracker.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(HolidayViewModel model)
         {
@@ -113,6 +115,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> DeleteHoliday(int id)
         {

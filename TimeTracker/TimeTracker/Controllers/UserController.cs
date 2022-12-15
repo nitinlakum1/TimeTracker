@@ -38,6 +38,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> LoadUser(DatatableParamViewModel param)
         {
             var dtParam = _mapper.Map<UserFilterModel>(param);
@@ -59,6 +60,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(AddUserViewModel model)
         {
@@ -91,6 +93,7 @@ namespace TimeTracker.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(EditUserViewModel model)
         {
@@ -124,6 +127,7 @@ namespace TimeTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> DeleteUser(int id)
         {

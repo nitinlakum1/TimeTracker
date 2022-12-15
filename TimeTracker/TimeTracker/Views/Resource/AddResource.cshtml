@@ -1,7 +1,19 @@
 ﻿@model TimeTracker.Models.Setting.ResourceViewModel
 @{
-    ViewData["Title"] = "Resources";
+    ViewData["Title"] = "Add Resource";
+}
 
+@section ContentHeader{
+    <div class="col-sm-6">
+        <h4 class="m-0">Resources</h4>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Resource">Resources</a></li>
+            <li class="breadcrumb-item active">Add Resource</li>
+        </ol>
+    </div>
 }
 
 <div class="row">

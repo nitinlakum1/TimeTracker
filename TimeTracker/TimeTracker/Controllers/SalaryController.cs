@@ -58,6 +58,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(SalaryViewModel model)
         {
@@ -89,6 +90,7 @@ namespace TimeTracker.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(EditSalaryViewModel model)
         {
