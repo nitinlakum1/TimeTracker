@@ -35,6 +35,13 @@ namespace TimeTracker_Repository.ResourcesRepo
         public async Task<bool> AddRemarks(ResourcerRemarksModel model)
         {
             var remarks = _mapper.Map<ResourcesRemarks>(model);
+
+            var resources = await _resourcesData.GetResourceById(model.PreferenceId ?? "");
+            if (resources != null && !string.IsNullOrWhiteSpace(resources.preferenceId))
+            {
+                resources.ResourceStatus = model.ResourceStatus;
+                await _resourcesData.EditResource(resources);
+            }
             return await _resourcesData.AddRemarks(remarks);
         }
 

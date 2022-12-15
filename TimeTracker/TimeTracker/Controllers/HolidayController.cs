@@ -53,6 +53,7 @@ namespace TimeTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -81,6 +82,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id)
         {
             var holiday = await _holidayRepo.GetHolidayById(id);

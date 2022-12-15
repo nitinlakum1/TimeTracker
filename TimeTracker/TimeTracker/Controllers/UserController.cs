@@ -53,6 +53,7 @@ namespace TimeTracker.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -82,6 +83,7 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id)
         {
             var user = await _userRepo.GetUserById(id);
@@ -97,7 +99,7 @@ namespace TimeTracker.Controllers
                 if (ModelState.IsValid)
                 {
                     model.Url = await _awsS3BucketService.UploadFile(
-                        model.AvatarFile, model.Url);
+                        model.AvatarFile, model.Url ?? "");
 
                     var editUser = _mapper.Map<AddEditUserModel>(model);
                     editUser.RoleId = _httpContextAccessor?.HttpContext?.User?.GetLoginRole() ?? 0;

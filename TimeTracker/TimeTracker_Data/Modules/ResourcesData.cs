@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Resources;
+using TimeTracker_Model.Setting;
 
 namespace TimeTracker_Data.Modules
 {
@@ -61,9 +62,22 @@ namespace TimeTracker_Data.Modules
             return (await result.ToListAsync(), totalRecord);
         }
 
+        public async Task<Resources> GetResourceById(string preferenceId)
+        {
+            return await _context.Resources
+                .FirstOrDefaultAsync(a => a.preferenceId == preferenceId) ?? new Resources();
+        }
+
         public async Task<bool> AddRemarks(ResourcesRemarks model)
         {
             _context.ResourcesRemarks.Add(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> EditResource(Resources model)
+        {
+            _context.Resources.Update(model);
             await _context.SaveChangesAsync();
             return true;
         }

@@ -25,6 +25,7 @@
                     perm = aoData;
                 },
                 "aoColumns": [
+                    { "data": "preferenceId" },
                     { "data": "name" },
                     { "data": "gender" },
                     { "data": "mobile" },
@@ -36,16 +37,16 @@
                     { "data": "workStartDate" },
                     { "data": "companyExperiences" },
                     { "data": "city" },
-                    { "data": "Remarks" },
+                    { "data": "preferenceId" },
                 ],
                 columnDefs: [
                     {
-                        targets: 11,
+                        targets: 12,
                         render: function (data, type, row) {
                             if (row.username == 'Dev' || row.username == 'Admin') {
                                 return "";
                             } else {
-                                return '<a data-toggle="modal" data-target="#basicModal""><i class="fas fa-trash text-danger" style="cursor:pointer;"></i></a>';
+                                return '<a onclick="findId(\'' + row.preferenceId + '\')" data-toggle="modal" data-target="#basicModal""><i class="fa-regular fa-square-plus"  style="cursor:pointer; font-size: 22px;"></i></a><a><i class="fa-solid fa-eye"  style="cursor:pointer; font-size: 22px; margin-left:10px;"></i></a>';
                             }
                         },
                         className: "text-center",
@@ -55,10 +56,16 @@
             });
 }
 
-$('#cmbExperience').change(function () {
-    $('#tblUsers').DataTable().draw();
-});
-
-function deleteUser() {
-
+function findId(preferenceId) {
+    $("#PreferenceId").val(preferenceId);
 }
+
+//function conformDelete() {
+//    var id = $("#deleteId").val();
+//    if (id > 0) {
+//        $.ajax({
+//            url: '/Resource/AddRemarks/',
+//            type: 'POST',
+//        })
+//    }
+//}

@@ -9,7 +9,7 @@ using TimeTracker_Repository;
 
 namespace TimeTracker.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class SettingController : Controller
     {
         #region Declaration

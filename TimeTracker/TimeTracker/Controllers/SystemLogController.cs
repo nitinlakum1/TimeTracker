@@ -183,6 +183,7 @@ namespace TimeTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             try
