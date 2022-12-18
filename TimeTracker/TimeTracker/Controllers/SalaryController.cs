@@ -102,8 +102,8 @@ namespace TimeTracker.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id)
         {
-            var salary = await _salaryRepo.GetSalaryById(id);
-            var model = _mapper.Map<EditSalaryViewModel>(salary);
+            var updateSalary = await _salaryRepo.GetSalaryById(id);
+            var model = _mapper.Map<EditSalaryViewModel>(updateSalary);
             return View(model);
         }
 

@@ -24,11 +24,11 @@ namespace TimeTracker_Repository.SystemLogRepo
 
         public async Task<(List<SystemLogModel>, int)> GetSystemLog(SystemLogFilterModel model)
         {
-            var (userList, totalRecord) = await _systemLogData.GetSystemLog(model);
+            var (result, totalRecord) = await _systemLogData.GetSystemLog(model);
 
-            var systemLogs = _mapper.Map<List<SystemLogModel>>(userList);
+            var systemLogList = _mapper.Map<List<SystemLogModel>>(result);
 
-            return (systemLogs, totalRecord);
+            return (systemLogList, totalRecord);
         }
 
         public async Task<List<SystemLogModel>> GetTodaysSystemLog(int userId)
@@ -42,15 +42,15 @@ namespace TimeTracker_Repository.SystemLogRepo
         {
             var list= await _systemLogData.GetMonthlyReport(model);
 
-            var systemLogs = _mapper.Map<List<SystemLogModel>>(list);
+            var result = _mapper.Map<List<SystemLogModel>>(list);
 
-            return systemLogs;
+            return result;
         }
 
         public async Task<bool> AddLog(SystemLogAdddModel model)
         {
-            var log = _mapper.Map<SystemLogs>(model);
-            return await _systemLogData.AddLog(log);
+            var result = _mapper.Map<SystemLogs>(model);
+            return await _systemLogData.AddLog(result);
         }
 
         #endregion

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TimeTracker.Models;
-using TimeTracker.Models.ResourcesRemarks;
+using TimeTracker.Models.Resource;
 using TimeTracker.Models.Setting;
 using TimeTracker.Models.SystemLog;
 using TimeTracker_Data.Model;

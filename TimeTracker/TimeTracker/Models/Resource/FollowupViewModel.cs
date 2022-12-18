@@ -1,4 +1,4 @@
-﻿namespace TimeTracker.Models.ResourcesRemarks
+﻿namespace TimeTracker.Models.Resource
 {
     public class FollowupListViewModel
     {

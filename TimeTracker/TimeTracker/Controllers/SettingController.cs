@@ -35,9 +35,9 @@ namespace TimeTracker.Controllers
         {
             var dtParam = _mapper.Map<SettingFilterModel>(param);
 
-            var (systemLogs, totalRecord) = await _settingRepo.SettingList(dtParam);
+            var (settingList, totalRecord) = await _settingRepo.SettingList(dtParam);
 
-            var lst = _mapper.Map<List<SettingViewModel>>(systemLogs);
+            var lst = _mapper.Map<List<SettingViewModel>>(settingList);
             return Json(new
             {
                 param.sEcho,
@@ -49,8 +49,8 @@ namespace TimeTracker.Controllers
 
         public async Task<IActionResult> Update(int id)
         {
-            var user = await _settingRepo.GetSettingById(id);
-            var model = _mapper.Map<EditSettingViewModel>(user);
+            var updateSetting = await _settingRepo.GetSettingById(id);
+            var model = _mapper.Map<EditSettingViewModel>(updateSetting);
             return View(model);
         }
 
@@ -61,8 +61,8 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var editUser = _mapper.Map<SettingModel>(model);
-                    var result = await _settingRepo.UpdateSetting(editUser);
+                    var editSetting = _mapper.Map<SettingModel>(model);
+                    var result = await _settingRepo.UpdateSetting(editSetting);
 
                     if (result)
                     {
@@ -77,25 +77,6 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> StatusSettings(int id)
-        //{
-        //    bool isSuccess = false;
-        //    string message = "";
-        //    try
-        //    {
-        //        if (id > 0)
-        //        {
-        //            isSuccess = await _settingRepo.StatusSettings(id);
-        //            message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
-        //    }
-        //    return Json(new { isSuccess, message });
-        //}
         #endregion
     }
 }

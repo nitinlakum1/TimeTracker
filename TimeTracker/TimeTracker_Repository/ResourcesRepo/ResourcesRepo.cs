@@ -27,11 +27,11 @@ namespace TimeTracker_Repository.ResourcesRepo
 
         public async Task<(List<ResourcesModel>, int)> GetResourcesList(ResourcesFilterModel model)
         {
-            var (userList, totalRecord) = await _resourcesData.GetResourcesList(model);
+            var (result, totalRecord) = await _resourcesData.GetResourcesList(model);
 
-            var systemLogs = _mapper.Map<List<ResourcesModel>>(userList);
+            var resourceList = _mapper.Map<List<ResourcesModel>>(result);
 
-            return (systemLogs, totalRecord);
+            return (resourceList, totalRecord);
         }
 
         public async Task<bool> AddRemarks(ResourcerRemarksModel model)

@@ -23,8 +23,8 @@ namespace TimeTracker_Repository
         #region Methods
         public async Task<(List<HolidayModel>, int)> GetHolidayList(HolidayFilterModel model)
         {
-            var (userList, totalRecord) = await _holidayData.GetHolidayList(model);
-            return (_mapper.Map<List<HolidayModel>>(userList), totalRecord);
+            var (holidayList, totalRecord) = await _holidayData.GetHolidayList(model);
+            return (_mapper.Map<List<HolidayModel>>(holidayList), totalRecord);
         }
 
         public async Task<HolidayModel> GetHolidayById(int id)
@@ -35,14 +35,14 @@ namespace TimeTracker_Repository
 
         public async Task<bool> AddHoliday(HolidayModel model)
         {
-            var user = _mapper.Map<Holidays>(model);
-            return await _holidayData.AddHoliday(user);
+            var result = _mapper.Map<Holidays>(model);
+            return await _holidayData.AddHoliday(result);
         }
 
         public async Task<bool> UpdateHoliday(HolidayModel model)
         {
-            var user = _mapper.Map<Holidays>(model);
-            return await _holidayData.UpdateHoliday(user);
+            var result = _mapper.Map<Holidays>(model);
+            return await _holidayData.UpdateHoliday(result);
         }
 
         public async Task<bool> DeleteHoliday(int id)

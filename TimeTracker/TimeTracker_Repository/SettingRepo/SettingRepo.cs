@@ -25,11 +25,11 @@ namespace TimeTracker_Repository
 
         public async Task<(List<SettingModel>, int)> SettingList(SettingFilterModel model)
         {
-            var (userList, totalRecord) = await _settingData.SettingList(model);
+            var (result, totalRecord) = await _settingData.SettingList(model);
 
-            var systemLogs = _mapper.Map<List<SettingModel>>(userList);
+            var settingList = _mapper.Map<List<SettingModel>>(result);
 
-            return (systemLogs, totalRecord);
+            return (settingList, totalRecord);
         }
 
         public async Task<SettingModel> GetSettingById(int id)

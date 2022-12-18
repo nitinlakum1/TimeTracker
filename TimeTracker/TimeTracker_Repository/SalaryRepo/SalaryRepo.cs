@@ -24,9 +24,9 @@ namespace TimeTracker_Repository.SalaryRepo
 
         public async Task<(List<SalaryModel>, int)> GetSalary(SalaryFilterModel model)
         {
-            var (salary, totalRecord) = await _salaryData.GetSalary(model);
+            var (result, totalRecord) = await _salaryData.GetSalary(model);
 
-            var salaryList = _mapper.Map<List<SalaryModel>>(salary);
+            var salaryList = _mapper.Map<List<SalaryModel>>(result);
             return (salaryList, totalRecord);
         }
 
@@ -38,8 +38,8 @@ namespace TimeTracker_Repository.SalaryRepo
 
         public async Task<bool> AddSalary(AddEditSalaryModel model)
         {
-            var salary = _mapper.Map<Salarys>(model);
-            return await _salaryData.AddSalary(salary);
+            var result = _mapper.Map<Salarys>(model);
+            return await _salaryData.AddSalary(result);
 
 
         }

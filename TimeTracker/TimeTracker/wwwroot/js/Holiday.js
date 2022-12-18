@@ -1,5 +1,5 @@
 ﻿function bindDataTable() {
-    datatable = $('#tblUsers')
+    datatable = $('#tblHoliday')
         .dataTable(
             {
                 "sAjaxSource": "/Holiday/LoadHoliday",
@@ -61,7 +61,7 @@ function conformDelete() {
             success: function (result) {
                 setStatusMsg(result);
                 Close();
-                $('#tblUsers').DataTable().ajax.reload();
+                $('#tblHoliday').DataTable().ajax.reload();
             },
             error: function (result) {
                 alert("User not Delete!");

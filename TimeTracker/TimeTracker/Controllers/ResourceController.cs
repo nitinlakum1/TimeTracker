@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using TimeTracker.Models;
 using TimeTracker.Models.Holiday;
-using TimeTracker.Models.ResourcesRemarks;
+using TimeTracker.Models.Resource;
 using TimeTracker.Models.Setting;
 using TimeTracker.Models.SystemLog;
 using TimeTracker_Data.Model;
@@ -197,8 +197,8 @@ namespace TimeTracker.Controllers
                     dtParam.City = filterData?.City == null || filterData?.City == "" ? "" : filterData?.City;
                 }
 
-                var (systemLogs, totalRecord) = await _resourcesRepo.GetResourcesList(dtParam);
-                var lst = _mapper.Map<List<ResourceListModel>>(systemLogs);
+                var (resourceList, totalRecord) = await _resourcesRepo.GetResourcesList(dtParam);
+                var lst = _mapper.Map<List<ResourceListModel>>(resourceList);
 
                 return Json(new
                 {

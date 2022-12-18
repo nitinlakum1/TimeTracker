@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TimeTracker_Model;
 
-namespace TimeTracker.Models.ResourcesRemarks
+namespace TimeTracker.Models.Resource
 {
     public class ResourcesRemarksViewModel
     {

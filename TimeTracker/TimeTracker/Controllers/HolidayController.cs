@@ -37,14 +37,14 @@ namespace TimeTracker.Controllers
             {
                 var dtParam = _mapper.Map<HolidayFilterModel>(param);
 
-                var (userList, totalRecord) = await _holidayRepo.GetHolidayList(dtParam);
+                var (holidayList, totalRecord) = await _holidayRepo.GetHolidayList(dtParam);
 
                 return Json(new
                 {
                     param.sEcho,
                     iTotalRecords = totalRecord,
                     iTotalDisplayRecords = totalRecord,
-                    aaData = userList
+                    aaData = holidayList
                 });
             }
             catch (Exception ex)
@@ -67,8 +67,8 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var addUser = _mapper.Map<HolidayModel>(model);
-                    var result = await _holidayRepo.AddHoliday(addUser);
+                    var addHoliday = _mapper.Map<HolidayModel>(model);
+                    var result = await _holidayRepo.AddHoliday(addHoliday);
 
                     if (result)
                     {
@@ -99,8 +99,8 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var editUser = _mapper.Map<HolidayModel>(model);
-                    var result = await _holidayRepo.UpdateHoliday(editUser);
+                    var editHoliday = _mapper.Map<HolidayModel>(model);
+                    var result = await _holidayRepo.UpdateHoliday(editHoliday);
 
                     if (result)
                     {

@@ -1,5 +1,5 @@
 ﻿function bindDataTable() {
-    datatable = $('#tblUsers')
+    datatable = $('#tblSalary')
         .dataTable(
             {
                 "sAjaxSource": "/Salary/LoadSalary",
@@ -57,5 +57,5 @@
 }
 
 $('#cmbUser').change(function () {
-    $('#tblUsers').DataTable().draw();
+    $('#tblSalary').DataTable().draw();
 });

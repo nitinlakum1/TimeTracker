@@ -92,9 +92,9 @@ namespace TimeTracker.Controllers
                     dtParam.ToDate = filterData?.ToDate ?? DateTime.Now;
                 }
 
-                var (systemLogs, totalRecord) = await _systemlogRepo.GetSystemLog(dtParam);
+                var (systemLogList, totalRecord) = await _systemlogRepo.GetSystemLog(dtParam);
 
-                var lst = _mapper.Map<List<SystemLogListModel>>(systemLogs);
+                var lst = _mapper.Map<List<SystemLogListModel>>(systemLogList);
                 return Json(new
                 {
                     param.sEcho,
@@ -143,11 +143,11 @@ namespace TimeTracker.Controllers
                     dtParam.ToDate = (filterData?.ToDate ?? curentDay).AddMonths(1).AddDays(-1);
                 }
 
-                var systemLogs = await _systemlogRepo.GetMonthlyReport(dtParam);
+                var systemLogsList = await _systemlogRepo.GetMonthlyReport(dtParam);
                 var monthlyReport = new List<MonthlyReportListViewModel>();
-                if (systemLogs is { Count: > 0 })
+                if (systemLogsList is { Count: > 0 })
                 {
-                    monthlyReport = systemLogs
+                    monthlyReport = systemLogsList
                         .GroupBy(a => new { a.Username, a.LogTime.Date })
                         .Select(a => new MonthlyReportListViewModel()
                         {
