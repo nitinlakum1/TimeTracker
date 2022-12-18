@@ -70,5 +70,17 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        public IActionResult LogOut()
+        {
+            try
+            {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

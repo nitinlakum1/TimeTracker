@@ -17,6 +17,12 @@
                         '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
                 },
                 "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "filter", "value": JSON.stringify({
+                            Experience: $('#cmbUser').val(),
+                        })
+                    });
+                    perm = aoData;
                 },
                 "aoColumns": [
                     { "data": "username" },
@@ -49,3 +55,7 @@
                 processing: true,
             });
 }
+
+$('#cmbUser').change(function () {
+    $('#tblUsers').DataTable().draw();
+});

@@ -20,6 +20,6 @@
         public string? IFSC { get; set; }
         public string? MacAddress { get; set; }
         public string Password { get; set; }
-        public string Url { get; set; }
+        public string? Url { get; set; }
     }
 }

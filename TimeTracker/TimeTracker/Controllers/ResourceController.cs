@@ -20,7 +20,7 @@ using TimeTracker_Repository.ResourcesRepo;
 
 namespace TimeTracker.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,HR")]
     public class ResourceController : Controller
     {
         private readonly ISettingRepo _settingRepo;
@@ -39,11 +39,13 @@ namespace TimeTracker.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AddResource()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddResource(ResourceViewModel model)
         {
@@ -189,16 +191,21 @@ namespace TimeTracker.Controllers
                 {
                     var filterData = JsonConvert.DeserializeObject<ResourcesFilterModel>(filter);
                     dtParam.Experience = filterData?.Experience == null || filterData?.Experience == 0 ? 0 : filterData?.Experience;
+
+                    dtParam.Designation = filterData?.Designation == null || filterData?.Designation == "" ? "" : filterData?.Designation;
+
+                    dtParam.City = filterData?.City == null || filterData?.City == "" ? "" : filterData?.City;
                 }
 
                 var (systemLogs, totalRecord) = await _resourcesRepo.GetResourcesList(dtParam);
+                var lst = _mapper.Map<List<ResourceListModel>>(systemLogs);
 
                 return Json(new
                 {
                     param.sEcho,
                     iTotalRecords = totalRecord,
                     iTotalDisplayRecords = totalRecord,
-                    aaData = systemLogs,
+                    aaData = lst,
                 });
             }
             catch (Exception)

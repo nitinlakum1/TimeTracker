@@ -91,7 +91,7 @@ label {
 
 .image-areaAA {
     position: relative;
-    display:inline-block;
+    display: inline-block;
 }
 
 
@@ -122,7 +122,8 @@ label {
 
 .select2-container--bootstrap4 .select2-selection--multiple {
     min-height: 10px !important;
-    height: 30px !important;
+    overflow-x: hidden;
+    height: 31px;
 }
 
 .select2-container .select2-search--inline .select2-search__field {
@@ -133,9 +134,62 @@ label {
 .select2-container--bootstrap4 .select2-selection--multiple .select2-selection__choice {
     margin-top: 2px !important;
     line-height: 22px !important;
+    overflow-x: hidden;
+}
+
+.select2-container .select2-search--inline .select2-search__field {
+    margin-top: 4px;
+}
+
+.select2-container--bootstrap4 .select2-search {
+    height: 22px !important;
 }
 
 .select2-selection__rendered {
     width: -moz-fit-content;
     height: fit-content;
+    overflow-x: auto;
+
+}
+
+.rejected-status {
+    color: #76101a !important;
+    background-color: #e5bbbf !important;
+    border-color: #f5c6cb !important;
+}
+
+.confirmed-status {
+    color: #0c4218 !important;
+    background-color: #9bc9a5 !important;
+    border-color: #c3e6cb !important;
+}
+
+.selected-status {
+    color: #0c4218 !important;
+    background-color: #bed9c4 !important;
+    border-color: #c3e6cb !important;
+}
+
+.inProcess-status {
+    color: #523d00 !important;
+    background-color: #f9e4a0 !important;
+    border-color: #ffeeba !important;
+}
+
+.interview-status {
+    color: #00274e !important;
+    background-color: #afc8e1 !important;
+    border-color: #ffeeba !important;
+}
+
+.notInterested-status {
+    color: #201f1f !important;
+    background-color: #dfe6e9 !important;
+    border-color: #f5c6cb !important;
+}
+
+.callNotAttend-status {
+    color: #2e005a !important;
+    background-color: #d7baf5 !important;
+    border-color: #f5c6cb !important;
 }

@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using TimeTracker_Model.Setting;
+using TimeTracker_Model;
+using TimeTracker.Helper;
 
-namespace TimeTracker_Model.Resources
+namespace TimeTracker.Models.Setting
 {
-    public class ResourcesModel
+    public class ResourceListModel
     {
         public string id { get; set; }
         public string preferenceId { get; set; }
@@ -19,5 +21,12 @@ namespace TimeTracker_Model.Resources
         public string? companyExperiences { get; set; }
         public string? city { get; set; }
         public ResourceStatus? ResourceStatus { get; set; }
+        public string StatusName
+        {
+            get
+            {
+                return CommonHelper.GetEnumDescription(ResourceStatus);
+            }
+        }
     }
 }

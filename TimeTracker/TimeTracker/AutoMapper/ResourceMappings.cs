@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TimeTracker.Models;
 using TimeTracker.Models.ResourcesRemarks;
+using TimeTracker.Models.Setting;
 using TimeTracker.Models.SystemLog;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Resources;
@@ -14,7 +15,7 @@ namespace TimeTracker.AutoMapper
     {
         public static void Map(Profile profile)
         {
-            profile.CreateMap<ResourcesRemarks, ResourcerRemarksModel>();
+            profile.CreateMap<ResourcesModel, ResourceListModel>();
 
 
             profile.CreateMap<Resources, ResourcesModel>();

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model.Holiday;
 using TimeTracker_Model.Resources;
+using TimeTracker_Model.Setting;
 
 namespace TimeTracker_Repository.ResourcesRepo
 {

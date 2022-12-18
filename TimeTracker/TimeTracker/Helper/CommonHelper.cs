@@ -6,17 +6,20 @@ namespace TimeTracker.Helper
     {
         public static string GetEnumDescription(this Enum value)
         {
-            // get attributes  
-            var field = value.GetType().GetField(value.ToString());
-            var attributes = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            if (value != null)
+            {
+                // get attributes  
+                var field = value.GetType().GetField(value.ToString());
+                var attributes = field.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
-            // return description
-            return attributes.Any() ? ((DescriptionAttribute)attributes.ElementAt(0)).Description : "Description Not Found";
+                // return description
+                return attributes.Any() ? ((DescriptionAttribute)attributes.ElementAt(0)).Description : "Description Not Found";
+            }
+            return "";
         }
-
         //public static string IsLogin(this Enum value)
         //{
-            
+
         //}
     }
 }

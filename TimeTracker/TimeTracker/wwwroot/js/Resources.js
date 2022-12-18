@@ -21,28 +21,60 @@
                     aoData.push({
                         "name": "filter", "value": JSON.stringify({
                             Experience: $('#cmbExperience').val(),
+                            Designation: $('#cmbDesignation').val(),
+                            City: $('#cmbCity').val(),
                         })
                     });
                     perm = aoData;
                 },
                 "aoColumns": [
-                    { "data": "preferenceId" },
                     { "data": "name" },
                     { "data": "gender" },
                     { "data": "mobile" },
                     { "data": "email" },
                     { "data": "workYears" },
-                    { "data": "designationName" },
+                    { "data": "designation" },
+                    { "data": "statusName" },
                     { "data": "degree" },
                     { "data": "birthDate" },
-                    { "data": "cityName" },
+                    { "data": "city" },
                     { "data": "workStartDate" },
                     //{ "data": "companyExperiences" },
+                    { "data": "preferenceId" },
                     { "data": "preferenceId" },
                 ],
                 columnDefs: [
                     {
-                        targets: 11,
+                        targets: 6,
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            switch (cellData) {
+                                case "Call Not Attend":
+                                    $(td).addClass('callNotAttend-status');
+                                    break;
+                                case "Not Interested":
+                                    $(td).addClass('notInterested-status');
+                                    break;
+                                case "In Process":
+                                    $(td).addClass('inProcess-status');
+                                    break;
+                                case "Interview":
+                                    $(td).addClass('interview-status');
+                                    break;
+                                case "Selected":
+                                    $(td).addClass('selected-status');
+                                    break;
+                                case "Rejected":
+                                    $(td).addClass('rejected-status');
+                                    break;
+                                case "Confirmed":
+                                    $(td).addClass('confirmed-status');
+                                    break;
+                            }
+                        },
+                        className: "text-center",
+                    },
+                    {
+                        targets: 12,
                         render: function (data, type, row) {
                             if (row.username == 'Dev' || row.username == 'Admin') {
                                 return "";
@@ -59,13 +91,20 @@
 
 $('#cmdColumn').on('change', function (e) {
     e.preventDefault();
-    $.each($(this).val(), function (index, val) {
-        var column = $('#tblResource').DataTable().column(val);
-        column.visible(!column.visible());
-    });
+    var dt = $('#tblResource').DataTable();
+    dt.columns().visible(true);
+    dt.columns($(this).val()).visible(false);
 });
 
 $('#cmbExperience').change(function () {
+    $('#tblResource').DataTable().draw();
+});
+
+$('#cmbDesignation').keyup(function () {
+    $('#tblResource').DataTable().draw();
+});
+
+$('#cmbCity').keyup(function () {
     $('#tblResource').DataTable().draw();
 });
 

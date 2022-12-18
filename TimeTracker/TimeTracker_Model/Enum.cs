@@ -45,6 +45,9 @@ namespace TimeTracker_Model
 
         [Description("Employee")]
         Employee = 2,
+
+        [Description("HR")]
+        HR = 3,
     }
     #endregion
 
@@ -52,25 +55,32 @@ namespace TimeTracker_Model
     public enum ResourceStatus : int
     {
         [Display(Name = "Call Not Attend")]
+        [Description("Call Not Attend")]
         CallNotAttend = 1,
 
         [Display(Name = "Not Interested")]
+        [Description("Not Interested")]
         NotInterested = 2,
 
         [Display(Name = "In Process")]
-        InProcess = 2,
+        [Description("In Process")]
+        InProcess = 3,
 
         [Display(Name = "Interview")]
-        Interview = 3,
+        [Description("Interview")]
+        Interview = 4,
 
         [Display(Name = "Selected")]
-        Selected = 4,
+        [Description("Selected")]
+        Selected = 5,
 
         [Display(Name = "Rejected")]
-        Rejected = 5,
+        [Description("Rejected")]
+        Rejected = 6,
 
         [Display(Name = "Confirmed")]
-        Confirmed = 6,
+        [Description("Confirmed")]
+        Confirmed = 7,
     }
     #endregion
 }

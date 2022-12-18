@@ -29,7 +29,11 @@ namespace TimeTracker_Data.Modules
                        || a.name.ToLower().Contains(model.SearchText)
                        || a.gender.ToLower().Contains(model.SearchText)
                        || a.mobile.ToLower().Contains(model.SearchText)
-                       || a.email.ToLower().Contains(model.SearchText)));
+                       || a.email.ToLower().Contains(model.SearchText))
+                       && (string.IsNullOrWhiteSpace(model.Designation)
+                       || a.designation.ToLower().Contains(model.Designation))
+                       && (string.IsNullOrWhiteSpace(model.City)
+                       || a.city.ToLower().Contains(model.City)));
 
             var totalRecord = result.Count();
 

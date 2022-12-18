@@ -2,5 +2,6 @@
 {
     public class SalaryFilterModel : DatatableParamModel
     {
+        public int? UserId { get; set; }
     }
 }
