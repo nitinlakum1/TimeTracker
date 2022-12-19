@@ -20,7 +20,39 @@ namespace TimeTracker_Data.Modules
 
         #region Methods
 
-        public async Task<(List<Resources>, int)> GetResourcesList(ResourcesFilterModel model)
+        public async Task<Resources> GetResourceById(string id)
+        {
+            var result = await _context.Resources.FirstOrDefaultAsync(a => a.id == id);
+
+            result ??= new Resources();
+
+            return result;
+        }
+
+        public async Task<List<Resources>> GetResources()
+        {
+            var result = await _context.Resources.ToListAsync();
+
+            result ??= new List<Resources>();
+
+            return result;
+        }
+
+        public async Task<bool> AddResources(Resources model)
+        {
+            _context.Resources.Add(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> EditResource(Resources model)
+        {
+            _context.Resources.Update(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<(List<Resources>, int)> GetResourcesList(ResourceFilterModel model)
         {
             var result = _context.Resources
                 .Where(a => a.workYears == model.Experience
@@ -44,20 +76,20 @@ namespace TimeTracker_Data.Modules
             return (await result.ToListAsync(), totalRecord);
         }
 
-        public async Task<Resources> GetResourceById(string preferenceId)
+        public async Task<Resources> GetResourceByPrId(string preferenceId)
         {
             return await _context.Resources
                 .FirstOrDefaultAsync(a => a.preferenceId == preferenceId) ?? new Resources();
         }
 
-        public async Task<bool> AddRemarks(ResourcesRemarks model)
+        public async Task<bool> AddFollowup(ResourcesRemarks model)
         {
             _context.ResourcesRemarks.Add(model);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> EditResource(Resources model)
+        public async Task<bool> EditResourceStatus(Resources model)
         {
             _context.Resources.Update(model);
             await _context.SaveChangesAsync();

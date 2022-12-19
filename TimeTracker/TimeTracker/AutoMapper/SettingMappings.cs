@@ -3,6 +3,7 @@ using TimeTracker.Models;
 using TimeTracker.Models.Setting;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Holiday;
+using TimeTracker_Model.Resources;
 using TimeTracker_Model.Setting;
 
 namespace TimeTracker.AutoMapper
@@ -16,7 +17,7 @@ namespace TimeTracker.AutoMapper
             profile.CreateMap<EditSettingViewModel, SettingModel>();
             profile.CreateMap<SettingModel, EditSettingViewModel>();
             profile.CreateMap<Settings, SettingModel>();
-            profile.CreateMap<Resources, ResourceModel>();
+            
             //profile.CreateMap<SettingModel, Settings>();
             profile.CreateMap<DatatableParamViewModel, SettingFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))

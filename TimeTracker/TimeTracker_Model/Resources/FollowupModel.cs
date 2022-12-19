@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TimeTracker_Model.Resources
 {
-    public class ResourcerRemarksModel
+    public class FollowupModel
     {
         public int Id { get; set; }
 

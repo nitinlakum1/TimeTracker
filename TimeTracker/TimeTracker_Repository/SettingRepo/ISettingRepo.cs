@@ -10,12 +10,6 @@ namespace TimeTracker_Repository
 
         Task<bool> UpdateSetting(SettingModel model);
 
-        Task<ResourceModel> GetResourceById(string id);
-
-        Task<List<ResourceModel>> GetResources();
-
-        Task<bool> AddResources(ResourceModel model);
-
-        Task<bool> EditResource(ResourceModel model);
+       
     }
 }

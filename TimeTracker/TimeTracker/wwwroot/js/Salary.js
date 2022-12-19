@@ -19,7 +19,7 @@
                 "fnServerParams": function (aoData) {
                     aoData.push({
                         "name": "filter", "value": JSON.stringify({
-                            Experience: $('#cmbUser').val(),
+                            UserId: $('#cmbUser').val(),
                         })
                     });
                     perm = aoData;

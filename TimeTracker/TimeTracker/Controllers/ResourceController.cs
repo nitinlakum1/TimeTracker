@@ -6,13 +6,11 @@ using System.Net.Http.Headers;
 using TimeTracker.Models;
 using TimeTracker.Models.Holiday;
 using TimeTracker.Models.Resource;
-using TimeTracker.Models.Setting;
 using TimeTracker.Models.SystemLog;
 using TimeTracker_Data.Model;
 using TimeTracker_Model;
 using TimeTracker_Model.Holiday;
 using TimeTracker_Model.Resources;
-using TimeTracker_Model.Setting;
 using TimeTracker_Model.SystemLog;
 using TimeTracker_Model.User;
 using TimeTracker_Repository;
@@ -23,13 +21,12 @@ namespace TimeTracker.Controllers
     [Authorize(Roles = "Admin,HR")]
     public class ResourceController : Controller
     {
-        private readonly ISettingRepo _settingRepo;
+      
         private readonly IMapper _mapper;
-        private readonly IResourcesRepo _resourcesRepo;
+        private readonly IResourceRepo _resourcesRepo;
 
-        public ResourceController(ISettingRepo settingRepo, IMapper mapper, IResourcesRepo resourcesRepo)
+        public ResourceController(IMapper mapper, IResourceRepo resourcesRepo)
         {
-            _settingRepo = settingRepo;
             _mapper = mapper;
             _resourcesRepo = resourcesRepo;
         }
@@ -116,7 +113,7 @@ namespace TimeTracker.Controllers
                         string id = item["id"];
                         string preferenceId = item["preferenceId"];
 
-                        var resource = await _settingRepo.GetResourceById(id);
+                        var resource = await _resourcesRepo.GetResourceById(id);
                         if (string.IsNullOrWhiteSpace(resource.id))
                         {
                             await GetResourceDetails(id, preferenceId, model.Token);
@@ -176,7 +173,7 @@ namespace TimeTracker.Controllers
 
                     deserializeObject.city = JsonConvert.SerializeObject(deserializeObject.preferences);
 
-                    await _settingRepo.AddResources(deserializeObject);
+                    await _resourcesRepo.AddResources(deserializeObject);
                 }
             }
         }
@@ -185,11 +182,11 @@ namespace TimeTracker.Controllers
         {
             try
             {
-                var dtParam = _mapper.Map<ResourcesFilterModel>(param);
+                var dtParam = _mapper.Map<ResourceFilterModel>(param);
 
                 if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
                 {
-                    var filterData = JsonConvert.DeserializeObject<ResourcesFilterModel>(filter);
+                    var filterData = JsonConvert.DeserializeObject<ResourceFilterModel>(filter);
                     dtParam.Experience = filterData?.Experience == null || filterData?.Experience == 0 ? 0 : filterData?.Experience;
 
                     dtParam.Designation = filterData?.Designation == null || filterData?.Designation == "" ? "" : filterData?.Designation;
@@ -198,7 +195,7 @@ namespace TimeTracker.Controllers
                 }
 
                 var (resourceList, totalRecord) = await _resourcesRepo.GetResourcesList(dtParam);
-                var lst = _mapper.Map<List<ResourceListModel>>(resourceList);
+                var lst = _mapper.Map<List<ResourceListViewModel>>(resourceList);
 
                 return Json(new
                 {
@@ -215,7 +212,7 @@ namespace TimeTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRemarks(ResourcesRemarksViewModel model)
+        public async Task<IActionResult> AddFollowup(FollowupAddViewModel model)
         {
             bool isSuccess = false;
             string message = "";
@@ -223,8 +220,8 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var addRemarks = _mapper.Map<ResourcerRemarksModel>(model);
-                    isSuccess = await _resourcesRepo.AddRemarks(addRemarks);
+                    var AddFollowup = _mapper.Map<FollowupModel>(model);
+                    isSuccess = await _resourcesRepo.AddFollowup(AddFollowup);
                     message = isSuccess ? AppMessages.SAVE_SUCCESS : AppMessages.SOMETHING_WRONG;
 
                     //if (isSuccess)

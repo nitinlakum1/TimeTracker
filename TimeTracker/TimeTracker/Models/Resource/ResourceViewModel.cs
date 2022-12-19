@@ -1,4 +1,4 @@
-﻿namespace TimeTracker.Models.Setting
+﻿namespace TimeTracker.Models.Resource
 {
     public class ResourceViewModel
     {

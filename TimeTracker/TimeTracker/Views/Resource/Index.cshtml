@@ -1,6 +1,6 @@
 ﻿@using TimeTracker.Helper
 @using TimeTracker_Model
-@model TimeTracker.Models.Resource.ResourcesRemarksViewModel
+@model TimeTracker.Models.Resource.FollowupAddViewModel
 
 @{
     ViewData["Title"] = "Resources";
@@ -58,7 +58,7 @@
 
                     <div style="float:right;margin-left:5px;">
                         <select class="form-control form-control-sm" id="cmbExperience">
-                            <option value="">Select Experience</option>
+                            <option value="">Freshers</option>
                             @{
                                 for (int i = 1; i <= 10; i++)
                                 {

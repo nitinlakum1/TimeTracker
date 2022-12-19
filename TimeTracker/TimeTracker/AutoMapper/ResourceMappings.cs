@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using TimeTracker.Models;
 using TimeTracker.Models.Resource;
-using TimeTracker.Models.Setting;
 using TimeTracker.Models.SystemLog;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Resources;
@@ -15,17 +14,17 @@ namespace TimeTracker.AutoMapper
     {
         public static void Map(Profile profile)
         {
-            profile.CreateMap<ResourcesModel, ResourceListModel>();
+            profile.CreateMap<ResourceListModel, ResourceListViewModel>();
 
-
-            profile.CreateMap<Resources, ResourcesModel>();
-            profile.CreateMap<ResourcerRemarksModel, ResourcesRemarks>();
-            profile.CreateMap<ResourcesRemarksViewModel, ResourcerRemarksModel>();
+            profile.CreateMap<Resources, ResourceModel>();
+            profile.CreateMap<Resources, ResourceListModel>();
+            profile.CreateMap<FollowupModel, ResourcesRemarks>();
+            profile.CreateMap<FollowupAddViewModel, FollowupModel>();
             profile.CreateMap<FollowupListModel, FollowupListViewModel>();
             profile.CreateMap<ResourcesRemarks, FollowupListModel>();
 
 
-            profile.CreateMap<DatatableParamViewModel, ResourcesFilterModel>()
+            profile.CreateMap<DatatableParamViewModel, ResourceFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))
                 .ForMember(source => source.PageSize, dest => dest.MapFrom(x => x.iDisplayLength))
                 .ForMember(source => source.SearchText, dest => dest.MapFrom(x => x.sSearch))

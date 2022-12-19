@@ -3,7 +3,7 @@ using TimeTracker_Model;
 
 namespace TimeTracker.Models.Resource
 {
-    public class ResourcesRemarksViewModel
+    public class FollowupAddViewModel
     {
         public string? PreferenceId { get; set; }
 

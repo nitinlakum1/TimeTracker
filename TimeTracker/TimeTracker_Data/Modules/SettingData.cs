@@ -72,37 +72,6 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
-        public async Task<Resources> GetResourceById(string id)
-        {
-            var result = await _context.Resources.FirstOrDefaultAsync(a => a.id == id);
-
-            result ??= new Resources();
-
-            return result;
-        }
-
-        public async Task<List<Resources>> GetResources()
-        {
-            var result = await _context.Resources.ToListAsync();
-
-            result ??= new List<Resources>();
-
-            return result;
-        }
-
-        public async Task<bool> AddResources(Resources model)
-        {
-            _context.Resources.Add(model);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> EditResource(Resources model)
-        {
-            _context.Resources.Update(model);
-            await _context.SaveChangesAsync();
-            return true;
-        }
         #endregion
     }
 }
