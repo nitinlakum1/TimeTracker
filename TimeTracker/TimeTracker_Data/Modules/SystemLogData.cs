@@ -101,6 +101,19 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
+        public async Task<bool> DeleteLog(int id)
+        {
+            var result = await _context.SystemLogs.FirstOrDefaultAsync(a => a.Id == id);
+
+            if (result == null)
+            {
+                return false;
+            }
+            _context.SystemLogs.Remove(result);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
         #endregion
     }
 }

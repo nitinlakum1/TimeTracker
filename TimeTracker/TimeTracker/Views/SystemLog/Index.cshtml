@@ -64,6 +64,7 @@
                                         <th>Log Type</th>
                                         <th>Description</th>
                                         <th>Log Time</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -72,6 +73,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="comformdelete">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Are you sure to delete</h5>
+                <p hidden id="deleteId"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Close()">Close</button>
+                <button type="button" class="btn btn-danger" onclick="conformDelete()">Delete</button>
             </div>
         </div>
     </div>

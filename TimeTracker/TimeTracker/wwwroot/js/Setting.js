@@ -50,7 +50,7 @@
 }
 
 function deleteUser(id) {
-    $("#comformdelete").show();
+    $("#comformdelete").model('show');
     $("#deleteId").val(id);
 }
 

@@ -11,5 +11,7 @@ namespace TimeTracker_Repository.SystemLogRepo
         Task<List<SystemLogModel>> GetMonthlyReport(SystemLogFilterModel model);
 
         Task<bool> AddLog(SystemLogAdddModel model);
+
+        Task<bool> DeleteLog(int id);
     }
 }

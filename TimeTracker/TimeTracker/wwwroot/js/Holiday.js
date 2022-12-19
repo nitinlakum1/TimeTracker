@@ -46,7 +46,7 @@
 }
 
 function deleteUser(id) {
-    $("#comformdelete").show();
+    $("#comformdelete").modal('show');
     $("#deleteId").val(id);
 }
 
@@ -72,5 +72,5 @@ function conformDelete() {
 
 function Close() {
     $("#deleteId").val(0);
-    $("#comformdelete").hide();
+    $("#comformdelete").modal('hide');
 }

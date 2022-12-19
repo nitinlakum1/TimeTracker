@@ -224,6 +224,26 @@ namespace TimeTracker.Controllers
             }
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteLog(int id)
+        {
+            bool isSuccess = false;
+            string message = "";
+            try
+            {
+                if (id > 0)
+                {
+                    isSuccess = await _systemlogRepo.DeleteLog(id);
+                    message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
+                }
+            }
+            catch (Exception ex)
+            {
+                //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
+            }
+            return Json(new { isSuccess, message });
+        }
         #endregion
 
         #region Private_Methods

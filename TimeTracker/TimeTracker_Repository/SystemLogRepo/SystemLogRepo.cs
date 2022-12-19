@@ -53,6 +53,10 @@ namespace TimeTracker_Repository.SystemLogRepo
             return await _systemLogData.AddLog(result);
         }
 
+        public async Task<bool> DeleteLog(int id)
+        {
+            return await _systemLogData.DeleteLog(id);
+        }
         #endregion
     }
 }

@@ -35,7 +35,20 @@
                             return setDateTimeFormat(data);
                         },
                     },
-                    //{ "data": "id", "bSortable": false, width: 70 },
+                    { "data": "id", "bSortable": false, width: 70 },
+                ],
+                columnDefs: [
+                    {
+                        targets: 4,
+                        render: function (data, type, row) {
+                            if (row.username == 'Dev' || row.username == 'Admin') {
+                                return "";
+                            } else {
+                                return '<a onclick="deleteLog(' + row.id + ')"><i class="fas fa-trash text-danger" style="cursor:pointer;"></i></a>';
+                            }
+                        },
+                        className: "text-center",
+                    }
                 ],
                 processing: true,
             });
@@ -169,3 +182,33 @@ $('#txtDateMonth').change(function () {
     totalMinutes = 0;
     $('#tblMonthlyReport').DataTable().clear().draw();
 });
+
+function deleteLog(id) {
+    debugger
+    $('#comformdelete').modal('show');
+    $("#deleteId").val(id);
+}
+
+function conformDelete() {
+    var id = $("#deleteId").val();
+    if (id > 0) {
+        $.ajax({
+            url: '/SystemLog/DeleteLog/',
+            type: 'POST',
+            data: { id: id },
+            success: function (result) {
+                setStatusMsg(result);
+                Close();
+                $('#tblSystemLogs').DataTable().ajax.reload();
+            },
+            error: function (result) {
+                alert("Log not Delete!");
+            },
+        })
+    }
+}
+
+function Close() {
+    $("#deleteId").val(0);
+    $("#comformdelete").modal('hide');
+}
