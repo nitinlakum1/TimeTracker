@@ -41,10 +41,11 @@
                     {
                         targets: 4,
                         render: function (data, type, row) {
-                            if (row.username == 'Dev' || row.username == 'Admin') {
-                                return "";
-                            } else {
+                            var roleId = $("#roleId").text();
+                            if (roleId == 1) {  // Admin = 1 , Employee = 2
                                 return '<a onclick="deleteLog(' + row.id + ')"><i class="fas fa-trash text-danger" style="cursor:pointer;"></i></a>';
+                            } else {
+                                return 'N/A';
                             }
                         },
                         className: "text-center",
