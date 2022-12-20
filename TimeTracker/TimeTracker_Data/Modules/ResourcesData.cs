@@ -55,7 +55,7 @@ namespace TimeTracker_Data.Modules
         public async Task<(List<Resources>, int)> GetResourcesList(ResourceFilterModel model)
         {
             var result = _context.Resources
-                .Where(a => a.workYears == model.Experience
+                .Where(a => (model.Experience == -1 || a.workYears == model.Experience)
                        && (string.IsNullOrWhiteSpace(model.SearchText)
                        || a.preferenceId.ToLower().Contains(model.SearchText)
                        || a.name.ToLower().Contains(model.SearchText)
