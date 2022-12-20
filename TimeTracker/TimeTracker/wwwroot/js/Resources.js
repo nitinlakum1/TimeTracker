@@ -76,9 +76,7 @@
                     {
                         targets: 12,
                         render: function (data, type, row) {
-                            if (row.username == 'Dev' || row.username == 'Admin') {
-                                return "";
-                            } else {
+                            {
                                 return '<a onclick="openFollowupModel(\'' + row.preferenceId + '\')"><i class="fa-regular fa-square-plus font-color"  style="cursor:pointer; font-size: 16px;"></i></a><a onclick="openDetailsModel(\'' + row.preferenceId + '\')"><i class="fa-solid fa-eye font-color"  style="cursor:pointer; font-size: 16px; margin-left:10px;"></i></a>';
                             }
                         },
