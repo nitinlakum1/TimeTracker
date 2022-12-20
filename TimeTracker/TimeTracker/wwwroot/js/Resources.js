@@ -134,7 +134,7 @@ function submitFollowup() {
     var id = $("#hdnPreferenceId").val();
     if (id > 0) {
         $.ajax({
-            url: '/Resource/AddRemarks/',
+            url: '/Resource/AddFollowup/',
             type: 'POST',
             data: $('#frmFollowup').serialize(),
             success: function (result) {
@@ -145,7 +145,7 @@ function submitFollowup() {
                 $('#tblResource').DataTable().ajax.reload();
             },
             error: function (result) {
-                alert("User not Delete!");
+                alert("Followup not Added!");
             },
         })
     }
