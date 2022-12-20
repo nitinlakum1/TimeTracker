@@ -62,7 +62,9 @@ namespace TimeTracker_Repository.ResourcesRepo
                 {
                     var data = preferences.FirstOrDefault();
                     resource.city = data.city;
-                    resource.designation = string.IsNullOrWhiteSpace(resource.designation) ? data.channel : resource.designation;
+                    if (!string.IsNullOrWhiteSpace(resource.designation))
+                    { resource.designation += " | "; }
+                    resource.designation += string.IsNullOrWhiteSpace(resource.designation) ? data.channel : resource.designation;
                 }
             }
             return await _resourcesData.AddResources(resource);
