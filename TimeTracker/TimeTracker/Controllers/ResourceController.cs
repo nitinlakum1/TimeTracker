@@ -21,7 +21,7 @@ namespace TimeTracker.Controllers
     [Authorize(Roles = "Admin,HR")]
     public class ResourceController : Controller
     {
-      
+
         private readonly IMapper _mapper;
         private readonly IResourceRepo _resourcesRepo;
 
@@ -116,14 +116,18 @@ namespace TimeTracker.Controllers
                         var resource = await _resourcesRepo.GetResourceById(id);
                         if (string.IsNullOrWhiteSpace(resource.id))
                         {
-                            await GetResourceDetails(id, preferenceId, model.Token);
+                            await GetResourceDetails(id, preferenceId, model.Token, false);
+                        }
+                        else
+                        {
+                            await GetResourceDetails(id, preferenceId, model.Token, true);
                         }
                     }
                 }
             }
         }
 
-        private async Task GetResourceDetails(string id, string preferenceId, string token)
+        private async Task GetResourceDetails(string id, string preferenceId, string token, bool isEdit)
         {
             string url = $"https://prod.hirect.ai/hirect/candidate-service/recruiters/candidates/{id}/profile?preferenceId={preferenceId}";
 
@@ -173,7 +177,14 @@ namespace TimeTracker.Controllers
 
                     deserializeObject.city = JsonConvert.SerializeObject(deserializeObject.preferences);
 
-                    await _resourcesRepo.AddResources(deserializeObject);
+                    if (isEdit)
+                    {
+                        await _resourcesRepo.EditDesignation(deserializeObject);
+                    }
+                    else
+                    {
+                        await _resourcesRepo.AddResources(deserializeObject);
+                    }
                 }
             }
         }

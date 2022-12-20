@@ -64,10 +64,29 @@ namespace TimeTracker_Repository.ResourcesRepo
                     resource.city = data.city;
                     if (!string.IsNullOrWhiteSpace(resource.designation))
                     { resource.designation += " | "; }
-                    resource.designation += string.IsNullOrWhiteSpace(resource.designation) ? data.channel : resource.designation;
+                    resource.designation += data.channel;
                 }
             }
             return await _resourcesData.AddResources(resource);
+        }
+
+        public async Task<bool> EditDesignation(ResourceModel model)
+        {
+            var resource = await _resourcesData.GetResourceById(model.id);
+
+            if (!string.IsNullOrWhiteSpace(model.city))
+            {
+                var preferences = JsonConvert.DeserializeObject<List<Preferences>>(model.city);
+                if (preferences is { Count: > 0 })
+                {
+                    var data = preferences.FirstOrDefault();
+                    resource.city = data.city;
+                    if (!string.IsNullOrWhiteSpace(model.designation))
+                    { resource.designation = model.designation + " | "; }
+                    resource.designation += data.channel;
+                }
+            }
+            return await _resourcesData.EditResource(resource);
         }
 
         public async Task<bool> EditResource(ResourceModel model)

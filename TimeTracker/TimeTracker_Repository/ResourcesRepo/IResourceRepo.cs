@@ -10,6 +10,8 @@ namespace TimeTracker_Repository.ResourcesRepo
 
         Task<bool> AddResources(ResourceModel model);
 
+        Task<bool> EditDesignation(ResourceModel model);
+
         Task<bool> EditResource(ResourceModel model);
 
         Task<(List<ResourceListModel>, int)> GetResourcesList(ResourceFilterModel model);
