@@ -25,14 +25,14 @@
                             return setDateFormat(data);
                         },
                         },
-                    { "data": "id", "bSortable": false, width: 140},
+                    { "data": "id", "bSortable": false, width: 100},
                 ],
                 columnDefs: [
                     {
                         targets: 2,
                         render: function (data, type, row) {
                             var roleId = $("#roleId").text();
-                            if (roleId == 1) { // Admin = 1 , Employee = 2
+                            if (roleId == 1) { // Admin = 1 , Employee = 2 , HR = 3
                                 return '<a href="/holiday/update/' + row.id + '" style="margin-right: 10px;" class="justify-content-center"><i class="fas fa-edit text-success"></i></a><a onclick="deleteUser(' + row.id + ')"><i class="fas fa-trash text-danger" style="cursor:pointer; margin-left:8px;"></i></a>';
                             } else {
                                 return 'N/A';

@@ -21,19 +21,22 @@
     </div>
 }
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-lightblue card-outline">
-                <div class="card-header">
-                    <h3 class="card-title font-color">
-                        <i class="fa-solid fa-user-clock"></i>
-                        Daily Log
-                    </h3>
-                    <div style="float:right; display:flex;">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-lightblue card-outline">
+            <div class="card-header">
+                <h3 class="card-title font-color">
+                    <i class="fa-solid fa-user-clock"></i>
+                    Daily Log
+                </h3>
+                <div style="float:right; display:flex;">
+                    @if (roleId == (int)Roles.Employee){
                         <div style="display:flex;float:left;margin-top:2px;">
                             <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
                             <h5 class="font-color" style="margin-bottom:0px;"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
                         </div>
+
+                    }
                     @if (roleId == (int)Roles.Admin)
                     {
                         <div style="float:right; margin-left:5px;">
@@ -43,7 +46,7 @@
                         </div>
                     }
                     <div style="float:right; margin-left:5px;">
-                        <input type="date" class="form-control form-control-sm" value="@DateTime.Now.Date" id="txtDate" />
+                        <input type="date" class="form-control form-control-sm"  id="txtDate" />
                     </div>
                     @if (roleId == (int)Roles.Admin)
                     {
@@ -102,6 +105,8 @@
             startTimeLog();
             SelectedMenu('menuAttendance', 'menuSystemLog');
             bindDataTable();
+
+        $("#txtDate").val(todayDate());
         });
     </script>
 }

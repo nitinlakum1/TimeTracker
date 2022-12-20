@@ -15,7 +15,7 @@ namespace TimeTracker.Helper
                 // return description
                 return attributes.Any() ? ((DescriptionAttribute)attributes.ElementAt(0)).Description : "Description Not Found";
             }
-            return "";
+            return "N/A";
         }
         //public static string IsLogin(this Enum value)
         //{

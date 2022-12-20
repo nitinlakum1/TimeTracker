@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.Auth.AccessControlPolicy;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using TimeTracker.Models;
@@ -15,20 +16,31 @@ namespace TimeTracker.Controllers
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
         private readonly JwtSettingModel _jwtSettings;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public LoginController(IUserRepo userRepo,
                               IMapper mapper,
                               ITokenService tokenService,
-                              IOptions<JwtSettingModel> jwtSettings)
+                              IOptions<JwtSettingModel> jwtSettings,
+                              IHttpContextAccessor httpContextAccessor)
         {
             _userRepo = userRepo;
             _mapper = mapper;
             _tokenService = tokenService;
             _jwtSettings = jwtSettings.Value;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
         {
+            var isAuthenticated = _httpContextAccessor?
+                .HttpContext?.User?
+                .Identity?.IsAuthenticated;
+
+            if (isAuthenticated == true)
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
             return View();
         }
 

@@ -22,18 +22,21 @@
     </div>
 }
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-lightblue card-outline">
-                <div class="card-header">
-                    <h3 class="card-title font-color">
-                        <i class="fa-solid fa-chart-line"></i>
-                        Monthly Report
-                    </h3>
-                    <div style="float:right; display:flex;">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-lightblue card-outline">
+            <div class="card-header">
+                <h3 class="card-title font-color">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Monthly Report
+                </h3>
+                <div style="float:right; display:flex;">
+                    @if (roleId == (int)Roles.Employee)
+                    {
                         <div style="float:left;">
                             <h5 class="font-color" style="margin:3px 0px;"><span id="spnLastTime" style="font-size: 1.1rem;">Total Hours: <span id="spnTotalMonthTime">00:00</span> </span></h5>
                         </div>
+                    }
                     @if (roleId == (int)Roles.Admin)
                     {
                         <div style="float:right; margin-left:5px;">

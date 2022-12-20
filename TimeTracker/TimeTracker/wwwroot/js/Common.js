@@ -73,3 +73,9 @@ $('.select2bs4').select2({
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
+
+function todayDate() {
+    var d = new Date();
+    var todayDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+    return todayDate;
+};

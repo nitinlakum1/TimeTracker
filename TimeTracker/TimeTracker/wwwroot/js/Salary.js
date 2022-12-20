@@ -43,7 +43,13 @@
                     {
                         targets: 4,
                         render: function (data, type, row) {
-                            return '<a href="/salary/update/' + row.id + '" style="margin-right: 10px;" class="justify-content-center"><i class="fas fa-edit text-success"></i>';
+                            // Admin = 1 , Employee = 2 , HR = 3
+                            var roleId = $("#roleId").text();
+                            if (roleId == 1 || roleId == 3) {
+                                return '<a href="/salary/update/' + row.id + '" style="margin-right: 10px;" class="justify-content-center"><i class="fas fa-edit text-success"></i>';
+                            } else {
+                                return "N/A";
+                            }
                         },
                         className: "text-center",
                     }
