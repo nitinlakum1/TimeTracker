@@ -22,7 +22,7 @@
                     { "data": "username" },
                     { "data": "fullName" },
                     { "data": "email" },
-                    { "data": "contactNo" },
+                    { "data": "contactNo", "render": $.fn.dataTable.render.number('', '', '', '+91 ')  },
                     { "data": "id", "bSortable": false },
                 ],
                 columnDefs: [

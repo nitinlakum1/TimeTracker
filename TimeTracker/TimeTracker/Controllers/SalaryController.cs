@@ -81,7 +81,7 @@ namespace TimeTracker.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && model.FromDate < model.ToDate)
                 {
                     var addSalary = _mapper.Map<AddEditSalaryModel>(model);
                     var result = await _salaryRepo.AddSalary(addSalary);

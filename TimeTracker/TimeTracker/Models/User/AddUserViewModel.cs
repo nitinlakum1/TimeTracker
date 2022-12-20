@@ -19,6 +19,7 @@ namespace TimeTracker.Models.User
         public string Designation { get; set; }
 
         [Required(ErrorMessage = "Contact No. is required.")]
+        [RegularExpression (@"^[0-9]{10}$", ErrorMessage = "Please enter a valid Contact No.")]
         public string ContactNo { get; set; }
 
         public bool Gender { get; set; }

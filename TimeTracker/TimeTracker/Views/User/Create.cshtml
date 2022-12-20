@@ -26,7 +26,7 @@
                     Create User
                 </h3>
             </div>
-            <form asp-action="Create" enctype="multipart/form-data">
+            <form asp-action="Create" enctype="multipart/form-data" id="test">
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-md-4">
@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label asp-for="ContactNo">Contact No.</label>
-                            <input asp-for="ContactNo" type="text" class="form-control form-control-sm" placeholder="Contact No.">
+                            <input asp-for="ContactNo" type="text" class="form-control form-control-sm" placeholder="Contact No." onkeyup="if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" maxlength="10">
                             <span asp-validation-for="ContactNo" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-2">
@@ -108,6 +108,19 @@
     <script>
         $(document).ready(function () {
             SelectedMenu('menuMaster', 'menuUsers');
+
+            $(function () {
+                $('#FullName').keydown(function (e) {
+                        var key = e.keyCode;
+                        if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
+                            e.preventDefault();
+                    }
+                });
+            });
+
+            $('#test').submit(function () {
+                console.log("IT WORKS!");
+            });
         });
     </script>
 }
