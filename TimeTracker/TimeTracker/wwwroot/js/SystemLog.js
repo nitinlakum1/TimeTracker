@@ -32,7 +32,7 @@
                     { "data": "description" },
                     {
                         "data": "logTime", width: 140, "render": function (data) {
-                            return setDateTimeFormat(data);
+                            return setDateTimeFormat(data, 'DD-MM-yyyy hh:mm A');
                         },
                     },
                     { "data": "id", "bSortable": false, width: 70 },
@@ -127,18 +127,18 @@ function bindMRDataTable() {
                 "aoColumns": [
                     {
                         "data": "date", width: 170, "bSortable": false, "render": function (data) {
-                            return setDateDayFormat(data);
+                            return setDateTimeFormat(data, 'DD-MM-yyyy (dddd)');
                         }
                     },
                     { "data": "username", "bSortable": false, width: 170 },
                     {
                         "data": "startingTime", width: 170, "bSortable": false, "render": function (data) {
-                            return setDateTimeFormat(data);
+                            return setDateTimeFormat(data, 'DD-MM-yyyy hh:mm A');
                         },
                     },
                     {
                         "data": "closingTime", width: 170, "bSortable": false, "render": function (data) {
-                            return setDateTimeFormat(data);
+                            return setDateTimeFormat(data, 'DD-MM-yyyy hh:mm A');
                         },
                     },
                     { "data": "totalTime", width: 100, "bSortable": false },

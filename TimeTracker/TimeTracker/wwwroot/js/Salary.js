@@ -29,12 +29,12 @@
                     { "data": "salary", width: 120, "render": $.fn.dataTable.render.number(',', '.', 0, '₹ ') },
                     {
                         "data": "fromDate", width: 120, "render": function (data) {
-                            return setDateFormat(data);
+                            return setDateTimeFormat(data, 'DD-MM-yyyy');
                         },
                     },
                     {
                         "data": "toDate", width: 120, "render": function (data) {
-                            return setDateFormat(data);
+                            return setDateTimeFormat(data, 'DD-MM-yyyy');
                         },
                     },
                     { "data": "id", "bSortable": false, width: 70 },

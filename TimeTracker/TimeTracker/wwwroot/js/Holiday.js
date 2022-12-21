@@ -22,7 +22,7 @@
                     { "data": "name" },
                     {
                         "data": "date", width: 140, "render": function (data) {
-                            return setDateFormat(data);
+                            return setDateTimeFormat(data, 'DD-MM-yyyy');
                         },
                         },
                     { "data": "id", "bSortable": false, width: 100},

@@ -20,6 +20,7 @@ namespace TimeTracker.Models.Resource
         public string? workStartDate { get; set; }
         public string? companyExperiences { get; set; }
         public string? city { get; set; }
+        public DateTime CreatedOn { get; set; }
         public ResourceStatus? ResourceStatus { get; set; }
         public string StatusName
         {

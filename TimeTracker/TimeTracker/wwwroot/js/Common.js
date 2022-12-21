@@ -29,25 +29,24 @@ function scrollUp() {
     }, 800);
 };
 
-function setDateTimeFormat(data) {
+/*
+ dddd - Wednesday
+ DD - 31
+ MM - 12
+ MMM - Dec
+ MMMM - December
+ yyyy - 2022
+ YY - 22
+ HH - 23
+ hh - 12
+ mm - 59
+ A - AM/PM
+ */
+function setDateTimeFormat(data, format) {
     if (data == null || data == undefined) {
         return "";
     }
-    return moment(data).format('DD-MM-yyyy hh:mm A');
-}
-
-function setDateFormat(data) {
-    if (data == null || data == undefined) {
-        return "";
-    }
-    return moment(data).format('DD-MM-yyyy');
-}
-
-function setDateDayFormat(data) {
-    if (data == null || data == undefined) {
-        return "";
-    }
-    return moment(data).format('DD-MM-yyyy (dddd)');
+    return moment(data).format(format);
 }
 
 function SelectedMenu(mainMenu, subMenu) {

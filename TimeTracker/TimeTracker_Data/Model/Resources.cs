@@ -20,5 +20,6 @@ namespace TimeTracker_Data.Model
         public string? companyExperiences { get; set; }
         public string? city { get; set; }
         public ResourceStatus? ResourceStatus { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

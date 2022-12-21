@@ -41,6 +41,11 @@
                     { "data": "workStartDate" },
                     //{ "data": "companyExperiences" },
                     { "data": "preferenceId" },
+                    {
+                        "data": "createdOn", width: 140, "render": function (data) {
+                            return setDateTimeFormat(data, 'DD-MM-yyyy hh:mm A');
+                        },
+                    },
                     { "data": "preferenceId" },
                 ],
                 columnDefs: [
@@ -74,7 +79,7 @@
                         className: "text-center",
                     },
                     {
-                        targets: 12,
+                        targets: 13,
                         render: function (data, type, row) {
                             {
                                 return '<a onclick="openFollowupModel(\'' + row.preferenceId + '\')"><i class="fa-regular fa-square-plus font-color"  style="cursor:pointer; font-size: 16px;"></i></a><a onclick="openDetailsModel(\'' + row.preferenceId + '\')"><i class="fa-solid fa-eye font-color"  style="cursor:pointer; font-size: 16px; margin-left:10px;"></i></a>';

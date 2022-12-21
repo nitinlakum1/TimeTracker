@@ -53,6 +53,7 @@ namespace TimeTracker_Repository.ResourcesRepo
                 workStartDate = model.workStartDate,
                 companyExperiences = model.companyExperiences,
                 city = model.city,
+                CreatedOn = DateTime.Now
             };
 
             if (!string.IsNullOrWhiteSpace(model.city))
@@ -62,9 +63,15 @@ namespace TimeTracker_Repository.ResourcesRepo
                 {
                     var data = preferences.FirstOrDefault();
                     resource.city = data.city;
-                    if (!string.IsNullOrWhiteSpace(resource.designation))
-                    { resource.designation += " | "; }
-                    resource.designation += data.channel;
+
+                    if (string.IsNullOrWhiteSpace(resource.designation))
+                    {
+                        resource.designation = data.channel;
+                    }
+                    else
+                    {
+                        resource.designation = string.Format("{0} | {1}", resource.designation, data.channel);
+                    }
                 }
             }
             return await _resourcesData.AddResources(resource);
@@ -81,11 +88,18 @@ namespace TimeTracker_Repository.ResourcesRepo
                 {
                     var data = preferences.FirstOrDefault();
                     resource.city = data.city;
-                    if (!string.IsNullOrWhiteSpace(model.designation))
-                    { resource.designation = model.designation + " | "; }
-                    resource.designation += data.channel;
+
+                    if (string.IsNullOrWhiteSpace(model.designation))
+                    {
+                        resource.designation = data.channel;
+                    }
+                    else
+                    {
+                        resource.designation = string.Format("{0} | {1}", model.designation, data.channel);
+                    }
                 }
             }
+            resource.CreatedOn = DateTime.Now;
             return await _resourcesData.EditResource(resource);
         }
 
