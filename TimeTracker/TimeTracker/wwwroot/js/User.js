@@ -22,7 +22,7 @@
                     { "data": "username" },
                     { "data": "fullName" },
                     { "data": "email" },
-                    { "data": "contactNo", "render": $.fn.dataTable.render.number('', '', '', '+91 ')  },
+                    { "data": "contactNo", "render": $.fn.dataTable.render.number('', '', '', '+91 ') },
                     { "data": "id", "bSortable": false },
                 ],
                 columnDefs: [
@@ -71,3 +71,41 @@ function Close() {
     $("#deleteId").val(0);
     $("#comformdelete").modal('hide');
 }
+
+
+function conformDelete() {
+    var id = $("#deleteProfileId").val();
+    if (id > 0) {
+        $.ajax({
+            url: '/User/DeleteUser/',
+            type: 'POST',
+            data: { id: id },
+            success: function (result) {
+                setStatusMsg(result);
+                Close();
+                $('#tblUsers').DataTable().ajax.reload();
+            },
+            error: function (result) {
+                alert("User not Delete!");
+            },
+        })
+    }
+}
+
+//function deleteProfile() {
+//    var id = $("#deleteProfileId").val();
+//    if (id > 0) {
+//        $.ajax({
+//            url: '/User/DeleteProfile/',
+//            type: 'POST',
+//            data: { id: id },
+//            success: function (result) {
+//                setStatusMsg(result);
+//                Close();
+//            },
+//            error: function (result) {
+//                alert("Profile not Delete!");
+//            },
+//        })
+//    }
+//}

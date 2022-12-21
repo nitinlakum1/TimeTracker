@@ -66,6 +66,10 @@ namespace TimeTracker_Model
         [Description("In Process")]
         InProcess = 3,
 
+        [Display(Name = "Pending")]
+        [Description("Pending")]
+        Pending = 8,
+
         [Display(Name = "Interview")]
         [Description("Interview")]
         Interview = 4,

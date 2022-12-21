@@ -23,7 +23,9 @@ namespace TimeTracker_Data.Modules
         {
             var result = _context.Salarys
                 .Include(a => a.Users)
-                .Where(a => a.UserId == model.UserId
+                .Where(a => (model.UserId == 0
+                            || model.UserId == 1
+                            || a.UserId == model.UserId)
                       && (string.IsNullOrWhiteSpace(model.SearchText)));
 
             var totalRecord = result.Count();

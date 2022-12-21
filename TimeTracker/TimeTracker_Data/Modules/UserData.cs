@@ -118,6 +118,19 @@ namespace TimeTracker_Data.Modules
                 Username = a.Username,
             }).ToListAsync();
         }
+
+        public async Task<bool> DeleteProfile(int id)
+        {
+            var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
+            if (result == null)
+            {
+                return false;
+            }
+            _context.Users.Remove(result);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
         #endregion
     }
 }

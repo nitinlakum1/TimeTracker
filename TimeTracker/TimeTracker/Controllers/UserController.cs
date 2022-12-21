@@ -155,5 +155,24 @@ namespace TimeTracker.Controllers
             var model = _mapper.Map<EditUserViewModel>(user);
             return View(model);
         }
+
+        public async Task<IActionResult> DeleteProfile(int id)
+        {
+            bool isSuccess = false;
+            string message = "";
+            try
+            {
+                if (id > 0)
+                {
+                    isSuccess = await _userRepo.DeleteProfile(id);
+                    message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
+                }
+            }
+            catch (Exception ex)
+            {
+                //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
+            }
+            return Json(new { isSuccess, message });
+        }
     }
 }

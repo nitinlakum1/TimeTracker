@@ -33,8 +33,12 @@
                         },
                     },
                     {
-                        "data": "toDate", width: 120, "render": function (data) {
-                            return setDateTimeFormat(data, 'DD-MM-yyyy');
+                        "data": "toDate", width: 120, "render": function (toDate) {
+                            if (toDate == null) {
+                                return 'Till Today..';
+                            } else {
+                                return setDateTimeFormat(toDate, 'DD-MM-yyyy');
+                            }
                         },
                     },
                     { "data": "id", "bSortable": false, width: 70 },

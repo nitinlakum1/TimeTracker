@@ -5,9 +5,11 @@
     ViewData["Title"] = "User Profile";
     ViewData["ProfilePic"] = Model.Url;
     int roleId = 0;
+    int userId = 0;
     if (User != null)
     {
         roleId = User.GetLoginRole();
+        userId = User.GetIdFromClaim();
     }
 }
 
@@ -41,7 +43,8 @@
                                 <div class="text-center">
                                     <div class="image-areaAA">
                                         <img class=" profile-user-img img-fluid img-circle" src="@Model.Url" alt="User profile picture" id="ProfilePic" style="cursor:pointer; width:100px; height:100px;">
-                                        <a class="remove-image" href="#" style="display: inline;"><i class="fa-solid fa-trash"></i></a>
+                                        <a class="remove-image" href="#" style="display: inline;" onclick="deleteProfile()"><i class="fa-solid fa-trash"></i></a>
+                                        <input type="hidden" value="@userId" id="deleteProfileId" />
                                     </div>
                                 </div>
 
@@ -193,6 +196,8 @@
 </div>
 
 @section Scripts{
+    <script src="~/js/user.js"></script>
+
     <script>
         $(document).ready(function () {
             $(function () {
