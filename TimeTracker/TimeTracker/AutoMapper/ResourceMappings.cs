@@ -18,10 +18,10 @@ namespace TimeTracker.AutoMapper
 
             profile.CreateMap<Resources, ResourceModel>();
             profile.CreateMap<Resources, ResourceListModel>();
-            profile.CreateMap<FollowupModel, ResourcesRemarks>();
+            profile.CreateMap<FollowupModel, ResourcesFollowup>();
             profile.CreateMap<FollowupAddViewModel, FollowupModel>();
             profile.CreateMap<FollowupListModel, FollowupListViewModel>();
-            profile.CreateMap<ResourcesRemarks, FollowupListModel>();
+            profile.CreateMap<ResourcesFollowup, FollowupListModel>();
 
 
             profile.CreateMap<DatatableParamViewModel, ResourceFilterModel>()

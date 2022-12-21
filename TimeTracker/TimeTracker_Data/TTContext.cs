@@ -16,6 +16,7 @@ namespace TimeTracker_Data
         public DbSet<Holidays> Holidays { get; set; }
         public DbSet<Salarys> Salarys { get; set; }
         public DbSet<Resources> Resources { get; set; }
-        public DbSet<ResourcesRemarks> ResourcesRemarks { get; set; }
+        public DbSet<ResourcesFollowup> ResourcesFollowup { get; set; }
+        public DbSet<ErrorLogs> ErrorLogs { get; set; }
     }
 }

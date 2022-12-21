@@ -88,9 +88,9 @@ namespace TimeTracker_Repository.UserRepo
             return _mapper.Map<List<UserModel>>(userList);
         }
 
-        public async Task<bool> DeleteProfile(int id)
+        public async Task<bool> DeleteProfilePic(int id)
         {
-            return await _userData.DeleteProfile(id);
+            return await _userData.DeleteProfilePic(id);
         }
         #endregion
     }

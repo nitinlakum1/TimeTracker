@@ -156,7 +156,7 @@ namespace TimeTracker.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> DeleteProfile(int id)
+        public async Task<IActionResult> DeleteProfile(int id, string url)
         {
             bool isSuccess = false;
             string message = "";
@@ -164,13 +164,14 @@ namespace TimeTracker.Controllers
             {
                 if (id > 0)
                 {
-                    isSuccess = await _userRepo.DeleteProfile(id);
+                    await _awsS3BucketService.DeleteFile(url);
+                    isSuccess = await _userRepo.DeleteProfilePic(id);
                     message = isSuccess ? AppMessages.DELETE_SUCCESS : AppMessages.SOMETHING_WRONG;
                 }
             }
             catch (Exception ex)
             {
-                //LogWriter.LogWrite(ex.Message, MessageTypes.Error);
+                LogWriter.LogWrite(ex);
             }
             return Json(new { isSuccess, message });
         }

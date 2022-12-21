@@ -82,9 +82,9 @@ namespace TimeTracker_Data.Modules
                 .FirstOrDefaultAsync(a => a.preferenceId == preferenceId) ?? new Resources();
         }
 
-        public async Task<bool> AddFollowup(ResourcesRemarks model)
+        public async Task<bool> AddFollowup(ResourcesFollowup model)
         {
-            _context.ResourcesRemarks.Add(model);
+            _context.ResourcesFollowup.Add(model);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -96,9 +96,9 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
-        public async Task<List<ResourcesRemarks>> GetFollowupList(string id)
+        public async Task<List<ResourcesFollowup>> GetFollowupList(string id)
         {
-            return await _context.ResourcesRemarks
+            return await _context.ResourcesFollowup
                 .Where(a => a.PreferenceId == id)
                 .OrderByDescending(a => a.DateTime)
                 .ToListAsync();

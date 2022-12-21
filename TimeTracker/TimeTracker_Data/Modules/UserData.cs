@@ -119,14 +119,15 @@ namespace TimeTracker_Data.Modules
             }).ToListAsync();
         }
 
-        public async Task<bool> DeleteProfile(int id)
+        public async Task<bool> DeleteProfilePic(int id)
         {
             var result = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
             if (result == null)
             {
                 return false;
             }
-            _context.Users.Remove(result);
+            result.Url = "";
+            _context.Users.Update(result);
             await _context.SaveChangesAsync();
 
             return true;

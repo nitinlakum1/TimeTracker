@@ -2,7 +2,7 @@
 
 namespace TimeTracker_Data.Model
 {
-    public class ResourcesRemarks
+    public class ResourcesFollowup
     {
         [Key]
         public int Id { get; set; }

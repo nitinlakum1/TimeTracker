@@ -92,20 +92,23 @@ function conformDelete() {
     }
 }
 
-//function deleteProfile() {
-//    var id = $("#deleteProfileId").val();
-//    if (id > 0) {
-//        $.ajax({
-//            url: '/User/DeleteProfile/',
-//            type: 'POST',
-//            data: { id: id },
-//            success: function (result) {
-//                setStatusMsg(result);
-//                Close();
-//            },
-//            error: function (result) {
-//                alert("Profile not Delete!");
-//            },
-//        })
-//    }
-//}
+function deleteProfile() {
+    var id = $("#deleteProfileId").val();
+    if (id > 0) {
+        $.ajax({
+            url: '/User/DeleteProfile/',
+            type: 'POST',
+            data: {
+                id: id,
+                url: $("#deleteProfileUrl").val(),
+            },
+            success: function (result) {
+                setStatusMsg(result);
+                Close();
+            },
+            error: function (result) {
+                alert("Profile not Delete!");
+            },
+        })
+    }
+}

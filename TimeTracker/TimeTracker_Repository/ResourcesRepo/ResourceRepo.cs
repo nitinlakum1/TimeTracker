@@ -131,7 +131,7 @@ namespace TimeTracker_Repository.ResourcesRepo
 
         public async Task<bool> AddFollowup(FollowupModel model)
         {
-            var remarks = _mapper.Map<ResourcesRemarks>(model);
+            var remarks = _mapper.Map<ResourcesFollowup>(model);
 
             var resources = await _resourcesData.GetResourceByPrId(model.PreferenceId ?? "");
             if (resources != null && !string.IsNullOrWhiteSpace(resources.preferenceId))
