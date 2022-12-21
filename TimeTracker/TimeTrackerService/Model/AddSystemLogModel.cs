@@ -10,5 +10,6 @@ namespace TimeTrackerService.DataModel
         public LogTypes LogType { get; set; }
         public string Description { get; set; }
         public DateTime LogTime { get; set; }
+        public DateTime CreatedOn { get; set; }
     }
 }

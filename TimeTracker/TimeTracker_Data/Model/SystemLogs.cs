@@ -22,6 +22,9 @@ namespace TimeTracker_Data.Model
         [Required]
         public DateTime LogTime { get; set; }
 
+        [Required]
+        public DateTime CreatedOn { get; set; }
+
         public Users Users { get; set; }
     }
 }

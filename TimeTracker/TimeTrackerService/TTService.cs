@@ -120,7 +120,8 @@ namespace TimeTrackerService
                                     MacAddress = macAddress,
                                     LogType = module,
                                     Description = message,
-                                    LogTime = logTime
+                                    LogTime = logTime,
+                                    CreatedOn = DateTime.Now,
                                 };
                                 await systemLogData.AddSystemLog(model);
                             }
@@ -269,7 +270,8 @@ namespace TimeTrackerService
                                             MacAddress = GetMacAddress(),
                                             LogType = (LogTypes)module,
                                             Description = message,
-                                            LogTime = logTime
+                                            LogTime = logTime,
+                                            CreatedOn = DateTime.Now,
                                         };
                                         await systemLogData.AddSystemLog(model);
                                     }
