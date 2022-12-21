@@ -82,6 +82,7 @@ namespace TimeTrackerService
         {
             try
             {
+                bool skipLog = false;
                 bool serverOnline = await systemLogData.IsServerConnected();
                 if (serverOnline)
                 {
@@ -94,42 +95,55 @@ namespace TimeTrackerService
                 if (writeLog)
                 {
                     var logTime = DateTime.Now;
-                    if (serverOnline)
-                    {
-                        //Sync log text file with database.
-                        await SyncTextFileInDB();
-                        try
-                        {
-                            var macAddress = GetMacAddress();
 
-                            AddSystemLogModel model = new AddSystemLogModel()
+                    var lastLog = GetTodaysLog();
+                    if (lastLog != null)
+                    {
+                        skipLog = (lastLog.LogType == LogTypes.ServiceStart
+                                        && module == LogTypes.SystemLogOn)
+                                  || (lastLog.LogType == LogTypes.SystemLogOn
+                                        && module == LogTypes.ServiceStart);
+                    }
+
+                    if (!skipLog)
+                    {
+                        if (serverOnline)
+                        {
+                            //Sync log text file with database.
+                            await SyncTextFileInDB();
+                            try
                             {
-                                MacAddress = macAddress,
-                                LogType = module,
-                                Description = message,
-                                LogTime = logTime
-                            };
-                            await systemLogData.AddSystemLog(model);
+                                var macAddress = GetMacAddress();
+
+                                AddSystemLogModel model = new AddSystemLogModel()
+                                {
+                                    MacAddress = macAddress,
+                                    LogType = module,
+                                    Description = message,
+                                    LogTime = logTime
+                                };
+                                await systemLogData.AddSystemLog(model);
+                            }
+                            catch (Exception ex)
+                            {
+                                WriteTextFile("AddSystemLog", ex.Message, GetErrorLineNumber(ex));
+                            }
                         }
-                        catch (Exception ex)
+
+                        string path = @"C:\Program Files\WCT\";
+                        if (!Directory.Exists(path))
                         {
-                            WriteTextFile("AddSystemLog", ex.Message, GetErrorLineNumber(ex));
+                            Directory.CreateDirectory(path);
                         }
-                    }
+                        path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
 
-                    string path = @"C:\Program Files\WCT\";
-                    if (!Directory.Exists(path))
-                    {
-                        Directory.CreateDirectory(path);
+                        FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                        StreamWriter sWriter = new StreamWriter(fs);
+                        sWriter.BaseStream.Seek(0, SeekOrigin.End);
+                        sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)module} | {message}");
+                        sWriter.Flush();
+                        sWriter.Close();
                     }
-                    path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
-
-                    FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-                    StreamWriter sWriter = new StreamWriter(fs);
-                    sWriter.BaseStream.Seek(0, SeekOrigin.End);
-                    sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)module} | {message}");
-                    sWriter.Flush();
-                    sWriter.Close();
                 }
                 else
                 {
@@ -244,7 +258,6 @@ namespace TimeTrackerService
                                 foreach (var item in data)
                                 {
                                     var logTime = DateTime.ParseExact(item.Split('|')[0].Trim(), "dd-MM-yy hh:mm:ss tt", null);
-                                    //var logTime = Convert.ToDateTime(item.Split('|')[0].Trim());
                                     var module = Convert.ToInt32(item.Split('|')[1].Trim());
                                     var message = item.Split('|')[2].Trim();
 
@@ -416,6 +429,42 @@ namespace TimeTrackerService
                 WriteTextFile(nameof(ValidateSettings), ex.Message, GetErrorLineNumber(ex));
             }
             return result;
+        }
+
+        private static AddSystemLogModel GetTodaysLog()
+        {
+            try
+            {
+                string path = Path.Combine(@"C:\Program Files\WCT\", string.Format(@"{0:dd_MM_yy}.txt", DateTime.Now));
+                if (File.Exists(path))
+                {
+                    var data = File.ReadAllLines(path);
+                    if (data != null && data.Length > 0)
+                    {
+                        string lastLog = data[data.Length - 1];
+                        if (!string.IsNullOrWhiteSpace(lastLog))
+                        {
+                            var logTime = DateTime.ParseExact(lastLog.Split('|')[0].Trim(), "dd-MM-yy hh:mm:ss tt", null);
+                            var module = Convert.ToInt32(lastLog.Split('|')[1].Trim());
+                            var message = lastLog.Split('|')[2].Trim();
+
+                            string name = Enum.GetName(typeof(LogTypes), module);
+                            AddSystemLogModel model = new AddSystemLogModel()
+                            {
+                                LogType = (LogTypes)module,
+                                Description = message,
+                                LogTime = logTime
+                            };
+                            return model;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteTextFile(nameof(GetTodaysLog), ex.Message, GetErrorLineNumber(ex));
+            }
+            return null;
         }
         #endregion
     }
