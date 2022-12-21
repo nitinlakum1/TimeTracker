@@ -37,7 +37,7 @@
                         <input type="text" class="form-control form-control-sm" placeholder="Designation" id="cmbDesignation" />
                     </div>
                     <div style="float:right; margin-left:5px;width: 100px;">
-                        <input type="text" class="form-control form-control-sm" placeholder="City" id="cmbCity"/>
+                        <input type="text" class="form-control form-control-sm" placeholder="City" id="cmbCity" />
                     </div>
                     <div style="float:right; margin-left:5px;">
                         <select class="form-control select2bs4 select2-multi-update" multiple="multiple" data-placeholder="Hide Columns" style="width: 180px;" id="cmdColumn">
@@ -121,8 +121,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <form id="frmFollowup">
+            <form id="frmFollowup">
+                <div class="modal-body">
                     <input type="hidden" asp-for="PreferenceId" id="hdnPreferenceId" />
                     <div class="row mt-1">
                         <div class="form-group col-md-12">
@@ -145,11 +145,11 @@
                             <span asp-validation-for="ResourceStatus" class="text-danger"></span>
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer justify-content-end">
-                <button type="button" class="btn btn-info btn-sm theme-color" onclick="submitFollowup()">Add Follow-up</button>
-            </div>
+                </div>
+                <div class="modal-footer justify-content-end">
+                    <button type="submit" class="btn btn-info btn-sm theme-color">Add Follow-up</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -122,29 +122,32 @@ function openDetailsModel(preferenceId) {
                 $('#modalFollowupList').modal('show');
             },
             error: function (result) {
-                alert("User not Delete!");
+                alert("Followup not Found!");
             },
         })
     }
 }
 
-function submitFollowup() {
-    var id = $("#hdnPreferenceId").val();
-    if (id > 0) {
-        $.ajax({
-            url: '/Resource/AddFollowup/',
-            type: 'POST',
-            data: $('#frmFollowup').serialize(),
-            success: function (result) {
-                $('#frmFollowup')[0].reset();
-                $("#hdnPreferenceId").val('');
-                $('#modalFollowup').modal('hide');
-                setStatusMsg(result);
-                $('#tblResource').DataTable().ajax.reload();
-            },
-            error: function (result) {
-                alert("Followup not Added!");
-            },
-        })
+$('#frmFollowup').submit(function (e) {
+    e.preventDefault();
+    if ($('#frmFollowup').valid()) {
+        var id = $("#hdnPreferenceId").val();
+        if (id > 0) {
+            $.ajax({
+                url: '/Resource/AddFollowup/',
+                type: 'POST',
+                data: $('#frmFollowup').serialize(),
+                success: function (result) {
+                    $('#frmFollowup')[0].reset();
+                    $("#hdnPreferenceId").val('');
+                    $('#modalFollowup').modal('hide');
+                    setStatusMsg(result);
+                    $('#tblResource').DataTable().ajax.reload();
+                },
+                error: function (result) {
+                    alert("Followup not Added!");
+                },
+            })
+        }
     }
-}
+});

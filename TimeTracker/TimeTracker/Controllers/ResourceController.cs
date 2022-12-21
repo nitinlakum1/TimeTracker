@@ -235,10 +235,6 @@ namespace TimeTracker.Controllers
                     isSuccess = await _resourcesRepo.AddFollowup(AddFollowup);
                     message = isSuccess ? AppMessages.SAVE_SUCCESS : AppMessages.SOMETHING_WRONG;
 
-                    //if (isSuccess)
-                    //{
-                    //    return RedirectToAction("Index");
-                    //}
                 }
             }
             catch (Exception)
