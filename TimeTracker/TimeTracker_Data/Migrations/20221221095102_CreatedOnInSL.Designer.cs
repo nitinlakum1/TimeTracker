@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TimeTracker_Data;
 
@@ -11,9 +12,10 @@ using TimeTracker_Data;
 namespace TimeTracker_Data.Migrations
 {
     [DbContext(typeof(TTContext))]
-    partial class TTContextModelSnapshot : ModelSnapshot
+    [Migration("20221221095102_CreatedOnInSL")]
+    partial class CreatedOnInSL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,42 +23,6 @@ namespace TimeTracker_Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("TimeTracker_Data.Model.ErrorLogs", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ErrorLocation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StackTrace")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ErrorLogs");
-                });
 
             modelBuilder.Entity("TimeTracker_Data.Model.Holidays", b =>
                 {
@@ -131,7 +97,7 @@ namespace TimeTracker_Data.Migrations
                     b.ToTable("Resources");
                 });
 
-            modelBuilder.Entity("TimeTracker_Data.Model.ResourcesFollowup", b =>
+            modelBuilder.Entity("TimeTracker_Data.Model.ResourcesRemarks", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +118,7 @@ namespace TimeTracker_Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResourcesFollowup");
+                    b.ToTable("ResourcesRemarks");
                 });
 
             modelBuilder.Entity("TimeTracker_Data.Model.Roles", b =>
@@ -340,17 +306,6 @@ namespace TimeTracker_Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("TimeTracker_Data.Model.ErrorLogs", b =>
-                {
-                    b.HasOne("TimeTracker_Data.Model.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("TimeTracker_Data.Model.Salarys", b =>
