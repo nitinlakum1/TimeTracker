@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace TimeTracker_Model
 {
@@ -51,7 +50,7 @@ namespace TimeTracker_Model
     }
     #endregion
 
-    #region Roles
+    #region ResourceStatus
     public enum ResourceStatus : int
     {
         [Display(Name = "Call Not Attend")]
@@ -62,29 +61,37 @@ namespace TimeTracker_Model
         [Description("Not Interested")]
         NotInterested = 2,
 
+        [Display(Name = "Follow Back")]
+        [Description("Follow Back")]
+        FollowBack = 3,
+
         [Display(Name = "In Process")]
         [Description("In Process")]
-        InProcess = 3,
+        InProcess = 4,
 
-        [Display(Name = "Pending")]
-        [Description("Pending")]
-        Pending = 8,
+        [Display(Name = "Schedule Interview")]
+        [Description("ScheduleInterview")]
+        ScheduleInterview = 5,
 
-        [Display(Name = "Interview")]
-        [Description("Interview")]
-        Interview = 4,
+        [Display(Name = "Reschedule")]
+        [Description("Reschedule")]
+        Reschedule = 6,
+
+        [Display(Name = "Not Suitable")]
+        [Description("Not Suitable")]
+        NotSuitable = 7,
 
         [Display(Name = "Selected")]
         [Description("Selected")]
-        Selected = 5,
+        Selected = 8,
 
         [Display(Name = "Rejected")]
         [Description("Rejected")]
-        Rejected = 6,
+        Rejected = 9,
 
         [Display(Name = "Confirmed")]
         [Description("Confirmed")]
-        Confirmed = 7,
+        Confirmed = 10,
     }
     #endregion
 }
