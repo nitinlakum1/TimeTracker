@@ -1,6 +1,6 @@
 ﻿function bindDataTable() {
     datatable = $('#tblResource')
-        .dataTable(
+        .DataTable(
             {
                 "sAjaxSource": "/Resource/GetResourcesList",
                 "bServerSide": true,
@@ -12,6 +12,7 @@
                 "paging": true,
                 "searching": true,
                 "bAutoWidth": false,
+                //"buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
                 "language": {
                     "emptyTable": "No record found.",
                     "processing":
@@ -23,6 +24,7 @@
                             Experience: $('#cmbExperience').val(),
                             Designation: $('#cmbDesignation').val(),
                             City: $('#cmbCity').val(),
+                            Status: $('#cmbStatus').val(),
                         })
                     });
                     perm = aoData;
@@ -39,7 +41,6 @@
                     { "data": "birthDate" },
                     { "data": "city" },
                     { "data": "workStartDate" },
-                    //{ "data": "companyExperiences" },
                     { "data": "preferenceId" },
                     {
                         "data": "createdOn", width: 140, "render": function (data) {
@@ -89,7 +90,7 @@
                     }
                 ],
                 processing: true,
-            });
+            });//.buttons().container().appendTo('#tblResource_wrapper .col-md-6:eq(1)');
 }
 
 $('#cmdColumn').on('change', function (e) {
@@ -99,15 +100,11 @@ $('#cmdColumn').on('change', function (e) {
     dt.columns($(this).val()).visible(false);
 });
 
-$('#cmbExperience').change(function () {
+$('#cmbExperience,#cmbStatus').change(function () {
     $('#tblResource').DataTable().draw();
 });
 
-$('#cmbDesignation').keyup(function () {
-    $('#tblResource').DataTable().draw();
-});
-
-$('#cmbCity').keyup(function () {
+$('#cmbDesignation,#cmbCity').keyup(function () {
     $('#tblResource').DataTable().draw();
 });
 

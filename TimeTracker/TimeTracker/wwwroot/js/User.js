@@ -72,31 +72,11 @@ function Close() {
     $("#comformdelete").modal('hide');
 }
 
-
-function conformDelete() {
-    var id = $("#deleteProfileId").val();
-    if (id > 0) {
-        $.ajax({
-            url: '/User/DeleteUser/',
-            type: 'POST',
-            data: { id: id },
-            success: function (result) {
-                setStatusMsg(result);
-                Close();
-                $('#tblUsers').DataTable().ajax.reload();
-            },
-            error: function (result) {
-                alert("User not Delete!");
-            },
-        })
-    }
-}
-
 function deleteProfile() {
     var id = $("#deleteProfileId").val();
     if (id > 0) {
         $.ajax({
-            url: '/User/DeleteProfile/',
+            url: '/User/DeleteProfilePic/',
             type: 'POST',
             data: {
                 id: id,

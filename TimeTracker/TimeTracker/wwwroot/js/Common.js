@@ -78,3 +78,21 @@ function todayDate() {
     var todayDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
     return todayDate;
 };
+
+$(document).ready(function () {
+    setProfilePic();
+});
+
+function setProfilePic() {
+    $.ajax({
+        url: '/User/GetProfilePic/',
+        type: 'GET',
+        success: function (result) {
+            if (result == '') {
+                $('#imgProfilePic').attr('src', '/images/userprofilepic.jpg');
+            } else {
+                $('#imgProfilePic').attr('src', result);
+            }
+        }
+    })
+}

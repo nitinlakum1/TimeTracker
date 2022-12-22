@@ -198,11 +198,10 @@ namespace TimeTracker.Controllers
                 if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
                 {
                     var filterData = JsonConvert.DeserializeObject<ResourceFilterModel>(filter);
-                    dtParam.Experience = filterData?.Experience == null || filterData?.Experience == 0 ? 0 : filterData?.Experience;
-
-                    dtParam.Designation = filterData?.Designation == null || filterData?.Designation == "" ? "" : filterData?.Designation;
-
-                    dtParam.City = filterData?.City == null || filterData?.City == "" ? "" : filterData?.City;
+                    dtParam.Experience = filterData?.Experience ?? 0;
+                    dtParam.Designation = filterData?.Designation;
+                    dtParam.City = filterData?.City;
+                    dtParam.Status = filterData?.Status;
                 }
 
                 var (resourceList, totalRecord) = await _resourcesRepo.GetResourcesList(dtParam);

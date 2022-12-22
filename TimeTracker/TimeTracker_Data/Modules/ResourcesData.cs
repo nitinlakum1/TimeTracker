@@ -55,17 +55,36 @@ namespace TimeTracker_Data.Modules
         public async Task<(List<Resources>, int)> GetResourcesList(ResourceFilterModel model)
         {
             var result = _context.Resources
-                .Where(a => (model.Experience == -1 || a.workYears == model.Experience)
-                       && (string.IsNullOrWhiteSpace(model.SearchText)
+                .Where(a => (string.IsNullOrWhiteSpace(model.SearchText)
                        || a.preferenceId.ToLower().Contains(model.SearchText)
                        || a.name.ToLower().Contains(model.SearchText)
                        || a.gender.ToLower().Contains(model.SearchText)
                        || a.mobile.ToLower().Contains(model.SearchText)
-                       || a.email.ToLower().Contains(model.SearchText))
-                       && (string.IsNullOrWhiteSpace(model.Designation)
-                       || a.designation.ToLower().Contains(model.Designation))
-                       && (string.IsNullOrWhiteSpace(model.City)
-                       || a.city.ToLower().Contains(model.City)));
+                       || a.email.ToLower().Contains(model.SearchText)));
+
+            if (!string.IsNullOrWhiteSpace(model.Designation))
+            {
+                result = _context.Resources
+                    .Where(a => a.designation.ToLower().Contains(model.Designation));
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.City))
+            {
+                result = _context.Resources
+                    .Where(a => a.city.ToLower().Contains(model.City));
+            }
+
+            if (model.Experience > 0)
+            {
+                result = _context.Resources
+                    .Where(a => a.workYears == model.Experience);
+            }
+
+            if (model.Status > 0)
+            {
+                result = _context.Resources
+                    .Where(a => a.ResourceStatus == model.Status);
+            }
 
             var totalRecord = result.Count();
 

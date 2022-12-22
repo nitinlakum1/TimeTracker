@@ -149,7 +149,6 @@ label {
     width: -moz-fit-content;
     height: fit-content;
     overflow-x: auto;
-
 }
 
 .rejected-status {
@@ -192,4 +191,9 @@ label {
     color: #2e005a !important;
     background-color: #d7baf5 !important;
     border-color: #f5c6cb !important;
+}
+
+.required:after {
+    content: "*";
+    color: red;
 }
