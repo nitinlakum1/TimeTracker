@@ -33,7 +33,12 @@
                     Resources
                 </h3>
                 <div style="float:right; display:flex;">
-                    <div style="float:right;width: 130px;">
+                    <div style="float:right;width: 160px;">
+                        <select class="form-control form-control-sm" asp-items="Html.GetEnumSelectList<ResourceStatus>()" id="cmbStatus">
+                            <option value="">Select Status</option>
+                        </select>
+                    </div>
+                    <div style="float:right;width: 130px;margin-left:5px;">
                         <input type="text" class="form-control form-control-sm" placeholder="Designation" id="cmbDesignation" />
                     </div>
                     <div style="float:right; margin-left:5px;width: 100px;">

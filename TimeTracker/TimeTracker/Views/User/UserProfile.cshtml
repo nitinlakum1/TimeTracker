@@ -42,7 +42,15 @@
                             <div class="card-body box-profile">
                                 <div class="text-center">
                                     <div class="image-areaAA">
-                                        <img class=" profile-user-img img-fluid img-circle" src="@Model.Url" alt="User profile picture" id="ProfilePic" style="cursor:pointer; width:100px; height:100px;">
+                                        @if (string.IsNullOrWhiteSpace(Model.Url))
+                                        {
+                                            <img class=" profile-user-img img-fluid img-circle" src="~/images/userprofilepic.jpg" alt="User profile picture" id="ProfilePic" style="cursor: pointer; width: 100px; height: 100px; ">
+                                        }
+                                        else
+                                        {
+                                            <img class=" profile-user-img img-fluid img-circle" src="@Model.Url" alt="User profile picture" id="ProfilePic" style="cursor:pointer; width:100px; height:100px;">
+                                        }
+
                                         <a class="remove-image" href="#" style="display: inline;" onclick="deleteProfile()"><i class="fa-solid fa-trash"></i></a>
                                         <input type="hidden" value="@userId" id="deleteProfileId" />
                                         <input type="hidden" value="@Model.Url" id="deleteProfileUrl" />
@@ -88,31 +96,31 @@
                                     <h5 class="font-color">Personal Details</h5>
                                     <div class="row">
                                         <div class="form-group col-md-5">
-                                            <label asp-for="FullName">Full Name</label>
+                                            <label asp-for="FullName" class="required">Full Name</label>
                                             <input asp-for="FullName" type="text" class="form-control form-control-sm" placeholder="Full Name">
                                             <span asp-validation-for="FullName" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-4">
-                                            <label asp-for="Email">Email</label>
+                                            <label asp-for="Email" class="required">Email</label>
                                             <input asp-for="Email" type="email" class="form-control form-control-sm" placeholder="Email">
                                             <span asp-validation-for="Email" class="text-danger"></span>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label asp-for="Username">Username</label>
+                                            <label asp-for="Username" class="required">Username</label>
                                             <input asp-for="Username" type="text" class="form-control form-control-sm" placeholder="Username">
                                             <span asp-validation-for="Username" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-2">
-                                            <label asp-for="Gender">Gender</label>
+                                            <label asp-for="Gender" class="required">Gender</label>
                                             <select asp-for="Gender" class="form-control form-control-sm">
                                                 <option value="true">Male</option>
                                                 <option value="false">Female</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-3">
-                                            <label asp-for="ContactNo">Contact No.</label>
+                                            <label asp-for="ContactNo" class="required">Contact No.</label>
                                             <input asp-for="ContactNo" type="text" class="form-control form-control-sm" placeholder="Contact No.">
                                             <span asp-validation-for="ContactNo" class="text-danger"></span>
                                         </div>
@@ -122,7 +130,7 @@
                                         </div>
 
                                         <div class="form-group col-md-3">
-                                            <label asp-for="MacAddress">MAC Address</label>
+                                            <label asp-for="MacAddress" class="required">MAC Address</label>
                                             @if (roleId == (int)Roles.Admin)
                                             {
                                                 <input asp-for="MacAddress" type="text" class="form-control form-control-sm" placeholder="MAC Address">
@@ -161,12 +169,12 @@
                                         <h5 class="font-color">Other Details</h5>
                                         <div class="row">
                                             <div class="form-group col-md-5">
-                                                <label asp-for="Designation">Designation</label>
+                                                <label asp-for="Designation" class="required">Designation</label>
                                                 <input asp-for="Designation" type="text" class="form-control form-control-sm" placeholder="Designation">
                                                 <span asp-validation-for="Designation" class="text-danger"></span>
                                             </div>
                                             <div class="form-group col-md-4">
-                                                <label asp-for="JoiningDate">JoiningDate</label>
+                                                <label asp-for="JoiningDate" class="required">JoiningDate</label>
                                                 <input asp-for="JoiningDate" type="date" class="form-control form-control-sm" placeholder="JoiningDate">
                                                 <span asp-validation-for="JoiningDate" class="text-danger"></span>
                                             </div>
@@ -205,6 +213,10 @@
                 $('#ProfilePic').on('click', function () {
                     $('#AvatarFile').trigger('click');
                 });
+            });
+
+            $('.remove-image').on('click', function () {
+                $('#ProfilePic').attr('src', '/images/userprofilepic.jpg');
             });
 
             $('#AvatarFile').change(function () {

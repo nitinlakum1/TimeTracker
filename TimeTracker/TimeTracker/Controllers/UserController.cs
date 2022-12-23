@@ -6,6 +6,7 @@ using TimeTracker.Configurations;
 using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.User;
+using TimeTracker_Data.Model;
 using TimeTracker_Model;
 using TimeTracker_Model.User;
 using TimeTracker_Repository.AWSRepo;
@@ -152,11 +153,12 @@ namespace TimeTracker.Controllers
         {
             int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
             var user = await _userRepo.GetUserById(userId ?? 0);
+            var pic = user.Url;
             var model = _mapper.Map<EditUserViewModel>(user);
             return View(model);
         }
 
-        public async Task<IActionResult> DeleteProfile(int id, string url)
+        public async Task<IActionResult> DeleteProfilePic(int id, string url)
         {
             bool isSuccess = false;
             string message = "";
@@ -174,6 +176,21 @@ namespace TimeTracker.Controllers
                 LogWriter.LogWrite(ex);
             }
             return Json(new { isSuccess, message });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProfilePic()
+        {
+            string url = "";
+            try
+            {
+                int? userId = _httpContextAccessor?.HttpContext?
+                    .User.GetIdFromClaim();
+                var user = await _userRepo.GetUserById(userId ?? 0);
+                url = user?.Url ?? "";
+            }
+            catch { }
+            return Json(url);
         }
     }
 }
