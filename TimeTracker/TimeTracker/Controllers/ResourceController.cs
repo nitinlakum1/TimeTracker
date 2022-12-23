@@ -116,18 +116,14 @@ namespace TimeTracker.Controllers
                         var resource = await _resourcesRepo.GetResourceById(id);
                         if (string.IsNullOrWhiteSpace(resource.id))
                         {
-                            await GetResourceDetails(id, preferenceId, model.Token, false);
-                        }
-                        else
-                        {
-                            await GetResourceDetails(id, preferenceId, model.Token, true);
+                            await GetResourceDetails(id, preferenceId, model.Token);
                         }
                     }
                 }
             }
         }
 
-        private async Task GetResourceDetails(string id, string preferenceId, string token, bool isEdit)
+        private async Task GetResourceDetails(string id, string preferenceId, string token)
         {
             string url = $"https://prod.hirect.ai/hirect/candidate-service/recruiters/candidates/{id}/profile?preferenceId={preferenceId}";
 
@@ -177,14 +173,7 @@ namespace TimeTracker.Controllers
 
                     deserializeObject.city = JsonConvert.SerializeObject(deserializeObject.preferences);
 
-                    if (isEdit)
-                    {
-                        await _resourcesRepo.EditDesignation(deserializeObject);
-                    }
-                    else
-                    {
-                        await _resourcesRepo.AddResources(deserializeObject);
-                    }
+                    await _resourcesRepo.AddResources(deserializeObject);
                 }
             }
         }
