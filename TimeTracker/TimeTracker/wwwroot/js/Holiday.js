@@ -8,24 +8,32 @@
                 "bSearchable": true,
                 "scrollX": true,
                 "order": [[0, "DESC"]],
-                "paging": true,
-                "searching": true,
+                "paging": false,
+                "searching": false,
+                "ordering": false,
                 "bAutoWidth": false,
+                "bInfo": false,
                 "language": {
                     "emptyTable": "No record found.",
                     "processing":
                         '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
                 },
                 "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "filter", "value": JSON.stringify({
+                            Year: $('#cmbYears').val(),
+                        })
+                    });
+                    perm = aoData;
                 },
                 "aoColumns": [
                     { "data": "name" },
                     {
-                        "data": "date", width: 140, "render": function (data) {
-                            return setDateTimeFormat(data, 'DD-MM-yyyy');
+                        "data": "date", width: 180, "render": function (data) {
+                            return setDateTimeFormat(data, 'DD, MMM-yyyy (dddd)');
                         },
                         },
-                    { "data": "id", "bSortable": false, width: 100},
+                    { "data": "id", width: 100},
                 ],
                 columnDefs: [
                     {
@@ -44,6 +52,10 @@
                 processing: true,
             });
 }
+
+$('#cmbYears').change(function () {
+    $('#tblHoliday').DataTable().ajax.reload();
+});
 
 function deleteUser(id) {
     $("#comformdelete").modal('show');

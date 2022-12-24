@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.Holiday;
@@ -31,19 +32,25 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        public async Task<IActionResult> LoadHoliday(DatatableParamViewModel param)
+        public async Task<IActionResult> LoadHoliday(DatatableParamViewModel param, string filter)
         {
             try
             {
                 var dtParam = _mapper.Map<HolidayFilterModel>(param);
 
-                var (holidayList, totalRecord) = await _holidayRepo.GetHolidayList(dtParam);
+                if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
+                {
+                    var filterData = JsonConvert.DeserializeObject<HolidayFilterModel>(filter);
+                    dtParam.Year = filterData?.Year ?? 0;
+                }
+
+                var holidayList = await _holidayRepo.GetHolidayList(dtParam);
 
                 return Json(new
                 {
                     param.sEcho,
-                    iTotalRecords = totalRecord,
-                    iTotalDisplayRecords = totalRecord,
+                    iTotalRecords = 0,
+                    iTotalDisplayRecords = 0,
                     aaData = holidayList
                 });
             }
