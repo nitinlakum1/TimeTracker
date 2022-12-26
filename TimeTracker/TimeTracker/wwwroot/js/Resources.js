@@ -44,7 +44,7 @@
                     { "data": "preferenceId" },
                     {
                         "data": "createdOn", width: 140, "render": function (data) {
-                            return setDateTimeFormat(data, 'DD-MM-yyyy hh:mm A');
+                            return setDateTimeFormat(data, 'DD, MMM-yyyy');
                         },
                     },
                     { "data": "preferenceId" },
@@ -53,29 +53,7 @@
                     {
                         targets: 6,
                         "createdCell": function (td, cellData, rowData, row, col) {
-                            switch (cellData) {
-                                case "Call Not Attend":
-                                    $(td).addClass('callNotAttend-status');
-                                    break;
-                                case "Not Interested":
-                                    $(td).addClass('notInterested-status');
-                                    break;
-                                case "In Process":
-                                    $(td).addClass('inProcess-status');
-                                    break;
-                                case "Interview":
-                                    $(td).addClass('interview-status');
-                                    break;
-                                case "Selected":
-                                    $(td).addClass('selected-status');
-                                    break;
-                                case "Rejected":
-                                    $(td).addClass('rejected-status');
-                                    break;
-                                case "Confirmed":
-                                    $(td).addClass('confirmed-status');
-                                    break;
-                            }
+                            $(td).addClass(cellData.replaceAll(" ", '') + '-status');
                         },
                         className: "text-center",
                     },

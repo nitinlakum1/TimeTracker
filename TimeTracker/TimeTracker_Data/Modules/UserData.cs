@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracker_Data.Model;
+using TimeTracker_Model;
 using TimeTracker_Model.User;
 
 namespace TimeTracker_Data.Modules
@@ -112,7 +113,7 @@ namespace TimeTracker_Data.Modules
 
         public async Task<List<Users>> GetUserLookup()
         {
-            return await _context.Users.Select(a => new Users()
+            return await _context.Users.Where(a=> a.RoleId != (int)TimeTracker_Model.Roles.Admin).Select(a => new Users()
             {
                 Id = a.Id,
                 Username = a.Username,

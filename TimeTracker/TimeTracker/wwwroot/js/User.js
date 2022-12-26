@@ -72,7 +72,7 @@ function Close() {
     $("#comformdelete").modal('hide');
 }
 
-function deleteProfile() {
+function deleteProfilePic() {
     var id = $("#deleteProfileId").val();
     if (id > 0) {
         $.ajax({

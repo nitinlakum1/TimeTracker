@@ -69,7 +69,7 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    model.Url = await _awsS3BucketService.UploadFile(model.AvatarFile, "");
+                    model.Url = await _awsS3BucketService.UploadFile(model.AvatarFile);
                     var addUser = _mapper.Map<AddEditUserModel>(model);
                     var result = await _userRepo.AddUser(addUser);
 

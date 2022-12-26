@@ -151,49 +151,67 @@ label {
     overflow-x: auto;
 }
 
-.rejected-status {
+.Reschedule-status {
     color: #76101a !important;
     background-color: #e5bbbf !important;
-    border-color: #f5c6cb !important;
 }
 
-.confirmed-status {
+.Confirmed-status {
     color: #0c4218 !important;
     background-color: #9bc9a5 !important;
-    border-color: #c3e6cb !important;
 }
 
-.selected-status {
+.Selected-status {
     color: #0c4218 !important;
     background-color: #bed9c4 !important;
-    border-color: #c3e6cb !important;
 }
 
-.inProcess-status {
+.InProcess-status {
     color: #523d00 !important;
     background-color: #f9e4a0 !important;
-    border-color: #ffeeba !important;
 }
 
-.interview-status {
+.ScheduleInterview-status {
     color: #00274e !important;
     background-color: #afc8e1 !important;
-    border-color: #ffeeba !important;
 }
 
-.notInterested-status {
+.NotInterested-status {
     color: #201f1f !important;
     background-color: #dfe6e9 !important;
-    border-color: #f5c6cb !important;
 }
 
-.callNotAttend-status {
+.CallNotAttend-status {
     color: #2e005a !important;
     background-color: #d7baf5 !important;
-    border-color: #f5c6cb !important;
+}
+
+.FollowBack-status {
+    color: #011913 !important;
+    background-color: #419e89de !important;
+}
+
+.Rejected-status {
+    color: #500202 !important;
+    background-color: #f68c8cd4 !important;
+}
+
+.NotSuitable-status {
+    color: #000a0e !important;
+    background-color: #34ace0 !important;
 }
 
 .required:after {
     content: "*";
     color: red;
+}
+
+    .swal-toast-position h2 {
+        font-size: 15px !important;
+    }
+
+.holiday-note {
+    font-size: 14px;
+    text-align: right;
+    font-weight: 400
 }

@@ -38,7 +38,7 @@ namespace TimeTracker.Models.User
 
         public string? Url { get; set; }
 
-        public IFormFile AvatarFile { get; set; }
+        public IFormFile? AvatarFile { get; set; }
 
         public long? Avatar { get; set; }
     }

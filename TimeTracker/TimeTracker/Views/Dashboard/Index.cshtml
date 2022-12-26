@@ -44,13 +44,41 @@
         </div>
     </div>
 </div>
+<button type="button" class="btn btn-success swalDefaultSuccess">
+    Launch Success Toast
+</button>
 
+<button type="button" class="btn btn-warning swalDefaultWarning">
+    Launch Warning Toast
+</button>
 
 @section Scripts{
-<script>
-    $(document).ready(function () {
-        SelectedMenu('menuDashboard', '');
-        bindDataTable();
-    });
-</script>
+    <script>
+        $(document).ready(function () {
+            SelectedMenu('menuDashboard', '');
+            bindDataTable();
+        });
+
+        $(function () {
+            var Toast = Swal.mixin({
+                toast: true,
+                customClass: 'swal-toast-position',
+                position: 'center',
+                showConfirmButton: false,
+                timer: 3000000
+            });
+            $('.swalDefaultSuccess').click(function () {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'deleted succesfully!'
+                })
+            });
+            $('.swalDefaultWarning').click(function () {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitrLorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+        });
+    </script>
 }
