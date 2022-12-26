@@ -18,30 +18,12 @@ namespace TimeTracker_Data.Modules
         #endregion
 
         #region Methods
-        public async Task<(List<Holidays>, int)> GetHolidayList(HolidayFilterModel model)
+        public async Task<List<Holidays>> GetHolidayList(HolidayFilterModel model)
         {
-            var result = _context.Holidays
-                .Where(a => string.IsNullOrWhiteSpace(model.SearchText)
-                       || a.Name.ToLower().Contains(model.SearchText));
-
-            var totalRecord = result.Count();
-
-            if (model.SortOrder.ToLower().Equals("desc")
-                && model.SortColumn.ToLower().Equals("name"))
-            {
-                result = result.OrderByDescending(a => a.Name);
-            }
-            if (model.SortOrder.ToLower().Equals("asc")
-                && model.SortColumn.ToLower().Equals("username"))
-            {
-                result = result.OrderBy(a => a.Name);
-            }
-
-            result = result
-                .Skip(model.DisplayStart)
-                .Take(model.PageSize);
-
-            return (await result.ToListAsync(), totalRecord);
+            return await _context.Holidays
+                .Where(a => a.Date.Year == model.Year)
+                .OrderBy(a => a.Date)
+                .ToListAsync();
         }
 
         public async Task<Holidays> GetHolidayById(int id)

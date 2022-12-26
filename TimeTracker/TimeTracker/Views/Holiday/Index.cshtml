@@ -12,15 +12,15 @@
 }
 
 @section ContentHeader{
-    <div class="col-sm-6">
-        <h4 class="m-0">Holiday</h4>
-    </div>
-    <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active">Holiday</li>
-        </ol>
-    </div>
+<div class="col-sm-6">
+    <h4 class="m-0">Holiday</h4>
+</div>
+<div class="col-sm-6">
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item active">Holiday</li>
+    </ol>
+</div>
 }
 
 <div class="row">
@@ -31,16 +31,38 @@
                     <i class="fa-solid fa-calendar-days"></i>
                     Holiday
                 </h3>
-                @if (roleId == (int)Roles.Admin)
-                {
-                    <div style="float:right;">
-                        <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>
+                <div style="float:right; display:flex;">
+                    <div style="float:right; margin-left:5px;">
+                        <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbYears">
+                            @for (int i = 2022; i <= 2025; i++)
+                            {
+                                if (i == DateTime.Now.Year)
+                                {
+                                    <option selected value="@i">@i</option>
+                                }
+                                else
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            }
+                        </select>
                     </div>
-                }
+                    @if (roleId == (int)Roles.Admin)
+                    {
+                        <div style="float:right;margin-left:5px;">
+                            <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>
+                        </div>
+                    }
+                </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="padding-top: 3px;">
                 <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
+                        <div class="col-sm-12" style="text-align: right;">
+                            <span class="holiday-note">
+                                *Optional Holiday <strong>'Bakrid / Eid al Adha'</strong> or <strong>'Janmashtami'</strong>
+                            </span>
+                        </div>
                         <div class="col-sm-12">
                             <table class="table table-sm table-bordered table-striped" id="tblHoliday">
                                 <thead>
@@ -79,12 +101,12 @@
 <p hidden id="roleId">@roleId</p>
 
 @section Scripts{
-    <script src="~/js/Holiday.js"></script>
+<script src="~/js/Holiday.js"></script>
 
-    <script>
-        $(document).ready(function () {
-            SelectedMenu('menuMaster', 'menuHolidayList');
-            bindDataTable();
-        });
-    </script>
+<script>
+    $(document).ready(function () {
+        SelectedMenu('menuMaster', 'menuHolidayList');
+        bindDataTable();
+    });
+</script>
 }

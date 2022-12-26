@@ -4,7 +4,7 @@ namespace TimeTracker_Repository
 {
     public interface IHolidayRepo
     {
-        Task<(List<HolidayModel>, int)> GetHolidayList(HolidayFilterModel model);
+        Task<List<HolidayModel>> GetHolidayList(HolidayFilterModel model);
 
         Task<HolidayModel> GetHolidayById(int id);
 

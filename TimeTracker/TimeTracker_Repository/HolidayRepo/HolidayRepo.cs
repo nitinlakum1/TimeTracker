@@ -21,10 +21,10 @@ namespace TimeTracker_Repository
         #endregion
 
         #region Methods
-        public async Task<(List<HolidayModel>, int)> GetHolidayList(HolidayFilterModel model)
+        public async Task<List<HolidayModel>> GetHolidayList(HolidayFilterModel model)
         {
-            var (holidayList, totalRecord) = await _holidayData.GetHolidayList(model);
-            return (_mapper.Map<List<HolidayModel>>(holidayList), totalRecord);
+            var holidayList = await _holidayData.GetHolidayList(model);
+            return _mapper.Map<List<HolidayModel>>(holidayList);
         }
 
         public async Task<HolidayModel> GetHolidayById(int id)

@@ -37,6 +37,7 @@ namespace TimeTrackerService
             {
                 wifiName = await GetConnectedWifi();
             }
+            WriteTextFile("OnStart", "Service is Start", 0);
             await SetLog("Service is Start", LogTypes.ServiceStart);
             servesStart = true;
         }
@@ -49,15 +50,19 @@ namespace TimeTrackerService
             {
                 case SessionChangeReason.SessionLogon:
                     while (!servesStart) { }
+                    WriteTextFile("OnSessionChange", "System Log On", 0);
                     await SetLog("System Log On", LogTypes.SystemLogOn);
                     break;
                 case SessionChangeReason.SessionLogoff:
+                    WriteTextFile("OnSessionChange", "System Log Off", 0);
                     SystemLogOff("System Log Off", LogTypes.SystemLogOff);
                     break;
                 case SessionChangeReason.SessionLock:
+                    WriteTextFile("OnSessionChange", "System Locked", 0);
                     await SetLog("System Locked", LogTypes.SystemLock);
                     break;
                 case SessionChangeReason.SessionUnlock:
+                    WriteTextFile("OnSessionChange", "System Unlocked", 0);
                     await SetLog("System Unlocked", LogTypes.SystemUnlock);
                     break;
                 default:
@@ -179,6 +184,18 @@ namespace TimeTrackerService
                     await sWriter.WriteLineAsync($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)module} | {message}");
                     sWriter.Flush();
                     sWriter.Close();
+
+                    var macAddress = GetMacAddress();
+
+                    AddSystemLogModel model = new AddSystemLogModel()
+                    {
+                        MacAddress = macAddress,
+                        LogType = module,
+                        Description = message,
+                        LogTime = logTime,
+                        CreatedOn = DateTime.Now,
+                    };
+                    await systemLogData.AddSystemLog(model);
                 }
                 else
                 {
@@ -302,7 +319,7 @@ namespace TimeTrackerService
                 FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
                 StreamWriter sWriter = new StreamWriter(fs);
                 sWriter.BaseStream.Seek(0, SeekOrigin.End);
-                sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | Line Number: {lineNumber} | {methodName} | {message}");
+                sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss:fff tt} | Line Number: {lineNumber} | {methodName} | {message}");
                 sWriter.Flush();
                 sWriter.Close();
             }
