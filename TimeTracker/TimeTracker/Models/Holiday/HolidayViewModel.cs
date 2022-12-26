@@ -6,10 +6,10 @@ namespace TimeTracker.Models.Holiday
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Holiday is required.")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Date is required.")]
         public DateTime Date { get; set; }
     }
 }

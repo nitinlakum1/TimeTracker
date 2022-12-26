@@ -11,7 +11,7 @@ namespace TimeTracker.Models.Salary
         [Required(ErrorMessage = "Salary is required.")]
         public decimal Salary { get; set; }
 
-        [Required(ErrorMessage = "FromDate is required.")]
+        [Required(ErrorMessage = "From Date is required.")]
         public DateTime FromDate { get; set; }
 
         public DateTime? ToDate { get; set; }

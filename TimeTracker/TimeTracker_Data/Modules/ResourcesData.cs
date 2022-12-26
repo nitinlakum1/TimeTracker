@@ -74,7 +74,7 @@ namespace TimeTracker_Data.Modules
                     .Where(a => a.city.ToLower().Contains(model.City));
             }
 
-            if (model.Experience > 0)
+            if (model.Experience >= 0)
             {
                 result = result
                     .Where(a => a.workYears == model.Experience);

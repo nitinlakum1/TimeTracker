@@ -149,9 +149,15 @@ function bindMRDataTable() {
                 columnDefs: [
                     {
                         targets: 4,
+                        "createdCell": function (td, cellData, rowData, row, col) {
+                            switch (cellData) {
+                                case "00:00":
+                                    $(td).addClass('Reschedule-status');
+                            }
+                        },
                         render: function (data, type, row) {
                             if (row.totalTime == '00:00') {
-                                return '<span class="new-btn-danger" style="padding: 3px 20px 4px 20px; border-radius:2px;">00:00</span>';
+                                return '<span>00:00</span>';
                             } else {
                                 totalHours += parseInt(row.totalTime.split(':')[0]);
                                 totalMinutes += parseInt(row.totalTime.split(':')[1]);
