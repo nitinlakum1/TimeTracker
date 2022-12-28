@@ -65,3 +65,63 @@
 $('#cmbUser').change(function () {
     $('#tblSalary').DataTable().draw();
 });
+
+
+function bindSRDataTable() {
+    datatable = $('#tblSalaryReport')
+        .DataTable(
+            {
+                "sAjaxSource": "/Salary/LoadSalaryReport",
+                "bServerSide": true,
+                "bProcessing": true,
+                "bSearchable": true,
+                "scrollX": true,
+                "order": [[0, "DESC"]],
+                "paging": true,
+                "searching": true,
+                "bAutoWidth": false,
+                "language": {
+                    "emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                }, "fnServerParams": function (aoData) {
+                    aoData.push({
+                        "name": "filter", "value": JSON.stringify({
+                            UserId: $('#cmbUser').val(),
+                        })
+                    });
+                    perm = aoData;
+                },
+                "aoColumns": [
+                    { "data": "username" },
+                    {
+                        "data": "salaryDate", width: 120, "render": function (data) {
+                            return setDateTimeFormat(data, 'MMMM-yyyy');
+                        },
+                    },
+                    { "data": "amount", width: 120 },
+                ],
+                processing: true,
+            });
+}
+
+$('#cmbUser').change(function () {
+    $('#tblSalaryReport').DataTable().draw();
+});
+
+$('#UserId').change(function () {
+    var id = $('#UserId').val();
+    if (id > 0) {
+        $.ajax({
+            url: '/Salary/SalaryAmount/',
+            type: 'GET',
+            data: { id: id },
+            success: function (result) {
+                $('#Amount').val(result);
+            },
+            error: function (result) {
+                alert("Followup not Found!");
+            },
+        })
+    }
+});

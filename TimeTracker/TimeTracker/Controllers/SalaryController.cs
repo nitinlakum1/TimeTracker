@@ -8,6 +8,7 @@ using TimeTracker.Models;
 using TimeTracker.Models.Salary;
 using TimeTracker_Data.Migrations;
 using TimeTracker_Data.Model;
+using TimeTracker_Model.Resources;
 using TimeTracker_Model.Salary;
 using TimeTracker_Model.SystemLog;
 using TimeTracker_Repository.SalaryRepo;
@@ -32,7 +33,7 @@ namespace TimeTracker.Controllers
             _mapper = mapper;
             _userRepo = userRepo;
             _httpContextAccessor = httpContextAccessor;
-        } 
+        }
         #endregion
 
         #region Method
@@ -47,13 +48,10 @@ namespace TimeTracker.Controllers
         {
             var dtParam = _mapper.Map<SalaryFilterModel>(param);
 
-            int userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
-            dtParam.UserId = userId;
-
             if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
             {
                 var filterData = JsonConvert.DeserializeObject<SalaryFilterModel>(filter);
-                dtParam.UserId = filterData?.UserId == null || filterData?.UserId == 0 ? userId : filterData?.UserId;
+                dtParam.UserId = filterData?.UserId;
             }
 
             var (salaryList, totalRecord) = await _salaryRepo.GetSalary(dtParam);
@@ -129,8 +127,72 @@ namespace TimeTracker.Controllers
                 throw;
             }
             return View();
-        } 
-        #endregion
+        }
 
+        public async Task<IActionResult> SalaryReport()
+        {
+            var users = await _userRepo.GetUserLookup();
+            ViewBag.Users = new SelectList(users, "Id", "Username");
+            return View();
+        }
+
+        public async Task<IActionResult> LoadSalaryReport(DatatableParamViewModel param, string filter)
+        {
+            var dtParam = _mapper.Map<SalaryFilterModel>(param);
+            if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
+            {
+                var filterData = JsonConvert.DeserializeObject<SalaryFilterModel>(filter);
+                dtParam.UserId = filterData?.UserId;
+            }
+
+            var (salaryReportList, totalRecord) = await _salaryRepo.GetSalaryReport(dtParam);
+
+            return Json(new
+            {
+                param.sEcho,
+                iTotalRecords = totalRecord,
+                iTotalDisplayRecords = totalRecord,
+                aaData = salaryReportList
+            });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateSalaryReport()
+        {
+            var users = await _userRepo.GetUserLookup();
+            ViewBag.Users = new SelectList(users, "Id", "Username");
+            return View();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> CreateSalaryReport(SalaryReportViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var addSalaryReport = _mapper.Map<AddEditSalaryReportModel>(model);
+                    var result = await _salaryRepo.AddSalaryReport(addSalaryReport);
+
+                    if (result)
+                    {
+                        return RedirectToAction("SalaryReport");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
+        }
+
+        public async Task<IActionResult> SalaryAmount(int id)
+        {
+            var salaryAmount = await _salaryRepo.GetAmountById(id);
+            return Json(salaryAmount);
+        }
+        #endregion
     }
 }

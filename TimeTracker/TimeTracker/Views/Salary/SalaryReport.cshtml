@@ -1,0 +1,82 @@
+﻿@using TimeTracker.Helper;
+@using TimeTracker_Model;
+@model List<TimeTracker_Model.Salary.SalaryReportModel>
+
+@{
+    ViewData["Title"] = "SalaryReport";
+    int roleId = 0;
+    if (User != null)
+    {
+        roleId = User.GetLoginRole();
+    }
+}
+
+@section ContentHeader{
+    <div class="col-sm-6">
+        <h4 class="m-0">Salary Report</h4>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">SalaryReport</li>
+        </ol>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-lightblue card-outline">
+            <div class="card-header">
+                <h3 class="card-title font-color">
+                    <i class="fa-solid fa-wallet"></i>
+                    Salary Report
+                </h3>
+                <div style="float:right; display:flex;">
+                    @if (roleId == (int)Roles.Admin)
+                    {
+                        <div style="float:right; margin-left:5px;">
+                            <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbUser">
+                                <option value="0">Select User</option>
+                            </select>
+                        </div>
+                    }
+                    @if (roleId == (int)Roles.Admin)
+                    {
+                        <div style="float:right;margin-left:5px;">
+                            <a asp-action="CreateSalaryReport" class="btn btn-block btn-info btn-sm theme-color">Create</a>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-sm table-bordered table-striped" id="tblSalaryReport">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Salary Month</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/Salary.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            SelectedMenu('menuAttendance', 'menuSalaryReport');
+            bindSRDataTable();
+        });
+    </script>
+}

@@ -61,6 +61,48 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
+        public async Task<(List<SalaryReports>, int)> GetSalaryReport(SalaryFilterModel model)
+        {
+            var result = _context.SalaryReports
+                .Include(a => a.Users)
+                .Where(a => (model.UserId == 0
+                            || model.UserId == 1
+                            || a.UserId == model.UserId)
+                      && (string.IsNullOrWhiteSpace(model.SearchText)));
+
+            var totalRecord = result.Count();
+
+            result = result
+                .Skip(model.DisplayStart)
+                .Take(model.PageSize);
+
+            return (await result.ToListAsync(), totalRecord);
+        }
+
+        public async Task<bool> AddSalaryReport(SalaryReports model)
+        {
+            var result = await _context.Salarys
+                .Where(a => a.UserId == model.UserId)
+                .OrderByDescending(a => a.Id)
+                .FirstOrDefaultAsync();
+
+            model.Amount = result.Salary;
+
+            _context.SalaryReports.Add(model);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<decimal> GetAmountById(int id)
+        {
+            var result = await _context.Salarys
+                .Where(a=> a.UserId == id)
+                .OrderByDescending(a=> a.Id)
+                .FirstOrDefaultAsync();
+
+            result ??= new Salarys();
+            return result.Salary;
+        }
         #endregion
     }
 }

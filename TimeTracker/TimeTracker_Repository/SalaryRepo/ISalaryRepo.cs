@@ -12,7 +12,13 @@ namespace TimeTracker_Repository.SalaryRepo
 
         Task<bool> AddSalary(AddEditSalaryModel model);
 
-        Task<bool> UpdateSalary(AddEditSalaryModel model); 
+        Task<bool> UpdateSalary(AddEditSalaryModel model);
+
+        Task<(List<SalaryReportModel>, int)> GetSalaryReport(SalaryFilterModel model);
+
+        Task<bool> AddSalaryReport(AddEditSalaryReportModel model);
+
+        Task<decimal> GetAmountById(int id);
         #endregion
 
     }

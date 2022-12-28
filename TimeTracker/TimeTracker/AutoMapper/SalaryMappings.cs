@@ -20,6 +20,11 @@ namespace TimeTracker.AutoMapper
             profile.CreateMap<Salarys, SalaryModel>()
                .ForMember(dest => dest.Username, source => source.MapFrom(x => x.Users.Username));
 
+            profile.CreateMap<SalaryReports, SalaryReportModel>()
+               .ForMember(dest => dest.Username, source => source.MapFrom(x => x.Users.Username));
+            profile.CreateMap<SalaryReportViewModel, AddEditSalaryReportModel>();
+            profile.CreateMap<AddEditSalaryReportModel, SalaryReports>();
+
             profile.CreateMap<DatatableParamViewModel, SalaryFilterModel>()
                 .ForMember(source => source.DisplayStart, dest => dest.MapFrom(x => x.iDisplayStart))
                 .ForMember(source => source.PageSize, dest => dest.MapFrom(x => x.iDisplayLength))

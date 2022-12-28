@@ -18,5 +18,6 @@ namespace TimeTracker_Data
         public DbSet<Resources> Resources { get; set; }
         public DbSet<ResourcesFollowup> ResourcesFollowup { get; set; }
         public DbSet<ErrorLogs> ErrorLogs { get; set; }
+        public DbSet<SalaryReports> SalaryReports { get; set; }
     }
 }

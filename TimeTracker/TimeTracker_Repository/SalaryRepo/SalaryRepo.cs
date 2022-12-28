@@ -54,6 +54,24 @@ namespace TimeTracker_Repository.SalaryRepo
             return await _salaryData.UpdateSalary(result);
         }
 
+        public async Task<(List<SalaryReportModel>, int)> GetSalaryReport(SalaryFilterModel model)
+        {
+            var (result, totalRecord) = await _salaryData.GetSalaryReport(model);
+
+            var salaryList = _mapper.Map<List<SalaryReportModel>>(result);
+            return (salaryList, totalRecord);
+        }
+
+        public async Task<bool> AddSalaryReport(AddEditSalaryReportModel model)
+        {
+            var result = _mapper.Map<SalaryReports>(model);
+            return await _salaryData.AddSalaryReport(result);
+        }
+
+        public async Task<decimal> GetAmountById(int id)
+        {
+            return await _salaryData.GetAmountById(id);
+        }
         #endregion
     }
 }
