@@ -95,8 +95,13 @@ function bindSRDataTable() {
                 "aoColumns": [
                     { "data": "username" },
                     {
-                        "data": "salaryDate", width: 120, "render": function (data) {
+                        "data": "salaryMonth", width: 120, "render": function (data) {
                             return setDateTimeFormat(data, 'MMMM-yyyy');
+                        },
+                    },
+                    {
+                        "data": "salaryDate", width: 120, "render": function (data) {
+                            return setDateTimeFormat(data, 'DD-MM-yyyy');
                         },
                     },
                     { "data": "amount", width: 120 },

@@ -94,4 +94,18 @@ namespace TimeTracker_Model
         Confirmed = 10,
     }
     #endregion
+
+    #region Status
+    public enum Status : int
+    {
+        [Description("Apply")]
+        Apply = 1,
+
+        [Description("Approved")]
+        Approved = 2,
+
+        [Description("Declined")]
+        Declined = 3,
+    } 
+    #endregion
 }

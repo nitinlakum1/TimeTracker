@@ -87,6 +87,7 @@ namespace TimeTracker_Data.Modules
                 .FirstOrDefaultAsync();
 
             model.Amount = result.Salary;
+            model.SalaryDate = DateTime.Now.Date;
 
             _context.SalaryReports.Add(model);
             await _context.SaveChangesAsync();

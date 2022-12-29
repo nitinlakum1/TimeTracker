@@ -6,6 +6,8 @@
 
         public string Username { get; set; }
 
+        public DateTime SalaryMonth { get; set; }
+
         public DateTime SalaryDate { get; set; }
 
         public decimal Amount { get; set; }

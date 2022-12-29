@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TimeTracker_Model;
 
 namespace TimeTracker_Data.Model
 {
-    public class SalaryReports
+    public class Leaves
     {
         [Key]
         public int Id { get; set; }
@@ -13,13 +14,22 @@ namespace TimeTracker_Data.Model
         public int UserId { get; set; }
 
         [Required]
-        public DateTime SalaryMonth { get; set; }
+        public DateTime LeaveFromDate { get; set; }
 
         [Required]
-        public DateTime SalaryDate { get; set; }
+        public DateTime LeaveToDate { get; set; }
 
         [Required]
-        public decimal Amount { get; set; }
+        public DateTime ApplyDate { get; set; }
+
+        [Required]
+        public string Reason { get; set; }
+
+        [Required]
+        public Status Status { get; set;}
+
+        [Required]
+        public bool IsPaid { get; set; }
 
         public Users Users { get; set; }
     }
