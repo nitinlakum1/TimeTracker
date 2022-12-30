@@ -92,3 +92,16 @@ function deleteProfilePic() {
         })
     }
 }
+
+$('#btnUpdateTimeTracker').click(function () {
+    $.ajax({
+        url: '/User/CheckUpdate/',
+        type: 'POST',
+        success: function (result) {
+            setStatusMsg(result);
+        },
+        error: function (result) {
+            alert("Profile not Delete!");
+        },
+    })
+});
