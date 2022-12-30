@@ -14,6 +14,8 @@ namespace TimeTracker_Repository.LeaveRepo
         Task<bool> ChangeStatus(int id, int btnId);
 
         Task<List<LeaveModel>> GetLeaveDetail(int id);
+
+        Task<int> LeaveCount(int id);
         #endregion
 
     }

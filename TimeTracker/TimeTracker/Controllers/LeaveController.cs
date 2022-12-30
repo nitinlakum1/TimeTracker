@@ -44,6 +44,10 @@ namespace TimeTracker.Controllers
         #region Method
         public async Task<IActionResult> Index()
         {
+            int userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
+            var LeaveCount = await _leaveRepo.LeaveCount(userId);
+            ViewBag.Count = LeaveCount;
+
             var users = await _userRepo.GetUserLookup();
             ViewBag.Users = new SelectList(users, "Id", "Username");
             return View();

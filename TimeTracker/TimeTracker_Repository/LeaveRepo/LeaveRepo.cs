@@ -50,6 +50,11 @@ namespace TimeTracker_Repository.LeaveRepo
             var leaveList = _mapper.Map<List<LeaveModel>>(result);
             return leaveList;
         }
+
+        public async Task<int> LeaveCount(int id)
+        {
+            return await _leaveData.LeaveCount(id);
+        }
         #endregion
     }
 }

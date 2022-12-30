@@ -54,7 +54,8 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label asp-for="IsPaid" class="required" style="display:block;">Paid</label>
-                            <input asp-for="IsPaid" type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="Yes" data-off-text="No" data-off-val="No" data-size="large" onchange="inputValue()">
+                            <input asp-for="IsPaid" type="hidden" />
+                            <input id="inputValue" type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success" data-on-text="Yes" data-off-text="No" data-off-val="No" data-size="large">
                         </div>
                     </div>
                     <div class="row">
@@ -88,9 +89,7 @@
         });
         $("input[data-bootstrap-switch]").bootstrapSwitch();
 
-        function inputValue() {
-            var a = $("#IsPaid").prop('checked');
-            $("#IsPaid").val(a);
-        }
+        var a = $("#inputValue").prop('checked');
+        $("#IsPaid").val(a);
     </script>
 }

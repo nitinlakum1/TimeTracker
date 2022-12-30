@@ -30,6 +30,15 @@
                     <i class="fa-solid fa-wallet"></i>
                     Leave
                 </h3>
+                @if (roleId == (int)Roles.Employee)
+                {
+                    <h3 class="card-title ml-3">
+                        Total Leave: <b class="font-color">12</b>
+                    </h3>
+                    <h3 class="card-title ml-3">
+                        Pending Leave: <b class="font-color">@(12 - @ViewBag.Count)</b>
+                    </h3>
+                }
                 @if (roleId == (int)Roles.Admin || roleId == (int)Roles.HR)
                 {
                     <div style="float:right; display:flex;">
@@ -75,13 +84,16 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Are you sure to change status</h5>
-                <p id="statusId"></p>
+                <h5 class="modal-title">Are you sure you want to change the status?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <input type="hidden" id="statusId" />
             </div>
             <div class="modal-footer">
                 @*enum Approved = 2, Declined = 3*@
                 <button type="button" id="btnApproved" class="btn btn-success" data-dismiss="modal" value="2">Approved</button>
-                <button type="button" id="btnDeclined" class="btn btn-danger" value="3" >Declined</button>
+                <button type="button" id="btnDeclined" class="btn btn-danger" value="3">Declined</button>
             </div>
         </div>
     </div>

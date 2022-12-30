@@ -28,14 +28,15 @@
                     <p><b>Status: </b>@item.LeaveStatusName</p>
                 </div>
                 <div class="col-md-6">
-                    <p><b>Paid: </b>@item.IsPaid</p>
+                    <p><b>Paid: </b>@(item.IsPaid ? "Yes" : "No")</p>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
+                    <label><b>Reason: </b></label>
                     <fieldset class="p-2" style="border: 1px solid #d1d1d1; border-radius:3px;">
-                        <legend class="w-auto" style="font-size:1rem; font-weight:bold;">Reason: </legend>
+                        @*<legend class="w-auto" style="font-size:1rem; font-weight:bold;">Reason: </legend>*@
                         <div>
                             <p>@item.Reason</p>
                         </div>

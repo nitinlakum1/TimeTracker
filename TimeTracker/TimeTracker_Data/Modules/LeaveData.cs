@@ -24,6 +24,7 @@ namespace TimeTracker_Data.Modules
         {
             var result = _context.Leaves
                 .Include(a => a.Users)
+                .OrderByDescending(a => a.ApplyDate)
                 .Where(a => (model.UserId == 0
                             || model.UserId == 1
                             || a.UserId == model.UserId)
@@ -35,7 +36,7 @@ namespace TimeTracker_Data.Modules
                 .Skip(model.DisplayStart)
                 .Take(model.PageSize);
 
-            return (await result.OrderBy(a => a.ApplyDate).ToListAsync(), totalRecord);
+            return (await result.ToListAsync(), totalRecord);
         }
 
         public async Task<bool> AddLeave(Leaves model)
@@ -66,6 +67,16 @@ namespace TimeTracker_Data.Modules
                 .Include(a => a.Users)
                 .Where(a => a.Id == id)
                 .ToListAsync();
+        }
+
+        public async Task<int> LeaveCount(int id)
+        {
+            var result = await _context.Leaves.
+                Where(a => a.UserId == id
+                        && a.Status == Status.Approved
+                        && a.IsPaid == true)
+                        .CountAsync();
+            return result;
         }
         #endregion
     }
