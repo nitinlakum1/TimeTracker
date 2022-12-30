@@ -25,6 +25,9 @@ namespace TimeTracker_Data.Model
         [Required]
         public DateTime CreatedOn { get; set; }
 
+        [Required]
+        public string WiFiName { get; set; }
+
         public Users Users { get; set; }
     }
 }

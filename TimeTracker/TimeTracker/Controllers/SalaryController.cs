@@ -48,10 +48,13 @@ namespace TimeTracker.Controllers
         {
             var dtParam = _mapper.Map<SalaryFilterModel>(param);
 
+            int userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
+            dtParam.UserId = userId;
+
             if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
             {
                 var filterData = JsonConvert.DeserializeObject<SalaryFilterModel>(filter);
-                dtParam.UserId = filterData?.UserId;
+                dtParam.UserId = filterData?.UserId == null || filterData?.UserId == 0 ? userId : filterData?.UserId;
             }
 
             var (salaryList, totalRecord) = await _salaryRepo.GetSalary(dtParam);
@@ -139,10 +142,14 @@ namespace TimeTracker.Controllers
         public async Task<IActionResult> LoadSalaryReport(DatatableParamViewModel param, string filter)
         {
             var dtParam = _mapper.Map<SalaryFilterModel>(param);
+
+            int userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
+            dtParam.UserId = userId;
+
             if (!string.IsNullOrWhiteSpace(filter) && filter != "{}")
             {
                 var filterData = JsonConvert.DeserializeObject<SalaryFilterModel>(filter);
-                dtParam.UserId = filterData?.UserId;
+                dtParam.UserId = filterData?.UserId == null || filterData?.UserId == 0 ? userId : filterData?.UserId;
             }
 
             var (salaryReportList, totalRecord) = await _salaryRepo.GetSalaryReport(dtParam);

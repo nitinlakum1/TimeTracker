@@ -1,0 +1,47 @@
+﻿@model List<TimeTracker.Models.Leave.LeaveListViewModel>
+
+@if (Model is { Count: > 0 })
+{
+    foreach (var item in Model)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><b>Username: </b>@item.Username</p>
+                </div>
+                <div class="col-md-6">
+                    <p><b>Apply Date: </b>@item.ApplyDate.ToString("dd, MMM-yyyy")</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><b>Leave Start: </b>@item.LeaveFromDate.ToString("dd, MMM-yyyy")</p>
+                </div>
+                <div class="col-md-6">
+                    <p><b>Leave Start: </b>@item.LeaveToDate.ToString("dd, MMM-yyyy")</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p><b>Status: </b>@item.LeaveStatusName</p>
+                </div>
+                <div class="col-md-6">
+                    <p><b>Paid: </b>@item.IsPaid</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset class="p-2" style="border: 1px solid #d1d1d1; border-radius:3px;">
+                        <legend class="w-auto" style="font-size:1rem; font-weight:bold;">Reason: </legend>
+                        <div>
+                            <p>@item.Reason</p>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    }
+}

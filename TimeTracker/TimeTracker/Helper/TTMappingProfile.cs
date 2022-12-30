@@ -13,6 +13,7 @@ namespace TimeTracker.Helper
             HolidayMappings.Map(this);
             SalaryMappings.Map(this);
             ResourceMappings.Map(this);
+            LeaveMappings.Map(this);
         }
     }
 }

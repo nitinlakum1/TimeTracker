@@ -1,9 +1,8 @@
 ﻿@using TimeTracker.Helper;
 @using TimeTracker_Model;
-@model List<TimeTracker_Model.Salary.AddEditSalaryModel>
 
 @{
-    ViewData["Title"] = "Salary";
+    ViewData["Title"] = "Leave";
     int roleId = 0;
     if (User != null)
     {
@@ -13,12 +12,12 @@
 
 @section ContentHeader{
     <div class="col-sm-6">
-        <h4 class="m-0">Salary</h4>
+        <h4 class="m-0">Leave</h4>
     </div>
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active">Salary</li>
+            <li class="breadcrumb-item active">Leave</li>
         </ol>
     </div>
 }
@@ -29,7 +28,7 @@
             <div class="card-header">
                 <h3 class="card-title font-color">
                     <i class="fa-solid fa-wallet"></i>
-                    Salary
+                    Leave
                 </h3>
                 @if (roleId == (int)Roles.Admin || roleId == (int)Roles.HR)
                 {
@@ -49,13 +48,15 @@
                 <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
                         <div class="col-sm-12">
-                            <table class="table table-sm table-bordered table-striped" id="tblSalary">
+                            <table class="table table-sm table-bordered table-striped" id="tblLeave">
                                 <thead>
                                     <tr>
                                         <th>Username</th>
-                                        <th>Salary</th>
-                                        <th>From Date</th>
-                                        <th>To Date</th>
+                                        <th>Leave Start</th>
+                                        <th>Leave End</th>
+                                        <th>Apply On</th>
+                                        <th>Status</th>
+                                        <th>Paid</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -70,28 +71,45 @@
     </div>
 </div>
 
-<div class="modal fade" id="comformdelete">
+<div class="modal fade" id="comformChange">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Are you sure to delete</h5>
-                <p hidden id="deleteId"></p>
+                <h5 class="modal-title">Are you sure to change status</h5>
+                <p id="statusId"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="Close()">Close</button>
-                <button type="button" class="btn btn-danger" onclick="conformDelete()">Delete</button>
+                @*enum Approved = 2, Declined = 3*@
+                <button type="button" id="btnApproved" class="btn btn-success" data-dismiss="modal" value="2">Approved</button>
+                <button type="button" id="btnDeclined" class="btn btn-danger" value="3" >Declined</button>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalLeaveDetail">
+    <div class="modal-dialog" style="max-width: 550px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Leave Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadLeaveDetail">
+            </div>
+        </div>
+    </div>
+</div>
+
 <p hidden id="roleId">@roleId</p>
 
 @section Scripts{
-    <script src="~/js/salary.js"></script>
+    <script src="~/js/Leave.js"></script>
 
     <script>
         $(document).ready(function () {
-            SelectedMenu('menuMainSalary', 'menuSalary');
+            SelectedMenu('menuMaster', 'menuLeaveList');
             bindDataTable();
         });
     </script>

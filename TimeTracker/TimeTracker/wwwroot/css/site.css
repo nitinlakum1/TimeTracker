@@ -206,12 +206,23 @@ label {
     color: red;
 }
 
-    .swal-toast-position h2 {
-        font-size: 15px !important;
-    }
+.swal-toast-position h2 {
+    font-size: 15px !important;
+}
 
 .holiday-note {
     font-size: 14px;
     text-align: right;
     font-weight: 400
 }
+
+.bootstrap-switch-handle-off.bootstrap-switch-danger {
+    color: #721c24 !important;
+    background-color: #fbaeb5f2 !important;
+}
+
+.bootstrap-switch-handle-on.bootstrap-switch-success {
+    color: #155724 !important;
+    background-color: #95dca6eb !important;
+}
+

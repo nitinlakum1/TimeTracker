@@ -1,6 +1,7 @@
 ﻿using TimeTracker_Data.Modules;
 using TimeTracker_Model;
 using TimeTracker_Repository;
+using TimeTracker_Repository.LeaveRepo;
 using TimeTracker_Repository.ResourcesRepo;
 using TimeTracker_Repository.SalaryRepo;
 using TimeTracker_Repository.SystemLogRepo;
@@ -18,6 +19,7 @@ namespace TimeTracker.Configurations
             services.AddTransient<IHolidayRepo, HolidayRepo>();
             services.AddTransient<ISalaryRepo, SalaryRepo>();
             services.AddTransient<IResourceRepo, ResourceRepo>();
+            services.AddTransient<ILeaveRepo, LeaveRepo>();
             services.AddTransient<JwtSettingModel>();
             services.AddSingleton<AwsConfiguration>();
             //services.AddTransient<IAWSS3BucketService, AWSS3BucketService>();
@@ -30,6 +32,7 @@ namespace TimeTracker.Configurations
             services.AddTransient<HolidayData>();
             services.AddTransient<SalaryData>();
             services.AddTransient<ResourcesData>();
+            services.AddTransient<LeaveData>();
         }
     }
 }

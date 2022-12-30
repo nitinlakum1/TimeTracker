@@ -47,12 +47,6 @@
                     <p>Holiday List</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a asp-controller="Salary" asp-action="Index" class="nav-link" id="menuSalary">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Salary</p>
-                </a>
-            </li>
             @if (roleId == (int)Roles.Admin || roleId == (int)Roles.HR)
             {
                 <li class="nav-item">
@@ -62,6 +56,12 @@
                     </a>
                 </li>
             }
+            <li class="nav-item">
+                <a asp-controller="Leave" asp-action="Index" class="nav-link" id="menuLeaveList">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Leave</p>
+                </a>
+            </li>
         </ul>
     </li>
     <li class="nav-item">
@@ -83,6 +83,24 @@
                 <a asp-controller="SystemLog" asp-action="MonthlyReport" class="nav-link" id="menuMonthlyReport">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Monthly Report</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
+        <a href="#" class="nav-link" id="menuMainSalary">
+            <i class="nav-icon fa-solid fa-wallet"></i>
+            <p>
+                Salary
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a asp-controller="Salary" asp-action="Index" class="nav-link" id="menuSalary">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Salary</p>
                 </a>
             </li>
             <li class="nav-item">

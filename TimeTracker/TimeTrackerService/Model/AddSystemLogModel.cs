@@ -11,5 +11,6 @@ namespace TimeTrackerService.DataModel
         public string Description { get; set; }
         public DateTime LogTime { get; set; }
         public DateTime CreatedOn { get; set; }
+        public string WiFiName { get; set; }
     }
 }
