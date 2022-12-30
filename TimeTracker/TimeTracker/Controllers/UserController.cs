@@ -16,7 +16,7 @@ using TimeTracker_Repository.UserRepo;
 
 namespace TimeTracker.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepo _userRepo;
