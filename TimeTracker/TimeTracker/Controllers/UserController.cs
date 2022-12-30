@@ -206,34 +206,60 @@ namespace TimeTracker.Controllers
             {
                 try
                 {
-                    string stopDelete = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Stop_Delete.bat");
-                    Process proc = new Process();
-                    proc.StartInfo.FileName = stopDelete;
-                    proc.StartInfo.UseShellExecute = true;
-                    proc.StartInfo.Verb = "runas";
-                    proc.Start();
+                    await Task.Run(() =>
+                    {
+                        string stopDelete = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Stop.bat");
+                        Process proc = new Process();
+                        proc.StartInfo.FileName = stopDelete;
+                        proc.StartInfo.UseShellExecute = true;
+                        proc.StartInfo.Verb = "runas";
+                        proc.Start();
+                    });
                 }
                 catch { }
 
-                DirectoryInfo directoryInfo = new DirectoryInfo(@"C:\TimeTrackerService\");
-                foreach (FileInfo file in directoryInfo.GetFiles())
+                try
                 {
-                    file.Delete();
+                    await Task.Run(() =>
+                    {
+                        string stopDelete = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Delete.bat");
+                        Process proc = new Process();
+                        proc.StartInfo.FileName = stopDelete;
+                        proc.StartInfo.UseShellExecute = true;
+                        proc.StartInfo.Verb = "runas";
+                        proc.Start();
+                    });
                 }
+                catch { }
 
-                string fileName = Path.Combine(_hostingEnvironment.WebRootPath, "TimeTrackerService/");
-                WebClient webClient = new WebClient();
+                await Task.Run(() =>
                 {
-                    webClient.DownloadFile(fileName + @"\TimeTrackerService.exe", @"C:\TimeTrackerService\TimeTrackerService.exe");
-                    webClient.DownloadFile(fileName + @"\Newtonsoft.Json.dll", @"C:\TimeTrackerService\Newtonsoft.Json.dll");
-                }
+                    DirectoryInfo directoryInfo = new DirectoryInfo(@"C:\TimeTrackerService\");
+                    foreach (FileInfo file in directoryInfo.GetFiles())
+                    {
+                        file.Delete();
+                    }
+                });
 
-                string installStart = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Install_Start.bat");
-                Process proc1 = new Process();
-                proc1.StartInfo.FileName = installStart;
-                proc1.StartInfo.UseShellExecute = true;
-                proc1.StartInfo.Verb = "runas";
-                proc1.Start();
+                await Task.Run(() =>
+                {
+                    string fileName = Path.Combine(_hostingEnvironment.WebRootPath, "TimeTrackerService/");
+                    WebClient webClient = new WebClient();
+                    {
+                        webClient.DownloadFile(fileName + @"\TimeTrackerService.exe", @"C:\TimeTrackerService\TimeTrackerService.exe");
+                        webClient.DownloadFile(fileName + @"\Newtonsoft.Json.dll", @"C:\TimeTrackerService\Newtonsoft.Json.dll");
+                    }
+                });
+
+                await Task.Run(() =>
+                {
+                    string installStart = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Install_Start.bat");
+                    Process proc1 = new Process();
+                    proc1.StartInfo.FileName = installStart;
+                    proc1.StartInfo.UseShellExecute = true;
+                    proc1.StartInfo.Verb = "runas";
+                    proc1.Start();
+                });
 
                 isSuccess = true;
                 message = "Time Tracker has been updated.";
