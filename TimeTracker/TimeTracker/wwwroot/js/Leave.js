@@ -45,11 +45,7 @@
                     { "data": "leaveStatusName" },
                     {
                         "data": "isPaid", width: 65, "render": function (isPaid) {
-                            if (isPaid == true) {
-                                return 'Yes';
-                            } else {
-                                return 'No';
-                            }
+                            return (isPaid == true ? 'Yes' : 'No')
                         },
                     },
                     { "data": "id", width: 70 },
@@ -60,15 +56,13 @@
                         targets: 6,
                         render: function (data, type, row) {
                             var roleId = $("#roleId").text();
-                            // Admin = 1 , Employee = 2 , HR = 3
-                            if ((roleId == 1) && (row.leaveStatusName == "Apply")) {
-                                return '<a onclick="statusChange(' + row.id + ')" style="margin-right: 10px; cursor:pointer;" class="justify-content-center"><i class="fas fa-edit text-success"></i></a><a onclick="openLeaveModel(' + row.id + ')"><i class="fa-solid fa-eye font-color"  style="cursor:pointer; font-size: 16px;"></i></a>';
-                            } else if ((roleId == 1) && (row.leaveStatusName != "Apply")) {
-                                return '<a style="margin-right: 10px;" class="justify-content-center"><i class="fas fa-edit" style="color:grey;"></i></a><a onclick="openLeaveModel(' + row.id + ')"><i class="fa-solid fa-eye font-color" style="cursor:pointer; font-size: 16px;"></i></a>';
-                            }
-                            else {
-                                return '<a onclick="openLeaveModel(' + row.id + ')"><i class="fa-solid fa-eye font-color"  style="cursor:pointer; font-size: 16px;"></i></a>';
-                            }
+                            var style = row.leaveStatusName == "Apply" ? 'cursor:pointer;' : 'cursor:no-drop; color:grey !important;';
+                            var leaveId = row.leaveStatusName == "Apply" ? `onclick="statusChange('${leaveId}')"` : '';
+
+                            var btn1 = `<a ${leaveId} style="margin-right: 10px; ${style}" class="justify-content-center"><i class="fas fa-edit text-success" style="${style}"></i></a>`;
+
+                            // Admin = 1
+                            return (roleId == 1 ? btn1 : '') + `<a onclick="openLeaveModel('${row.id}')"><i class="fa-solid fa-eye font-color"  style="cursor:pointer; font-size: 16px;"></i></a>`;
                         },
                         className: "text-center",
                     }
