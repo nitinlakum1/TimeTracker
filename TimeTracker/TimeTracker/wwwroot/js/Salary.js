@@ -104,7 +104,9 @@ function bindSRDataTable() {
                             return setDateTimeFormat(data, 'DD-MM-yyyy');
                         },
                     },
-                    { "data": "amount", width: 120 },
+                    { "data": "basicSalary", width: 120 },
+                    { "data": "payableAmount", width: 120 },
+                    { "data": "workingDays", width: 120 },
                 ],
                 processing: true,
             });
@@ -114,15 +116,16 @@ $('#cmbUser').change(function () {
     $('#tblSalaryReport').DataTable().draw();
 });
 
-$('#UserId').change(function () {
+$('#SalaryMonth').change(function () {
     var id = $('#UserId').val();
+    var month = $('#SalaryMonth').val();
     if (id > 0) {
         $.ajax({
             url: '/Salary/SalaryAmount/',
             type: 'GET',
-            data: { id: id },
+            data: { id: id, month:month },
             success: function (result) {
-                $('#Amount').val(result);
+                $('#BasicSalary').val(result);
             },
             error: function (result) {
                 alert("Followup not Found!");

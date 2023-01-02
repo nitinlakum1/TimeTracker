@@ -68,9 +68,9 @@ namespace TimeTracker_Repository.SalaryRepo
             return await _salaryData.AddSalaryReport(result);
         }
 
-        public async Task<decimal> GetAmountById(int id)
+        public async Task<decimal> GetAmountById(int id, string month)
         {
-            return await _salaryData.GetAmountById(id);
+            return await _salaryData.GetAmountById(id, month);
         }
         #endregion
     }

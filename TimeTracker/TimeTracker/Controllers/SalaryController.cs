@@ -195,9 +195,9 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        public async Task<IActionResult> SalaryAmount(int id)
+        public async Task<IActionResult> SalaryAmount(int id, string month)
         {
-            var salaryAmount = await _salaryRepo.GetAmountById(id);
+            var salaryAmount = await _salaryRepo.GetAmountById(id, month);
             return Json(salaryAmount);
         }
         #endregion

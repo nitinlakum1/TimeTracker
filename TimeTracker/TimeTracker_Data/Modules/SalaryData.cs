@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TimeTracker_Data.Model;
+using TimeTracker_Model;
 using TimeTracker_Model.Salary;
 
 namespace TimeTracker_Data.Modules
@@ -86,7 +87,7 @@ namespace TimeTracker_Data.Modules
                 .OrderByDescending(a => a.Id)
                 .FirstOrDefaultAsync();
 
-            model.Amount = result.Salary;
+            model.BasicSalary = result.Salary;
             model.SalaryDate = DateTime.Now.Date;
 
             _context.SalaryReports.Add(model);
@@ -94,11 +95,15 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
-        public async Task<decimal> GetAmountById(int id)
+        public async Task<decimal> GetAmountById(int id, string month)
         {
+            
+
+
+
             var result = await _context.Salarys
-                .Where(a=> a.UserId == id)
-                .OrderByDescending(a=> a.Id)
+                .Where(a => a.UserId == id)
+                .OrderByDescending(a => a.Id)
                 .FirstOrDefaultAsync();
 
             result ??= new Salarys();

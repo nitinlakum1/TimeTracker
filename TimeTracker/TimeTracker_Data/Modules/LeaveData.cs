@@ -2,6 +2,7 @@
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Leave;
 using TimeTracker_Model;
+using System.Net.Http;
 
 namespace TimeTracker_Data.Modules
 {
@@ -9,12 +10,14 @@ namespace TimeTracker_Data.Modules
     {
         #region Declaration
         private readonly TTContext _context;
+
         #endregion
 
         #region Const
         public LeaveData(TTContext context)
         {
             _context = context;
+
         }
         #endregion
 
@@ -42,6 +45,7 @@ namespace TimeTracker_Data.Modules
         public async Task<bool> AddLeave(Leaves model)
         {
             model.ApplyDate = DateTime.Now;
+            model.Status = Status.Apply;
 
             _context.Leaves.Add(model);
             await _context.SaveChangesAsync();
@@ -69,13 +73,21 @@ namespace TimeTracker_Data.Modules
                 .ToListAsync();
         }
 
-        public async Task<int> LeaveCount(int id)
+        public async Task<int> LeaveCount(int? id)
         {
-            var result = await _context.Leaves.
+            var count = await _context.Leaves.
                 Where(a => a.UserId == id
                         && a.Status == Status.Approved
-                        && a.IsPaid == true)
-                        .CountAsync();
+                        && a.IsPaid == true).ToListAsync();
+
+            var countFrom = count.Select(a => a.LeaveFromDate).ToList();
+            var countTo = count.Select(a => a.LeaveToDate).ToList();
+
+            int result = 0;
+            for (int i = 0; i < countFrom.Count; i++)
+            {
+                result += (countTo[i] - countFrom[i]).Days + 1;
+            }
             return result;
         }
         #endregion

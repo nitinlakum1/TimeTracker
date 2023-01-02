@@ -6,17 +6,10 @@ using Newtonsoft.Json;
 using TimeTracker.Helper;
 using TimeTracker.Models;
 using TimeTracker.Models.Leave;
-using TimeTracker.Models.Resource;
-using TimeTracker.Models.Salary;
-using TimeTracker_Data.Migrations;
 using TimeTracker_Data.Model;
 using TimeTracker_Model;
 using TimeTracker_Model.Leave;
-using TimeTracker_Model.Resources;
-using TimeTracker_Model.Salary;
-using TimeTracker_Model.SystemLog;
 using TimeTracker_Repository.LeaveRepo;
-using TimeTracker_Repository.SalaryRepo;
 using TimeTracker_Repository.UserRepo;
 
 namespace TimeTracker.Controllers
@@ -48,6 +41,7 @@ namespace TimeTracker.Controllers
             var LeaveCount = await _leaveRepo.LeaveCount(userId);
             ViewBag.Count = LeaveCount;
 
+
             var users = await _userRepo.GetUserLookup();
             ViewBag.Users = new SelectList(users, "Id", "Username");
             return View();
@@ -69,6 +63,11 @@ namespace TimeTracker.Controllers
             var (leaveList, totalRecord) = await _leaveRepo.GetLeave(dtParam);
             var lst = _mapper.Map<List<LeaveListViewModel>>(leaveList);
 
+            var Data = JsonConvert.DeserializeObject<LeaveFilterModel>(filter);
+            int? Id = Data?.UserId == null || Data?.UserId == 0 ? userId : Data?.UserId;
+            var LeaveCount = await _leaveRepo.LeaveCount(Id);
+            lst = lst.Select(a => { a.PendingLeave = (12 - LeaveCount); return a; }).ToList();
+
             return Json(new
             {
                 param.sEcho,
@@ -78,15 +77,23 @@ namespace TimeTracker.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
+            int userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
             var users = await _userRepo.GetUserLookup();
-            ViewBag.Users = new SelectList(users, "Id", "Username");
+            var currentUser = users.Where(a => a.Id == userId);
+            int roleId = User.GetLoginRole();
+            if (roleId == (int)TimeTracker_Model.Roles.Admin)
+            {
+                ViewBag.Users = new SelectList(users, "Id", "Username");
+            }
+            else
+            {
+                ViewBag.Users = new SelectList(currentUser, "Id", "Username");
+            }
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(AddLeaveViewModel model)
         {
@@ -94,7 +101,16 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    int userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
+                    int roleId = User.GetLoginRole();
+                    if (roleId != (int)TimeTracker_Model.Roles.Admin)
+                    {
+                        model.UserId = userId;
+                    }
+                    var leaveCount = await _leaveRepo.LeaveCount(model.UserId);
+
                     var addLeave = _mapper.Map<AddLeaveModel>(model);
+                    addLeave.IsPaid = leaveCount <= 12;
                     var result = await _leaveRepo.AddLeave(addLeave);
 
                     if (result)

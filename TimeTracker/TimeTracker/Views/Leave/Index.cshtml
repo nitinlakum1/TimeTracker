@@ -30,28 +30,25 @@
                     <i class="fa-solid fa-wallet"></i>
                     Leave
                 </h3>
-                @if (roleId == (int)Roles.Employee)
-                {
-                    <h3 class="card-title ml-3">
-                        Total Leave: <b class="font-color">12</b>
-                    </h3>
-                    <h3 class="card-title ml-3">
-                        Pending Leave: <b class="font-color">@(12 - @ViewBag.Count)</b>
-                    </h3>
-                }
-                @if (roleId == (int)Roles.Admin || roleId == (int)Roles.HR)
-                {
-                    <div style="float:right; display:flex;">
+                <h3 class="card-title ml-3">
+                    Total Leave: <b class="font-color">12</b>
+                </h3>
+                <h3 class="card-title ml-3">
+                    Pending Leave: <b class="font-color" id="pendingLeave">12</b>
+                </h3>
+                <div style="float:right; display:flex;">
+                    @if (roleId == (int)Roles.Admin || roleId == (int)Roles.HR)
+                    {
                         <div style="float:right;">
                             <select class="form-control form-control-sm" asp-items="ViewBag.Users" id="cmbUser">
                                 <option value="0">Select User</option>
                             </select>
                         </div>
+                    }
                         <div style="float:right; margin-left:5px;">
                             <a asp-action="Create" class="btn btn-block btn-info btn-sm theme-color">Create</a>
                         </div>
-                    </div>
-                }
+                </div>
             </div>
             <div class="card-body">
                 <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
