@@ -15,7 +15,7 @@ namespace TimeTracker_Repository.LeaveRepo
 
         Task<List<LeaveModel>> GetLeaveDetail(int id);
 
-        Task<int> LeaveCount(int id);
+        Task<int> LeaveCount(int? id);
         #endregion
 
     }

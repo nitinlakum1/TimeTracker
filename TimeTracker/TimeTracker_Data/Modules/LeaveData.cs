@@ -69,13 +69,21 @@ namespace TimeTracker_Data.Modules
                 .ToListAsync();
         }
 
-        public async Task<int> LeaveCount(int id)
+        public async Task<int> LeaveCount(int? id)
         {
-            var result = await _context.Leaves.
+            var count = await _context.Leaves.
                 Where(a => a.UserId == id
                         && a.Status == Status.Approved
-                        && a.IsPaid == true)
-                        .CountAsync();
+                        && a.IsPaid == true).ToListAsync();
+
+            var countFrom = count.Select(a => a.LeaveFromDate).ToList();
+            var countTo = count.Select(a => a.LeaveToDate).ToList();
+
+            int result = 0;
+            for (int i = 0; i < countFrom.Count; i++)
+            {
+                result += (countTo[i] - countFrom[i]).Days + 1;
+            }
             return result;
         }
         #endregion

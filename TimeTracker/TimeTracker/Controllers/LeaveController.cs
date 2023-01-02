@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.S3.Model;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -48,6 +49,7 @@ namespace TimeTracker.Controllers
             var LeaveCount = await _leaveRepo.LeaveCount(userId);
             ViewBag.Count = LeaveCount;
 
+
             var users = await _userRepo.GetUserLookup();
             ViewBag.Users = new SelectList(users, "Id", "Username");
             return View();
@@ -68,6 +70,11 @@ namespace TimeTracker.Controllers
 
             var (leaveList, totalRecord) = await _leaveRepo.GetLeave(dtParam);
             var lst = _mapper.Map<List<LeaveListViewModel>>(leaveList);
+
+            var Data = JsonConvert.DeserializeObject<LeaveFilterModel>(filter);
+            int? Id = Data?.UserId == null || Data?.UserId == 0 ? userId : Data?.UserId;
+            var LeaveCount = await _leaveRepo.LeaveCount(Id);
+            lst = lst.Select(a => { a.PendingLeave = (12-LeaveCount); return a; }).ToList();
 
             return Json(new
             {

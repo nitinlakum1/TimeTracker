@@ -51,7 +51,7 @@ namespace TimeTracker_Repository.LeaveRepo
             return leaveList;
         }
 
-        public async Task<int> LeaveCount(int id)
+        public async Task<int> LeaveCount(int? id)
         {
             return await _leaveData.LeaveCount(id);
         }
