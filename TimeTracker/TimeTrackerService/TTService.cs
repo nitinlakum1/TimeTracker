@@ -112,21 +112,7 @@ namespace TimeTrackerService
 
                     if (!skipLog)
                     {
-                        string path = @"C:\Program Files\WCT\";
                         string wifiName = await GetConnectedWifi();
-                        if (!Directory.Exists(path))
-                        {
-                            Directory.CreateDirectory(path);
-                        }
-                        path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
-
-                        FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
-                        StreamWriter sWriter = new StreamWriter(fs);
-                        sWriter.BaseStream.Seek(0, SeekOrigin.End);
-                        sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)logType} | {message} | {wifiName}");
-                        sWriter.Flush();
-                        sWriter.Close();
-
                         if (serverOnline)
                         {
                             //Sync log text file with database.
@@ -151,6 +137,20 @@ namespace TimeTrackerService
                                 WriteTextFile("AddSystemLog", ex.Message, GetErrorLineNumber(ex));
                             }
                         }
+
+                        string path = @"C:\Program Files\WCT\";
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
+
+                        FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                        StreamWriter sWriter = new StreamWriter(fs);
+                        sWriter.BaseStream.Seek(0, SeekOrigin.End);
+                        sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)logType} | {message} | {wifiName}");
+                        sWriter.Flush();
+                        sWriter.Close();
                     }
                 }
                 else
