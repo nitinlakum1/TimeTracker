@@ -198,74 +198,74 @@ namespace TimeTracker.Controllers
             return Json(url);
         }
 
-        public async Task<IActionResult> CheckUpdate()
-        {
-            bool isSuccess = false;
-            string message = "Something went wrong!";
-            try
-            {
-                try
-                {
-                    await Task.Run(() =>
-                    {
-                        string stopDelete = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Stop.bat");
-                        Process proc = new Process();
-                        proc.StartInfo.FileName = stopDelete;
-                        proc.StartInfo.UseShellExecute = true;
-                        proc.StartInfo.Verb = "runas";
-                        proc.Start();
-                    });
-                }
-                catch { }
+        //public async Task<IActionResult> CheckUpdate()
+        //{
+        //    bool isSuccess = false;
+        //    string message = "Something went wrong!";
+        //    try
+        //    {
+        //        try
+        //        {
+        //            await Task.Run(() =>
+        //            {
+        //                string stopDelete = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Stop.bat");
+        //                Process proc = new Process();
+        //                proc.StartInfo.FileName = stopDelete;
+        //                proc.StartInfo.UseShellExecute = true;
+        //                proc.StartInfo.Verb = "runas";
+        //                proc.Start();
+        //            });
+        //        }
+        //        catch { }
 
-                try
-                {
-                    await Task.Run(() =>
-                    {
-                        string stopDelete = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Delete.bat");
-                        Process proc = new Process();
-                        proc.StartInfo.FileName = stopDelete;
-                        proc.StartInfo.UseShellExecute = true;
-                        proc.StartInfo.Verb = "runas";
-                        proc.Start();
-                    });
-                }
-                catch { }
+        //        try
+        //        {
+        //            await Task.Run(() =>
+        //            {
+        //                string stopDelete = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Delete.bat");
+        //                Process proc = new Process();
+        //                proc.StartInfo.FileName = stopDelete;
+        //                proc.StartInfo.UseShellExecute = true;
+        //                proc.StartInfo.Verb = "runas";
+        //                proc.Start();
+        //            });
+        //        }
+        //        catch { }
 
-                await Task.Run(() =>
-                {
-                    DirectoryInfo directoryInfo = new DirectoryInfo(@"C:\TimeTrackerService\");
-                    foreach (FileInfo file in directoryInfo.GetFiles())
-                    {
-                        file.Delete();
-                    }
-                });
+        //        await Task.Run(() =>
+        //        {
+        //            DirectoryInfo directoryInfo = new DirectoryInfo(@"C:\TimeTrackerService\");
+        //            foreach (FileInfo file in directoryInfo.GetFiles())
+        //            {
+        //                file.Delete();
+        //            }
+        //        });
 
-                await Task.Run(() =>
-                {
-                    string fileName = Path.Combine(_hostingEnvironment.WebRootPath, "TimeTrackerService/");
-                    WebClient webClient = new WebClient();
-                    {
-                        webClient.DownloadFile(fileName + @"\TimeTrackerService.exe", @"C:\TimeTrackerService\TimeTrackerService.exe");
-                        webClient.DownloadFile(fileName + @"\Newtonsoft.Json.dll", @"C:\TimeTrackerService\Newtonsoft.Json.dll");
-                    }
-                });
+        //        await Task.Run(() =>
+        //        {
+        //            string fileName = Path.Combine(_hostingEnvironment.WebRootPath, "TimeTrackerService/");
+        //            WebClient webClient = new WebClient();
+        //            {
+        //                webClient.DownloadFile(fileName + @"\TimeTrackerService.exe", @"C:\TimeTrackerService\TimeTrackerService.exe");
+        //                webClient.DownloadFile(fileName + @"\Newtonsoft.Json.dll", @"C:\TimeTrackerService\Newtonsoft.Json.dll");
+        //            }
+        //        });
 
-                await Task.Run(() =>
-                {
-                    string installStart = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Install_Start.bat");
-                    Process proc1 = new Process();
-                    proc1.StartInfo.FileName = installStart;
-                    proc1.StartInfo.UseShellExecute = true;
-                    proc1.StartInfo.Verb = "runas";
-                    proc1.Start();
-                });
+        //        await Task.Run(() =>
+        //        {
+        //            string installStart = Path.Combine(_hostingEnvironment.WebRootPath, @"TimeTrackerService\Install_Start.bat");
+        //            Process proc1 = new Process();
+        //            proc1.StartInfo.FileName = installStart;
+        //            proc1.StartInfo.UseShellExecute = true;
+        //            proc1.StartInfo.Verb = "runas";
+        //            proc1.Start();
+        //        });
 
-                isSuccess = true;
-                message = "Time Tracker has been updated.";
-            }
-            catch { }
-            return Json(new { isSuccess, message });
-        }
+        //        isSuccess = true;
+        //        message = "Time Tracker has been updated.";
+        //    }
+        //    catch { }
+        //    return Json(new { isSuccess, message });
+        //}
     }
 }
