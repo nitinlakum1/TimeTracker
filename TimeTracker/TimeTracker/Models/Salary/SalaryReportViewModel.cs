@@ -12,7 +12,13 @@ namespace TimeTracker.Models.Salary
 
         public DateTime? SalaryDate { get; set; }
 
-        [Required(ErrorMessage = "Amount is required.")]
-        public decimal Amount { get; set; }
+        [Required(ErrorMessage = "Basic Salary is required.")]
+        public decimal BasicSalary { get; set; }
+
+        [Required(ErrorMessage = "Payable Amount is required.")]
+        public decimal PayableAmount { get; set; }
+
+        [Required(ErrorMessage = "Working Days is required.")]
+        public int WorkingDays { get; set; }
     }
 }

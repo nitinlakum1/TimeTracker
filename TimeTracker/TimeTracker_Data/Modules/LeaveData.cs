@@ -2,6 +2,7 @@
 using TimeTracker_Data.Model;
 using TimeTracker_Model.Leave;
 using TimeTracker_Model;
+using System.Net.Http;
 
 namespace TimeTracker_Data.Modules
 {
@@ -9,12 +10,14 @@ namespace TimeTracker_Data.Modules
     {
         #region Declaration
         private readonly TTContext _context;
+
         #endregion
 
         #region Const
         public LeaveData(TTContext context)
         {
             _context = context;
+
         }
         #endregion
 
@@ -42,6 +45,7 @@ namespace TimeTracker_Data.Modules
         public async Task<bool> AddLeave(Leaves model)
         {
             model.ApplyDate = DateTime.Now;
+            model.Status = Status.Apply;
 
             _context.Leaves.Add(model);
             await _context.SaveChangesAsync();

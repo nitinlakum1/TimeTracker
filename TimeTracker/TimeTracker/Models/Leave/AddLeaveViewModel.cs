@@ -20,11 +20,5 @@ namespace TimeTracker.Models.Leave
 
         [Required(ErrorMessage = "Reason is required.")]
         public string Reason { get; set; }
-
-        [Required(ErrorMessage = "Status is required.")]
-        public Status Status { get; set; }
-
-        [Required(ErrorMessage = "Is Paid is required.")]
-        public bool IsPaid { get; set; }
     }
 }

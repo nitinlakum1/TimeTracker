@@ -19,7 +19,13 @@ namespace TimeTracker_Data.Model
         public DateTime SalaryDate { get; set; }
 
         [Required]
-        public decimal Amount { get; set; }
+        public decimal BasicSalary { get; set; }
+
+        [Required]
+        public decimal PayableAmount { get; set; }
+
+        [Required]
+        public int WorkingDays { get; set; }
 
         public Users Users { get; set; }
     }
