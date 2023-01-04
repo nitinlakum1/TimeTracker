@@ -31,10 +31,10 @@
                     Leave
                 </h3>
                 <h3 class="card-title ml-3">
-                    Total Leave: <b class="font-color">12</b>
+                    Total Leave: <b class="font-color" id="totalLeave"></b>
                 </h3>
                 <h3 class="card-title ml-3">
-                    Pending Leave: <b class="font-color" id="pendingLeave">12</b>
+                    Pending Leave: <b class="font-color" id="pendingLeave"></b>
                 </h3>
                 <div style="float:right; display:flex;">
                     @if (roleId == (int)Roles.Admin || roleId == (int)Roles.HR)
@@ -120,6 +120,7 @@
         $(document).ready(function () {
             SelectedMenu('menuMaster', 'menuLeaveList');
             bindDataTable();
+            displayLeaveCount();
         });
     </script>
 }

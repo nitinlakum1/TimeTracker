@@ -9,6 +9,7 @@ CREATE PROCEDURE [dbo].[AddSystemLog]
 	,@Description NVARCHAR(50)
 	,@LogTime DATETIME
 	,@WiFiName  NVARCHAR(50)
+	,@CreatedOn DATETIME
 AS
 BEGIN
 BEGIN TRY
@@ -22,6 +23,7 @@ BEGIN TRY
 		,[Description]
 		,LogTime
 		,WiFiName
+		,CreatedOn
 	)
 	VALUES
 	(
@@ -30,6 +32,7 @@ BEGIN TRY
 		,@Description
 		,@LogTime
 		,@WiFiName
+		,@CreatedOn
 	)
 
 	RETURN 0

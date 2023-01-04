@@ -14,5 +14,6 @@
         public long Avatar { get; set; }
         public string? Url { get; set; }
         public string ProfilePic { get; set; }
+        public DateTime JoiningDate { get; set; }
     }
 }

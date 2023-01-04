@@ -7,7 +7,7 @@ namespace TimeTracker_Repository.LeaveRepo
     {
 
         #region Signature
-        Task<(List<LeaveModel>, int)> GetLeave(LeaveFilterModel model);
+        Task<List<LeaveModel>> GetLeave(LeaveFilterModel model);
 
         Task<bool> AddLeave(AddLeaveModel model);
 
@@ -16,6 +16,10 @@ namespace TimeTracker_Repository.LeaveRepo
         Task<List<LeaveModel>> GetLeaveDetail(int id);
 
         Task<int> LeaveCount(int? id);
+
+        Task<int> MonthlyLeaveCount(int id, string month);
+
+        Task<int> UsedLeaveCountSalary(int id, string month);
         #endregion
 
     }

@@ -11,6 +11,7 @@ using TimeTracker_Data.Model;
 using TimeTracker_Model.Resources;
 using TimeTracker_Model.Salary;
 using TimeTracker_Model.SystemLog;
+using TimeTracker_Repository.LeaveRepo;
 using TimeTracker_Repository.SalaryRepo;
 using TimeTracker_Repository.UserRepo;
 
@@ -23,15 +24,17 @@ namespace TimeTracker.Controllers
         private readonly ISalaryRepo _salaryRepo;
         private readonly IMapper _mapper;
         private readonly IUserRepo _userRepo;
+        private readonly ILeaveRepo _leaveRepo;
         private readonly IHttpContextAccessor _httpContextAccessor;
         #endregion
 
         #region Const
-        public SalaryController(ISalaryRepo salaryRepo, IMapper mapper, IUserRepo userRepo, IHttpContextAccessor httpContextAccessor)
+        public SalaryController(ISalaryRepo salaryRepo, IMapper mapper, IUserRepo userRepo, ILeaveRepo leaveRepo, IHttpContextAccessor httpContextAccessor)
         {
             _salaryRepo = salaryRepo;
             _mapper = mapper;
             _userRepo = userRepo;
+            _leaveRepo = leaveRepo;
             _httpContextAccessor = httpContextAccessor;
         }
         #endregion
@@ -197,8 +200,36 @@ namespace TimeTracker.Controllers
 
         public async Task<IActionResult> SalaryAmount(int id, string month)
         {
-            var salaryAmount = await _salaryRepo.GetAmountById(id, month);
-            return Json(salaryAmount);
+            var joiningDate = await _userRepo.GetJoiningDate(id);
+
+            var endFinancialYearDate
+                = new DateTime(DateTime.Now.Month < 4 ? DateTime.Now.Year : DateTime.Now.Year - 1, 3, 31);
+
+            int totalLeave = (12 * (endFinancialYearDate.Year - joiningDate.Year) + (endFinancialYearDate.Month - joiningDate.Month)) + 1;
+
+            var totalUsedLeaveCount = await _leaveRepo.LeaveCount(id);
+
+            var monthlyLeaveCount = await _leaveRepo.MonthlyLeaveCount(id, month);
+
+            var usedLeaveCountSalary = await _leaveRepo.UsedLeaveCountSalary(id, month);
+
+            var salaryAmount = await _salaryRepo.GetSalaryAmountById(id);
+
+            var presentDay = 30;
+            decimal payableSalaryAmount = salaryAmount;
+
+            if (totalLeave < usedLeaveCountSalary)
+            {
+                payableSalaryAmount = salaryAmount / 30 * (30 - monthlyLeaveCount);
+                presentDay = (30 - monthlyLeaveCount);
+            }
+            else if (totalLeave > usedLeaveCountSalary && totalLeave < totalUsedLeaveCount)
+            {
+                payableSalaryAmount = salaryAmount / 30 * (30 - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary)));
+                presentDay = 30 - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary));
+            }
+
+            return Json(new { salaryAmount, payableSalaryAmount, presentDay });
         }
         #endregion
     }

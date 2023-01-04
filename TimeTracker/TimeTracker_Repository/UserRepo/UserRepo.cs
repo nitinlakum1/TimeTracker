@@ -92,6 +92,11 @@ namespace TimeTracker_Repository.UserRepo
         {
             return await _userData.DeleteProfilePic(id);
         }
+
+        public async Task<DateTime> GetJoiningDate(int id)
+        {
+            return await _userData.GetJoiningDate(id);
+        }
         #endregion
     }
 }

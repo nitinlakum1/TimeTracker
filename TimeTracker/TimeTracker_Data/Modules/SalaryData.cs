@@ -95,12 +95,8 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
-        public async Task<decimal> GetAmountById(int id, string month)
+        public async Task<decimal> GetSalaryAmountById(int id)
         {
-            
-
-
-
             var result = await _context.Salarys
                 .Where(a => a.UserId == id)
                 .OrderByDescending(a => a.Id)

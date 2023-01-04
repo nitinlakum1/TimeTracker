@@ -19,5 +19,7 @@ namespace TimeTracker_Repository.UserRepo
         Task<List<UserModel>> GetUserLookup();
 
         Task<bool> DeleteProfilePic(int id);
+
+        Task<DateTime> GetJoiningDate(int id);
     }
 }

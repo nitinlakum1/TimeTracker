@@ -3,6 +3,7 @@ using TimeTracker_Data.Model;
 using TimeTracker_Model.Leave;
 using TimeTracker_Model;
 using System.Net.Http;
+using Microsoft.VisualBasic;
 
 namespace TimeTracker_Data.Modules
 {
@@ -23,7 +24,7 @@ namespace TimeTracker_Data.Modules
 
         #region Methods
 
-        public async Task<(List<Leaves>, int)> GetLeave(LeaveFilterModel model)
+        public async Task<List<Leaves>> GetLeave(LeaveFilterModel model)
         {
             var result = _context.Leaves
                 .Include(a => a.Users)
@@ -33,13 +34,7 @@ namespace TimeTracker_Data.Modules
                             || a.UserId == model.UserId)
                       && (string.IsNullOrWhiteSpace(model.SearchText)));
 
-            var totalRecord = result.Count();
-
-            result = result
-                .Skip(model.DisplayStart)
-                .Take(model.PageSize);
-
-            return (await result.ToListAsync(), totalRecord);
+            return await result.ToListAsync();
         }
 
         public async Task<bool> AddLeave(Leaves model)
@@ -75,18 +70,81 @@ namespace TimeTracker_Data.Modules
 
         public async Task<int> LeaveCount(int? id)
         {
-            var count = await _context.Leaves.
-                Where(a => a.UserId == id
-                        && a.Status == Status.Approved
-                        && a.IsPaid == true).ToListAsync();
+            var startFinancialYearDate
+                = new DateTime(DateTime.Now.Month > 3 ? DateTime.Now.Year : DateTime.Now.Year - 1, 4, 1);
 
-            var countFrom = count.Select(a => a.LeaveFromDate).ToList();
-            var countTo = count.Select(a => a.LeaveToDate).ToList();
+            var endFinancialYearDate
+                = new DateTime(DateTime.Now.Month < 4 ? DateTime.Now.Year : DateTime.Now.Year - 1, 3, 31);
+
+            var leaves = await _context.Leaves
+                .Where(a => a.UserId == id
+                      && a.Status == Status.Approved
+                      && a.IsPaid)
+                .ToListAsync();
 
             int result = 0;
-            for (int i = 0; i < countFrom.Count; i++)
+            foreach (var item in leaves)
             {
-                result += (countTo[i] - countFrom[i]).Days + 1;
+                for (DateTime date = item.LeaveFromDate; date <= item.LeaveToDate; date = date.AddDays(1))
+                {
+                    if (date.Date >= startFinancialYearDate && date.Date <= endFinancialYearDate)
+                    {
+                        result++;
+                    }
+                }
+            }
+            return result;
+        }
+
+        public async Task<int> MonthlyLeaveCount(int id, string month)
+        {
+            var firstDayMonth = DateTime.Parse(month);
+            var lastDayMonth = firstDayMonth.AddMonths(1).AddDays(-1);
+
+            var leaves = await _context.Leaves
+                .Where(a => a.UserId == id
+                      && a.Status == Status.Approved
+                      && a.IsPaid)
+                .ToListAsync();
+
+            int result = 0;
+            foreach (var item in leaves)
+            {
+                for (DateTime date = item.LeaveFromDate; date <= item.LeaveToDate; date = date.AddDays(1))
+                {
+                    if (date.Date >= firstDayMonth && date.Date <= lastDayMonth)
+                    {
+                        result++;
+                    }
+                }
+            }
+            return result;
+        }
+
+        public async Task<int> UsedLeaveCountSalary(int id, string month)
+        {
+            var startFinancialYearDate
+                = new DateTime(DateTime.Now.Month > 3 ? DateTime.Now.Year : DateTime.Now.Year - 1, 4, 1);
+
+            var selectedMonth = DateTime.Parse(month);
+            var lastDayOfSalaryPreMonth = new DateTime(selectedMonth.Year, selectedMonth.Month, 1).AddDays(-1);
+
+            var leaves = await _context.Leaves
+                .Where(a => a.UserId == id
+                      && a.Status == Status.Approved
+                      && a.IsPaid)
+                .ToListAsync();
+
+            int result = 0;
+            foreach (var item in leaves)
+            {
+                for (DateTime date = item.LeaveFromDate; date <= item.LeaveToDate; date = date.AddDays(1))
+                {
+                    if (date.Date >= startFinancialYearDate && date.Date <= lastDayOfSalaryPreMonth)
+                    {
+                        result++;
+                    }
+                }
             }
             return result;
         }

@@ -87,7 +87,6 @@ namespace TimeTrackerService
         {
             try
             {
-                bool skipLog = false;
                 bool serverOnline = await systemLogData.IsServerConnected();
                 if (serverOnline)
                 {
@@ -100,17 +99,24 @@ namespace TimeTrackerService
                 if (writeLog)
                 {
                     var logTime = DateTime.Now;
-
                     var lastLog = GetTodaysLog();
+                    var addLog = true;
                     if (lastLog != null)
                     {
-                        skipLog = (lastLog.LogType == LogTypes.ServiceStart
-                                        && logType == LogTypes.SystemLogOn)
-                                  || (lastLog.LogType == LogTypes.SystemLogOn
-                                        && logType == LogTypes.ServiceStart);
+                        if(lastLog.LogType == LogTypes.SystemLogOn
+                            || lastLog.LogType == LogTypes.SystemUnlock
+                            || lastLog.LogType == LogTypes.ServiceStart)
+                        {
+                            addLog = logType == LogTypes.SystemLock || logType == LogTypes.SystemLogOff;
+                        }
+
+                        if (lastLog.LogType == LogTypes.SystemLock)
+                        {
+                            addLog = logType == LogTypes.SystemUnlock || logType == LogTypes.SystemLogOn;
+                        }
                     }
 
-                    if (!skipLog)
+                    if (addLog)
                     {
                         string wifiName = await GetConnectedWifi();
                         if (serverOnline)

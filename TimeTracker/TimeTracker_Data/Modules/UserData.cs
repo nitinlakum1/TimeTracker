@@ -113,7 +113,7 @@ namespace TimeTracker_Data.Modules
 
         public async Task<List<Users>> GetUserLookup()
         {
-            return await _context.Users.Where(a=> a.RoleId != (int)TimeTracker_Model.Roles.Admin).Select(a => new Users()
+            return await _context.Users.Where(a => a.RoleId != (int)TimeTracker_Model.Roles.Admin).Select(a => new Users()
             {
                 Id = a.Id,
                 Username = a.Username,
@@ -132,6 +132,16 @@ namespace TimeTracker_Data.Modules
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<DateTime> GetJoiningDate(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(a => a.Id == id);
+            if (user == null)
+            {
+                return DateTime.MinValue;
+            }
+            return user.JoiningDate;
         }
         #endregion
     }

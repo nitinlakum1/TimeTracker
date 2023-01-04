@@ -116,7 +116,7 @@ $('#cmbUser').change(function () {
     $('#tblSalaryReport').DataTable().draw();
 });
 
-$('#SalaryMonth').change(function () {
+$('#UserId, #SalaryMonth').change(function () {
     var id = $('#UserId').val();
     var month = $('#SalaryMonth').val();
     if (id > 0) {
@@ -125,7 +125,9 @@ $('#SalaryMonth').change(function () {
             type: 'GET',
             data: { id: id, month:month },
             success: function (result) {
-                $('#BasicSalary').val(result);
+                $('#BasicSalary').val(result.salaryAmount);
+                $('#PayableAmount').val(result.payableSalaryAmount);
+                $('#WorkingDays').val(result.presentDay);
             },
             error: function (result) {
                 alert("Followup not Found!");

@@ -8,10 +8,11 @@
                 "bSearchable": true,
                 "scrollX": true,
                 "order": [[0, "DESC"]],
+                "paging": false,
+                "searching": false,
                 "ordering": false,
-                "paging": true,
-                "searching": true,
                 "bAutoWidth": false,
+                "bInfo": false,
                 "language": {
                     "emptyTable": "No record found.",
                     "processing":
@@ -49,7 +50,6 @@
                         },
                     },
                     { "data": "id", width: 70 },
-                    { "data": "pendingLeave", width: 70 },
                 ],
 
                 columnDefs: [
@@ -66,15 +66,7 @@
                             return (roleId == 1 ? btn1 : '') + `<a onclick="openLeaveModel('${row.id}')"><i class="fa-solid fa-eye font-color"  style="cursor:pointer; font-size: 16px;"></i></a>`;
                         },
                         className: "text-center",
-                    },
-                    {
-                        targets: 7,
-                        "visible": false,
-                        render: function (data, type, row) {
-                            $('#pendingLeave').text(row.pendingLeave);
-                            return row.pendingLeave;
-                        }
-                    },
+                    }
                 ],
                 processing: true,
             });
@@ -85,7 +77,7 @@ function start() {
 
 $('#cmbUser').change(function () {
     $('#tblLeave').DataTable().draw();
-    $('#pendingLeave').text('12');
+    displayLeaveCount();
 });
 
 function statusChange(id) {
@@ -130,3 +122,20 @@ function openLeaveModel(id) {
         })
     }
 }
+
+function displayLeaveCount() {
+    $.ajax({
+        url: '/Leave/DisplayLeaveCount/',
+        type: 'GET',
+        data: {
+            userId: $('#cmbUser').val()
+        },
+        success: function (result) {
+            $('#totalLeave').text(result.totalLeave);
+            $('#pendingLeave').text(result.pendingLeaveCount);
+        },
+        error: function (result) {
+            alert("Something went wrong!");
+        },
+    })
+};

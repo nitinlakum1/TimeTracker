@@ -43,6 +43,7 @@ namespace TimeTrackerService.Data
                     Dac.MakeDbParameter("@Description", DbType.String, model.Description),
                     Dac.MakeDbParameter("@LogTime", DbType.DateTime, model.LogTime),
                     Dac.MakeDbParameter("@WiFiName", DbType.String, model.WiFiName),
+                    Dac.MakeDbParameter("@CreatedOn", DbType.DateTime, model.CreatedOn),
                 };
 
                 return await Dac.ExecuteNonQueryAsync("AddSystemLog", lstParameter);

@@ -24,12 +24,10 @@ namespace TimeTracker_Repository.LeaveRepo
 
         #region Methods
 
-        public async Task<(List<LeaveModel>, int)> GetLeave(LeaveFilterModel model)
+        public async Task<List<LeaveModel>> GetLeave(LeaveFilterModel model)
         {
-            var (result, totalRecord) = await _leaveData.GetLeave(model);
-
-            var leaveList = _mapper.Map<List<LeaveModel>>(result);
-            return (leaveList, totalRecord);
+            var result = await _leaveData.GetLeave(model);
+            return _mapper.Map<List<LeaveModel>>(result);
         }
 
         public async Task<bool> AddLeave(AddLeaveModel model)
@@ -54,6 +52,16 @@ namespace TimeTracker_Repository.LeaveRepo
         public async Task<int> LeaveCount(int? id)
         {
             return await _leaveData.LeaveCount(id);
+        }
+
+        public async Task<int> MonthlyLeaveCount(int id, string month)
+        {
+            return await _leaveData.MonthlyLeaveCount(id, month);
+        }
+
+        public async Task<int> UsedLeaveCountSalary(int id, string month)
+        {
+            return await _leaveData.UsedLeaveCountSalary(id, month);
         }
         #endregion
     }

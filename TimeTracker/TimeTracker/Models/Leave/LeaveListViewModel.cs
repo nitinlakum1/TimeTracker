@@ -15,7 +15,6 @@ namespace TimeTracker.Models.Leave
         public string Reason { get; set; }
         public Status Status { get; set; }
         public bool IsPaid { get; set; }
-        public int? PendingLeave { get; set; }
 
         public string LeaveStatusName
         {

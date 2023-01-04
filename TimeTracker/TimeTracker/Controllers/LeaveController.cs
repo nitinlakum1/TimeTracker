@@ -37,11 +37,6 @@ namespace TimeTracker.Controllers
         #region Method
         public async Task<IActionResult> Index()
         {
-            int userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim() ?? 0;
-            var LeaveCount = await _leaveRepo.LeaveCount(userId);
-            ViewBag.Count = LeaveCount;
-
-
             var users = await _userRepo.GetUserLookup();
             ViewBag.Users = new SelectList(users, "Id", "Username");
             return View();
@@ -60,21 +55,37 @@ namespace TimeTracker.Controllers
                 dtParam.UserId = filterData?.UserId == null || filterData?.UserId == 0 ? userId : filterData?.UserId;
             }
 
-            var (leaveList, totalRecord) = await _leaveRepo.GetLeave(dtParam);
+            var leaveList = await _leaveRepo.GetLeave(dtParam);
             var lst = _mapper.Map<List<LeaveListViewModel>>(leaveList);
-
-            var Data = JsonConvert.DeserializeObject<LeaveFilterModel>(filter);
-            int? Id = Data?.UserId == null || Data?.UserId == 0 ? userId : Data?.UserId;
-            var LeaveCount = await _leaveRepo.LeaveCount(Id);
-            lst = lst.Select(a => { a.PendingLeave = (12 - LeaveCount); return a; }).ToList();
 
             return Json(new
             {
                 param.sEcho,
-                iTotalRecords = totalRecord,
-                iTotalDisplayRecords = totalRecord,
+                iTotalRecords = 0,
+                iTotalDisplayRecords = 0,
                 aaData = lst
             });
+        }
+
+        public async Task<IActionResult> DisplayLeaveCount(int userId)
+        {
+            userId = (userId > 0 ? userId : _httpContextAccessor?.HttpContext?.User.GetIdFromClaim()) ?? 0;
+
+            var usedLeaveCount = await _leaveRepo.LeaveCount(userId);
+
+            // Joining date after probation period.
+            var joiningDate = await _userRepo.GetJoiningDate(userId);
+
+            var endFinancialYearDate
+                = new DateTime(DateTime.Now.Month < 4 ? DateTime.Now.Year : DateTime.Now.Year - 1, 3, 31);
+
+            int totalLeave = (12 * (endFinancialYearDate.Year - joiningDate.Year) + (endFinancialYearDate.Month - joiningDate.Month)) + 1;
+
+            totalLeave = totalLeave > 12 ? 12 : totalLeave;
+
+            var pendingLeaveCount = totalLeave - usedLeaveCount < 0 ? 0 : totalLeave - usedLeaveCount;
+
+            return Json(new { totalLeave, pendingLeaveCount });
         }
 
         public async Task<IActionResult> Create()
