@@ -50,6 +50,17 @@ namespace TimeTracker_Data.Modules
 
         public async Task<bool> AddSalary(Salarys model)
         {
+            var result = _context.Salarys
+                            .Include(a => a.Users)
+                            .Where(a => a.UserId == model.UserId)
+                            .OrderByDescending(a => a.Id)
+                            .FirstOrDefault();
+            if (result != null)
+            {
+                result.ToDate = model.FromDate.AddDays(-1);
+            }
+
+
             _context.Salarys.Add(model);
             await _context.SaveChangesAsync();
             return true;
@@ -95,15 +106,54 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
-        public async Task<decimal> GetSalaryAmountById(int id)
+        public async Task<decimal> GetSalaryAmountById(int id, string month)
         {
+            var selectedMonthStart = DateTime.Parse(month);
+            var selectedMonthEnd = new DateTime(DateTime.Parse(month).Year, DateTime.Parse(month).Month, 1).AddMonths(1).AddDays(-1);
+
             var result = await _context.Salarys
+                .Where(a => a.UserId == id).ToListAsync();
+
+            var firstSalary = await _context.Salarys
+                .Where(a => a.UserId == id)
+                .OrderBy(a => a.Id)
+                .FirstOrDefaultAsync();
+
+            var lastSalary = await _context.Salarys
                 .Where(a => a.UserId == id)
                 .OrderByDescending(a => a.Id)
                 .FirstOrDefaultAsync();
 
-            result ??= new Salarys();
-            return result.Salary;
+            decimal salary = 0;
+            foreach (var item in result)
+            {
+                if (item.ToDate == null)
+                {
+                    item.ToDate = DateTime.Now;
+                }
+                if (item.FromDate <= selectedMonthStart || item.FromDate <= selectedMonthEnd
+                    && selectedMonthStart <= item.ToDate || selectedMonthEnd <= item.ToDate)
+                {
+                    var fromDateLast = new DateTime(item.FromDate.Year, item.FromDate.Month, 1).AddMonths(1).AddDays(-1);
+                    if (item.FromDate == firstSalary.FromDate && fromDateLast == selectedMonthEnd)
+                    {
+                        var difference = (fromDateLast.Day - item.FromDate.Day) + 1;
+                        salary = item.Salary / 30 * (30 - difference);
+                    }
+                    else
+                    {
+                        salary = item.Salary;
+                    }
+                }
+            }
+
+            //var result = await _context.Salarys
+            //    .Where(a => a.UserId == id)
+            //    .OrderByDescending(a => a.Id)
+            //    .FirstOrDefaultAsync();
+
+            //result ??= new Salarys();
+            return salary;
         }
         #endregion
     }

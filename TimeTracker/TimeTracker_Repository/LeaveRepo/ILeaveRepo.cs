@@ -15,11 +15,11 @@ namespace TimeTracker_Repository.LeaveRepo
 
         Task<List<LeaveModel>> GetLeaveDetail(int id);
 
-        Task<int> LeaveCount(int? id);
+        Task<decimal> LeaveCount(int? id, DateTime startDate, DateTime endDate);
 
-        Task<int> MonthlyLeaveCount(int id, string month);
+        Task<decimal> MonthlyLeaveCount(int id, string month);
 
-        Task<int> UsedLeaveCountSalary(int id, string month);
+        Task<decimal> UsedLeaveCountSalary(int id, string month);
         #endregion
 
     }

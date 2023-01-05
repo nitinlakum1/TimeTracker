@@ -49,19 +49,28 @@ namespace TimeTracker_Repository.LeaveRepo
             return leaveList;
         }
 
-        public async Task<int> LeaveCount(int? id)
+        public async Task<decimal> LeaveCount(int? id, DateTime startDate, DateTime endDate)
         {
-            return await _leaveData.LeaveCount(id);
+            return await _leaveData.LeaveCount(id, startDate, endDate);
         }
 
-        public async Task<int> MonthlyLeaveCount(int id, string month)
+        public async Task<decimal> MonthlyLeaveCount(int id, string month)
         {
-            return await _leaveData.MonthlyLeaveCount(id, month);
+            var firstDayMonth = DateTime.Parse(month);
+            var lastDayMonth = firstDayMonth.AddMonths(1).AddDays(-1);
+
+            return await _leaveData.LeaveCount(id, firstDayMonth, lastDayMonth);
         }
 
-        public async Task<int> UsedLeaveCountSalary(int id, string month)
+        public async Task<decimal> UsedLeaveCountSalary(int id, string month)
         {
-            return await _leaveData.UsedLeaveCountSalary(id, month);
+            var startFinancialYearDate
+                = new DateTime(DateTime.Now.Month > 3 ? DateTime.Now.Year : DateTime.Now.Year - 1, 4, 1);
+
+            var selectedMonth = DateTime.Parse(month);
+            var lastDayOfSalaryPreMonth = new DateTime(selectedMonth.Year, selectedMonth.Month, 1).AddDays(-1);
+
+            return await _leaveData.LeaveCount(id, startFinancialYearDate, lastDayOfSalaryPreMonth);
         }
         #endregion
     }

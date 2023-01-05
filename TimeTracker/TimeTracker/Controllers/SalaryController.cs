@@ -202,20 +202,22 @@ namespace TimeTracker.Controllers
         {
             var joiningDate = await _userRepo.GetJoiningDate(id);
 
+            var startFinancialYearDate
+                = new DateTime(DateTime.Now.Month > 3 ? DateTime.Now.Year : DateTime.Now.Year - 1, 4, 1);
             var endFinancialYearDate
                 = new DateTime(DateTime.Now.Month < 4 ? DateTime.Now.Year : DateTime.Now.Year - 1, 3, 31);
 
             int totalLeave = (12 * (endFinancialYearDate.Year - joiningDate.Year) + (endFinancialYearDate.Month - joiningDate.Month)) + 1;
 
-            var totalUsedLeaveCount = await _leaveRepo.LeaveCount(id);
+            var totalUsedLeaveCount = await _leaveRepo.LeaveCount(id, startFinancialYearDate, endFinancialYearDate);
 
             var monthlyLeaveCount = await _leaveRepo.MonthlyLeaveCount(id, month);
 
             var usedLeaveCountSalary = await _leaveRepo.UsedLeaveCountSalary(id, month);
 
-            var salaryAmount = await _salaryRepo.GetSalaryAmountById(id);
+            var salaryAmount = await _salaryRepo.GetSalaryAmountById(id, month);
 
-            var presentDay = 30;
+            decimal presentDay = 30;
             decimal payableSalaryAmount = salaryAmount;
 
             if (totalLeave < usedLeaveCountSalary)
@@ -223,7 +225,8 @@ namespace TimeTracker.Controllers
                 payableSalaryAmount = salaryAmount / 30 * (30 - monthlyLeaveCount);
                 presentDay = (30 - monthlyLeaveCount);
             }
-            else if (totalLeave > usedLeaveCountSalary && totalLeave < totalUsedLeaveCount)
+            else if (totalLeave > usedLeaveCountSalary && totalLeave < totalUsedLeaveCount
+                     && totalLeave < usedLeaveCountSalary + monthlyLeaveCount)
             {
                 payableSalaryAmount = salaryAmount / 30 * (30 - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary)));
                 presentDay = 30 - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary));

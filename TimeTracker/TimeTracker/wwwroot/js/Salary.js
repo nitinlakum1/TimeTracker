@@ -11,6 +11,7 @@
                 "paging": true,
                 "searching": true,
                 "bAutoWidth": false,
+                "ordering": false,
                 "language": {
                     "emptyTable": "No record found.",
                     "processing":
@@ -80,6 +81,7 @@ function bindSRDataTable() {
                 "paging": true,
                 "searching": true,
                 "bAutoWidth": false,
+                "ordering": false,
                 "language": {
                     "emptyTable": "No record found.",
                     "processing":
@@ -104,9 +106,9 @@ function bindSRDataTable() {
                             return setDateTimeFormat(data, 'DD-MM-yyyy');
                         },
                     },
-                    { "data": "basicSalary", width: 120 },
-                    { "data": "payableAmount", width: 120 },
-                    { "data": "workingDays", width: 120 },
+                    { "data": "basicSalary", width: 120, "render": $.fn.dataTable.render.number(',', '.', 0, '₹ ') },
+                    { "data": "payableAmount", width: 120, "render": $.fn.dataTable.render.number(',', '.', 0, '₹ ') },
+                    { "data": "workingDays", width: 100, render: function (data) {return data + " Days" } },
                 ],
                 processing: true,
             });
@@ -117,21 +119,20 @@ $('#cmbUser').change(function () {
 });
 
 $('#UserId, #SalaryMonth').change(function () {
-    var id = $('#UserId').val();
-    var month = $('#SalaryMonth').val();
-    if (id > 0) {
-        $.ajax({
-            url: '/Salary/SalaryAmount/',
-            type: 'GET',
-            data: { id: id, month:month },
-            success: function (result) {
-                $('#BasicSalary').val(result.salaryAmount);
-                $('#PayableAmount').val(result.payableSalaryAmount);
-                $('#WorkingDays').val(result.presentDay);
-            },
-            error: function (result) {
-                alert("Followup not Found!");
-            },
-        })
-    }
+    $.ajax({
+        url: '/Salary/SalaryAmount/',
+        type: 'GET',
+        data: {
+            id: $('#UserId').val(),
+            month: $('#SalaryMonth').val()
+        },
+        success: function (result) {
+            $('#BasicSalary').val(result.salaryAmount.toLocaleString());
+            $('#PayableAmount').val(Math.round(result.payableSalaryAmount).toLocaleString());
+            $('#WorkingDays').val(result.presentDay);
+        },
+        error: function (result) {
+            alert("Followup not Found!");
+        },
+    })
 });

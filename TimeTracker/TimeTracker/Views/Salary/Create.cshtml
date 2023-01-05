@@ -25,7 +25,7 @@
                     Create Salary
                 </h3>
             </div>
-            <form asp-action="Create" id="form">
+            <form asp-action="Create">
                 <div class="card-body">
                     <div class="row">
                         <div class="form-group col-md-3">
@@ -79,15 +79,14 @@
                 "use strict";
 
                 $(function () {
-                    var $form = $("#form");
-                    var $input = $form.find("#Salary");
+                    var $input = $("#Salary");
 
                     $input.on("keyup", function (event) {
                         var $this = $(this);
                         // Get the value.
                         var input = $this.val();
 
-                        var input = input.replace(/[\D\s\._\-]+/g, "");
+                        input = input.replace(/[\D\s\._\-]+/g, "");
                         input = input ? parseInt(input, 10) : 0;
 
                         $this.val(function () {

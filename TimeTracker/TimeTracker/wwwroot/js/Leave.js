@@ -98,6 +98,7 @@ $('#btnApproved , #btnDeclined').click(function () {
                 setStatusMsg(result);
                 $("#comformChange").modal('hide');
                 $('#tblLeave').DataTable().ajax.reload();
+                displayLeaveCount();
             },
             error: function (result) {
                 alert("Status not Change!");
@@ -139,3 +140,7 @@ function displayLeaveCount() {
         },
     })
 };
+
+$("#frmCreateLeave").submit(function () {
+    displayLeaveCount();
+});

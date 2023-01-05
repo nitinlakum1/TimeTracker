@@ -71,13 +71,16 @@ namespace TimeTracker.Controllers
         {
             userId = (userId > 0 ? userId : _httpContextAccessor?.HttpContext?.User.GetIdFromClaim()) ?? 0;
 
-            var usedLeaveCount = await _leaveRepo.LeaveCount(userId);
+            var startFinancialYearDate
+                = new DateTime(DateTime.Now.Month > 3 ? DateTime.Now.Year : DateTime.Now.Year - 1, 4, 1);
+            var endFinancialYearDate
+                = new DateTime(DateTime.Now.Month < 4 ? DateTime.Now.Year : DateTime.Now.Year - 1, 3, 31);
+
+            var usedLeaveCount = await _leaveRepo.LeaveCount(
+                userId, startFinancialYearDate, endFinancialYearDate);
 
             // Joining date after probation period.
             var joiningDate = await _userRepo.GetJoiningDate(userId);
-
-            var endFinancialYearDate
-                = new DateTime(DateTime.Now.Month < 4 ? DateTime.Now.Year : DateTime.Now.Year - 1, 3, 31);
 
             int totalLeave = (12 * (endFinancialYearDate.Year - joiningDate.Year) + (endFinancialYearDate.Month - joiningDate.Month)) + 1;
 
@@ -118,10 +121,26 @@ namespace TimeTracker.Controllers
                     {
                         model.UserId = userId;
                     }
-                    var leaveCount = await _leaveRepo.LeaveCount(model.UserId);
+
+                    var startFinancialYearDate
+                        = new DateTime(DateTime.Now.Month > 3 ? DateTime.Now.Year : DateTime.Now.Year - 1, 4, 1);
+
+                    var endFinancialYearDate
+                        = new DateTime(DateTime.Now.Month < 4 ? DateTime.Now.Year : DateTime.Now.Year - 1, 3, 31);
+
+                    var leaveCount = await _leaveRepo.LeaveCount(
+                        model.UserId, startFinancialYearDate, endFinancialYearDate);
 
                     var addLeave = _mapper.Map<AddLeaveModel>(model);
-                    addLeave.IsPaid = leaveCount <= 12;
+
+                    // Joining date after probation period.
+                    var joiningDate = await _userRepo.GetJoiningDate(userId);
+
+                    int totalLeave = (12 * (endFinancialYearDate.Year - joiningDate.Year) + (endFinancialYearDate.Month - joiningDate.Month)) + 1;
+
+                    totalLeave = totalLeave > 12 ? 12 : totalLeave;
+
+                    addLeave.IsPaid = leaveCount < totalLeave;
                     var result = await _leaveRepo.AddLeave(addLeave);
 
                     if (result)
