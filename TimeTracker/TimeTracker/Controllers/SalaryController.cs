@@ -215,21 +215,20 @@ namespace TimeTracker.Controllers
 
             var usedLeaveCountSalary = await _leaveRepo.UsedLeaveCountSalary(id, month);
 
-            var salaryAmount = await _salaryRepo.GetSalaryAmountById(id, month);
+            var (salaryAmount, presentDay) = await _salaryRepo.GetSalaryAmountById(id, month);
 
-            decimal presentDay = 30;
-            decimal payableSalaryAmount = salaryAmount;
+            decimal payableSalaryAmount = salaryAmount / 30 * presentDay;
 
             if (totalLeave < usedLeaveCountSalary)
             {
-                payableSalaryAmount = salaryAmount / 30 * (30 - monthlyLeaveCount);
-                presentDay = (30 - monthlyLeaveCount);
+                payableSalaryAmount = salaryAmount / 30 * (presentDay - monthlyLeaveCount);
+                presentDay = (presentDay - monthlyLeaveCount);
             }
             else if (totalLeave > usedLeaveCountSalary && totalLeave < totalUsedLeaveCount
                      && totalLeave < usedLeaveCountSalary + monthlyLeaveCount)
             {
-                payableSalaryAmount = salaryAmount / 30 * (30 - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary)));
-                presentDay = 30 - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary));
+                payableSalaryAmount = salaryAmount / 30 * (presentDay - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary)));
+                presentDay = presentDay - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary));
             }
 
             return Json(new { salaryAmount, payableSalaryAmount, presentDay });

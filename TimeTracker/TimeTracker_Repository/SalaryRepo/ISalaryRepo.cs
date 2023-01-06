@@ -18,7 +18,7 @@ namespace TimeTracker_Repository.SalaryRepo
 
         Task<bool> AddSalaryReport(AddEditSalaryReportModel model);
 
-        Task<decimal> GetSalaryAmountById(int id, string month);
+        Task<(decimal, decimal)> GetSalaryAmountById(int id, string month);
         #endregion
 
     }

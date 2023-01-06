@@ -106,7 +106,7 @@ namespace TimeTracker_Data.Modules
             return true;
         }
 
-        public async Task<decimal> GetSalaryAmountById(int id, string month)
+        public async Task<(decimal, decimal)> GetSalaryAmountById(int id, string month)
         {
             var selectedMonthStart = DateTime.Parse(month);
             var selectedMonthEnd = new DateTime(DateTime.Parse(month).Year, DateTime.Parse(month).Month, 1).AddMonths(1).AddDays(-1);
@@ -124,6 +124,7 @@ namespace TimeTracker_Data.Modules
                 .OrderByDescending(a => a.Id)
                 .FirstOrDefaultAsync();
 
+            int presentDay = 0;
             decimal salary = 0;
             foreach (var item in result)
             {
@@ -131,19 +132,23 @@ namespace TimeTracker_Data.Modules
                 {
                     item.ToDate = DateTime.Now;
                 }
-                if (item.FromDate <= selectedMonthStart || item.FromDate <= selectedMonthEnd
-                    && selectedMonthStart <= item.ToDate || selectedMonthEnd <= item.ToDate)
+                if ((item.FromDate <= selectedMonthStart || item.FromDate <= selectedMonthEnd)
+                    && (selectedMonthStart <= item.ToDate || selectedMonthEnd <= item.ToDate))
                 {
                     var fromDateLast = new DateTime(item.FromDate.Year, item.FromDate.Month, 1).AddMonths(1).AddDays(-1);
                     if (item.FromDate == firstSalary.FromDate && fromDateLast == selectedMonthEnd)
                     {
-                        var difference = (fromDateLast.Day - item.FromDate.Day) + 1;
-                        salary = item.Salary / 30 * (30 - difference);
+                        presentDay = (31 - item.FromDate.Day) < 0 ? 0 : (31 - item.FromDate.Day);
+                    }
+                    else if (item.ToDate == lastSalary.ToDate)
+                    {
+                        presentDay = (item.ToDate.Value.Day) > 30 ? 30 : (item.ToDate.Value.Day);
                     }
                     else
                     {
-                        salary = item.Salary;
+                        presentDay = 30;
                     }
+                    salary = item.Salary;
                 }
             }
 
@@ -153,7 +158,7 @@ namespace TimeTracker_Data.Modules
             //    .FirstOrDefaultAsync();
 
             //result ??= new Salarys();
-            return salary;
+            return (salary, presentDay);
         }
         #endregion
     }
