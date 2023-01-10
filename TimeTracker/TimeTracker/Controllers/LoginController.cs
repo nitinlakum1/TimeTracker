@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using TimeTracker.Models;
+using TimeTracker.Models.Login;
 using TimeTracker_Model;
 using TimeTracker_Model.User;
 using TimeTracker_Repository;
