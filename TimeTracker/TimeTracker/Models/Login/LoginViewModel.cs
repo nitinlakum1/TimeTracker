@@ -1,4 +1,4 @@
-namespace TimeTracker.Models
+namespace TimeTracker.Models.Login
 {
     public class LoginViewModel
     {

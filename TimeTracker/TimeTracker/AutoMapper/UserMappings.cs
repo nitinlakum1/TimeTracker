@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TimeTracker.Models;
+using TimeTracker.Models.Login;
 using TimeTracker.Models.User;
 using TimeTracker_Data.Model;
 using TimeTracker_Model.User;
