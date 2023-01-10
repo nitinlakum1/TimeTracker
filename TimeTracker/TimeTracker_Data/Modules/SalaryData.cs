@@ -130,7 +130,7 @@ namespace TimeTracker_Data.Modules
             {
                 if (item.ToDate == null)
                 {
-                    item.ToDate = DateTime.Now;
+                    item.ToDate = selectedMonthEnd;
                 }
                 if ((item.FromDate <= selectedMonthStart || item.FromDate <= selectedMonthEnd)
                     && (selectedMonthStart <= item.ToDate || selectedMonthEnd <= item.ToDate))
@@ -138,26 +138,19 @@ namespace TimeTracker_Data.Modules
                     var fromDateLast = new DateTime(item.FromDate.Year, item.FromDate.Month, 1).AddMonths(1).AddDays(-1);
                     if (item.FromDate == firstSalary.FromDate && fromDateLast == selectedMonthEnd)
                     {
-                        presentDay = (31 - item.FromDate.Day) < 0 ? 0 : (31 - item.FromDate.Day);
+                        presentDay = (fromDateLast.Day - item.FromDate.Day) + 1;
                     }
                     else if (item.ToDate == lastSalary.ToDate)
                     {
-                        presentDay = (item.ToDate.Value.Day) > 30 ? 30 : (item.ToDate.Value.Day);
+                        presentDay = item.ToDate.Value.Day;
                     }
                     else
                     {
-                        presentDay = 30;
+                        presentDay = selectedMonthEnd.Day;
                     }
                     salary = item.Salary;
                 }
             }
-
-            //var result = await _context.Salarys
-            //    .Where(a => a.UserId == id)
-            //    .OrderByDescending(a => a.Id)
-            //    .FirstOrDefaultAsync();
-
-            //result ??= new Salarys();
             return (salary, presentDay);
         }
         #endregion

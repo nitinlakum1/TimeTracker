@@ -132,7 +132,7 @@ $('#UserId, #SalaryMonth').change(function () {
             $('#WorkingDays').val(result.presentDay);
         },
         error: function (result) {
-            alert("Followup not Found!");
+            alert("Salary not Found!");
         },
     })
 });

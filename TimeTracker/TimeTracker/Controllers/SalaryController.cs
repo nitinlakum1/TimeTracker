@@ -200,6 +200,8 @@ namespace TimeTracker.Controllers
 
         public async Task<IActionResult> SalaryAmount(int id, string month)
         {
+            var monthTotalDays = DateTime.Parse(month).AddMonths(1).AddDays(-1).Day;
+
             var joiningDate = await _userRepo.GetJoiningDate(id);
 
             var startFinancialYearDate
@@ -217,18 +219,22 @@ namespace TimeTracker.Controllers
 
             var (salaryAmount, presentDay) = await _salaryRepo.GetSalaryAmountById(id, month);
 
-            decimal payableSalaryAmount = salaryAmount / 30 * presentDay;
+            decimal payableSalaryAmount = salaryAmount / monthTotalDays;
 
             if (totalLeave < usedLeaveCountSalary)
             {
-                payableSalaryAmount = salaryAmount / 30 * (presentDay - monthlyLeaveCount);
+                payableSalaryAmount = payableSalaryAmount * (presentDay - monthlyLeaveCount);
                 presentDay = (presentDay - monthlyLeaveCount);
             }
             else if (totalLeave > usedLeaveCountSalary && totalLeave < totalUsedLeaveCount
                      && totalLeave < usedLeaveCountSalary + monthlyLeaveCount)
             {
-                payableSalaryAmount = salaryAmount / 30 * (presentDay - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary)));
+                payableSalaryAmount = payableSalaryAmount * (presentDay - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary)));
                 presentDay = presentDay - (monthlyLeaveCount - (totalLeave - usedLeaveCountSalary));
+            }
+            else
+            {
+                payableSalaryAmount = payableSalaryAmount * presentDay;
             }
 
             return Json(new { salaryAmount, payableSalaryAmount, presentDay });
