@@ -1,8 +1,10 @@
-﻿using Amazon.Auth.AccessControlPolicy;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
-using TimeTracker.Models;
+using System.Net;
+using System.Net.Mail;
 using TimeTracker.Models.Login;
 using TimeTracker_Model;
 using TimeTracker_Model.User;
@@ -17,19 +19,22 @@ namespace TimeTracker.Controllers
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
         private readonly JwtSettingModel _jwtSettings;
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public LoginController(IUserRepo userRepo,
                               IMapper mapper,
                               ITokenService tokenService,
                               IOptions<JwtSettingModel> jwtSettings,
-                              IHttpContextAccessor httpContextAccessor)
+                              IHttpContextAccessor httpContextAccessor,
+                              Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
             _userRepo = userRepo;
             _mapper = mapper;
             _tokenService = tokenService;
             _jwtSettings = jwtSettings.Value;
             _httpContextAccessor = httpContextAccessor;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
@@ -80,6 +85,54 @@ namespace TimeTracker.Controllers
 
         public IActionResult ForgotPassword()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgotPassword(ForgotPasswordViewModel model)
+        {
+            string key = string.Format("{0}", Guid.NewGuid().ToString().Replace("-", ""));
+
+            string returnUrl = string.Format("https://{0}{1}", Request.Host.Value, Url.Action("ChangePassword", "Login", new { email = model.Email, key }));
+            string filePath = Path.Combine(_hostingEnvironment.WebRootPath, @"Template\Email\ResetPassword.html");
+
+            var fromEmail = new MailAddress("nitinb@capitalnumbers.com");
+            var toEmail = new MailAddress(model.Email);
+            var password = "lakum@123";
+            var htmlFileData = System.IO.File.ReadAllText(filePath);
+            htmlFileData = htmlFileData.Replace("{returnUrl}", returnUrl);
+
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromEmail.Address, password)
+            };
+
+            var mess = new MailMessage(fromEmail, toEmail);
+            mess.Subject = "Subject";
+            mess.IsBodyHtml = true;
+            mess.Body = htmlFileData;
+            smtp.Send(mess);
+
+            return View();
+        }
+
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ChangePassword(string email, string key)
+        {
+            if (key == "nitin")
+            {
+
+            }
             return View();
         }
 
