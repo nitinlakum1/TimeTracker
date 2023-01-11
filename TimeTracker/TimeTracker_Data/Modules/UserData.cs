@@ -143,6 +143,53 @@ namespace TimeTracker_Data.Modules
             }
             return user.JoiningDate;
         }
+
+        public async Task<bool> UpdateKey(string email, string key)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(a => a.Email == email);
+            user.Key = key;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<string> GetKey(string email)
+        {
+            var result = await _context.Users.FirstOrDefaultAsync(a => a.Email == email);
+            return result.Key;
+        }
+
+        public async Task<bool> CreatePassword(Users model)
+        {
+            var result = _context.Users.FirstOrDefault(a => a.Email == model.Email);
+            result.Password = model.Password;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ValidateEmail(string email, int userId)
+        {
+            var result = !await _context.Users
+                .AnyAsync(a => a.Email == email
+                          && (userId == 0 || a.Id != userId));
+            return result;
+        }
+
+        public async Task<bool> ValidateContactNo(string contactNo, int userId)
+        {
+            var result = !await _context.Users
+                .AnyAsync(a => a.ContactNo == contactNo
+                          && (userId == 0 || a.Id != userId));
+            return result;
+        }
+
+        public async Task<bool> ValidateEmailForgotPass(string email)
+        {
+            var result = await _context.Users
+                .AnyAsync(a => a.Email == email);
+            return result;
+        }
         #endregion
     }
 }

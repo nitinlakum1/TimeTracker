@@ -57,5 +57,7 @@ namespace TimeTracker_Data.Model
         public Roles Roles { get; set; }
 
         public string? Url { get; set; }
+
+        public string? Key { get; set; }
     }
 }

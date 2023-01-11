@@ -12,6 +12,9 @@ namespace TimeTracker.AutoMapper
 
         public static void Map(Profile profile)
         {
+            profile.CreateMap<CreatePasswordModel, Users>();
+            profile.CreateMap<CreatePasswordViewModel, CreatePasswordModel>();
+
             profile.CreateMap<LoginViewModel, LoginModel>();
             profile.CreateMap<Users, LoginDetailsModel>()
                 .ForMember(dest => dest.RoleName, source => source.MapFrom(x => x.Roles.Name));

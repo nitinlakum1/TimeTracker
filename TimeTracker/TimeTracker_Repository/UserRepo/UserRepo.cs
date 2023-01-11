@@ -2,6 +2,7 @@
 using TimeTracker_Data.Model;
 using TimeTracker_Data.Modules;
 using TimeTracker_Model;
+using TimeTracker_Model.Holiday;
 using TimeTracker_Model.User;
 
 namespace TimeTracker_Repository.UserRepo
@@ -96,6 +97,38 @@ namespace TimeTracker_Repository.UserRepo
         public async Task<DateTime> GetJoiningDate(int id)
         {
             return await _userData.GetJoiningDate(id);
+        }
+
+        public async Task<bool> UpdateKey(string email, string key)
+        {
+            return await _userData.UpdateKey(email, key);
+        }
+
+        public async Task<string> GetKey(string email)
+        {
+            return await _userData.GetKey(email);
+        }
+
+        public async Task<bool> CreatePassword(CreatePasswordModel model)
+        {
+            model.Password = Common.Encrypt(model.Password);
+            var result = _mapper.Map<Users>(model);
+            return await _userData.CreatePassword(result);
+        }
+
+        public async Task<bool> ValidateEmail(string email, int userId)
+        {
+            return await _userData.ValidateEmail(email, userId);
+        }
+
+        public async Task<bool> ValidateContactNo(string contactNo, int userId)
+        {
+            return await _userData.ValidateContactNo(contactNo, userId);
+        }
+
+        public async Task<bool> ValidateEmailForgotPass(string email)
+        {
+            return await _userData.ValidateEmailForgotPass(email);
         }
         #endregion
     }

@@ -23,19 +23,16 @@ namespace TimeTracker.Controllers
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IAWSS3BucketService _awsS3BucketService;
-        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
 
         public UserController(IUserRepo userRepo,
                               IMapper mapper,
                               IHttpContextAccessor httpContextAccessor,
-                              IOptions<AwsConfiguration> awsConfiguration,
-                              Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
+                              IOptions<AwsConfiguration> awsConfiguration)
         {
             _userRepo = userRepo;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _awsS3BucketService = new AWSS3BucketService(awsConfiguration.Value);
-            _hostingEnvironment = hostingEnvironment;
         }
 
         [Authorize(Roles = "Admin")]
@@ -196,6 +193,16 @@ namespace TimeTracker.Controllers
             }
             catch { }
             return Json(url);
+        }
+
+        public async Task<IActionResult> ValidateEmail(string Email, int Id = 0)
+        {
+            return Json(await _userRepo.ValidateEmail(Email, Id));
+        }
+
+        public async Task<IActionResult> ValidateContactNo(string ContactNo, int Id = 0)
+        {
+            return Json(await _userRepo.ValidateContactNo(ContactNo, Id));
         }
 
         //public async Task<IActionResult> CheckUpdate()

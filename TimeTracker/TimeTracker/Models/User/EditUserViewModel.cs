@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace TimeTracker.Models.User
 {
@@ -16,12 +17,14 @@ namespace TimeTracker.Models.User
 
         [Required(ErrorMessage = "Email is required.")]
         [RegularExpression(@"^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$", ErrorMessage = "Please enter a valid email.")]
+        [Remote("ValidateEmail", "User", AdditionalFields = "Id", ErrorMessage = "Email already exist.")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Designation is required.")]
         public string Designation { get; set; }
 
         [Required(ErrorMessage = "Contact No. is required.")]
+        [Remote("ValidateContactNo", "User", AdditionalFields = "Id", ErrorMessage = "Email already exist.")]
         public string ContactNo { get; set; }
 
         [Required(ErrorMessage = "Gender is required.")]

@@ -7,9 +7,11 @@ using System.Net;
 using System.Net.Mail;
 using TimeTracker.Models.Login;
 using TimeTracker_Model;
+using TimeTracker_Model.Holiday;
 using TimeTracker_Model.User;
 using TimeTracker_Repository;
 using TimeTracker_Repository.UserRepo;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TimeTracker.Controllers
 {
@@ -93,7 +95,9 @@ namespace TimeTracker.Controllers
         {
             string key = string.Format("{0}", Guid.NewGuid().ToString().Replace("-", ""));
 
-            string returnUrl = string.Format("https://{0}{1}", Request.Host.Value, Url.Action("ChangePassword", "Login", new { email = model.Email, key }));
+            _userRepo.UpdateKey(model.Email, key);
+
+            string returnUrl = string.Format("https://{0}{1}", Request.Host.Value, Url.Action("CreatePassword", "Login", new { email = model.Email, key }));
             string filePath = Path.Combine(_hostingEnvironment.WebRootPath, @"Template\Email\ResetPassword.html");
 
             var fromEmail = new MailAddress("nitinb@capitalnumbers.com");
@@ -121,17 +125,36 @@ namespace TimeTracker.Controllers
             return View();
         }
 
-        public IActionResult ChangePassword()
+        public async Task<IActionResult> CreatePassword(string email, string key)
         {
+            var GetKey = await _userRepo.GetKey(email);
+            ViewBag.Email = email;
+            if (GetKey == key)
+            {
             return View();
+            }
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult ChangePassword(string email, string key)
+        public async Task<IActionResult> CreatePassword(CreatePasswordViewModel model)
         {
-            if (key == "nitin")
+            try
             {
+                if (ModelState.IsValid)
+                {
+                    var createPassword = _mapper.Map<CreatePasswordModel>(model);
+                    var result = await _userRepo.CreatePassword(createPassword);
 
+                    if (result)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return View();
         }
@@ -147,6 +170,11 @@ namespace TimeTracker.Controllers
             {
                 throw;
             }
+        }
+
+        public async Task<IActionResult> ValidateEmailForgotPass(string Email)
+        {
+            return Json(await _userRepo.ValidateEmailForgotPass(Email));
         }
     }
 }

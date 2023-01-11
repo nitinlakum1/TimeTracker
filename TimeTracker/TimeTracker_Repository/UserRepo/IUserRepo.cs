@@ -21,5 +21,17 @@ namespace TimeTracker_Repository.UserRepo
         Task<bool> DeleteProfilePic(int id);
 
         Task<DateTime> GetJoiningDate(int id);
+
+        Task<bool> UpdateKey(string email, string key);
+
+        Task<string> GetKey(string email);
+
+        Task<bool> CreatePassword(CreatePasswordModel model);
+
+        Task<bool> ValidateEmail(string email, int userId);
+
+        Task<bool> ValidateContactNo(string contactNo, int userId);
+
+        Task<bool> ValidateEmailForgotPass(string email);
     }
 }
