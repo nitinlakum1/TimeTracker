@@ -62,6 +62,15 @@
                     <p>Leave</p>
                 </a>
             </li>
+            @if (roleId == (int)Roles.Admin)
+            {
+                <li class="nav-item">
+                    <a asp-controller="UpdateService" asp-action="Index" class="nav-link" id="menuUpdateService">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Update Service</p>
+                </a>
+            </li>
+            }
         </ul>
     </li>
     <li class="nav-item">

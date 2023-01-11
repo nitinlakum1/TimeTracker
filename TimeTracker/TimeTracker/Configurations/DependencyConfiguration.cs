@@ -20,6 +20,7 @@ namespace TimeTracker.Configurations
             services.AddTransient<ISalaryRepo, SalaryRepo>();
             services.AddTransient<IResourceRepo, ResourceRepo>();
             services.AddTransient<ILeaveRepo, LeaveRepo>();
+            services.AddTransient<IUpdateServiceRepo, UpdateServiceRepo>();
             services.AddTransient<JwtSettingModel>();
             services.AddSingleton<AwsConfiguration>();
             //services.AddTransient<IAWSS3BucketService, AWSS3BucketService>();
@@ -33,6 +34,7 @@ namespace TimeTracker.Configurations
             services.AddTransient<SalaryData>();
             services.AddTransient<ResourcesData>();
             services.AddTransient<LeaveData>();
+            services.AddTransient<UpdateServiceData>();
         }
     }
 }

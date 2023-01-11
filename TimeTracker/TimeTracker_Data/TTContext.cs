@@ -20,5 +20,6 @@ namespace TimeTracker_Data
         public DbSet<ErrorLogs> ErrorLogs { get; set; }
         public DbSet<SalaryReports> SalaryReports { get; set; }
         public DbSet<Leaves> Leaves { get; set; }
+        public DbSet<UpdateServices> UpdateServices { get; set; }
     }
 }
