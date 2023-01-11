@@ -1,4 +1,4 @@
-﻿namespace TimeTrackerService
+﻿namespace UpdateService
 {
     partial class ProjectInstaller
     {
@@ -33,15 +33,12 @@
             // 
             // serviceProcessInstaller1
             // 
-            this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
             this.serviceProcessInstaller1.Password = null;
             this.serviceProcessInstaller1.Username = null;
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "1.1.1";
-            this.serviceInstaller1.DisplayName = "TTService";
-            this.serviceInstaller1.ServiceName = "TTService";
+            this.serviceInstaller1.ServiceName = "TTUpdate";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
