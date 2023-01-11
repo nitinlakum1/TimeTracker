@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RestSharp;
 using System.Net.Http.Headers;
 using TimeTracker.Models;
 using TimeTracker.Models.Resource;
@@ -14,7 +15,6 @@ namespace TimeTracker.Controllers
     [Authorize(Roles = "Admin,HR")]
     public class ResourceController : Controller
     {
-
         private readonly IMapper _mapper;
         private readonly IResourceRepo _resourcesRepo;
 
@@ -40,7 +40,80 @@ namespace TimeTracker.Controllers
         public async Task<IActionResult> AddResource(ResourceViewModel model)
         {
             await ListOfResources(model);
-            return RedirectToAction("Index");
+            return RedirectToAction("AddResource");
+        }
+
+        private async Task ListOfResources(ResourceViewModel model)
+        {
+            for (int i = 0; i < i + 1; i++)
+            {
+                string url = $"https://prod.hirect.ai/hirect/candidate-service/candidates/search?searchDirect=true&cityId={model.CityId}&qs={model.Designation}&pageNum={i}&pageSize=20";
+                var client = new RestClient(url);
+                client.Timeout = -1;
+                client.FollowRedirects = false;
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("authority", "prod.hirect.ai");
+                request.AddHeader("accept", "application/json, text/plain, */*");
+                request.AddHeader("accept-language", "en-US,en;q=0.9");
+                request.AddHeader("content-type", "application/json;charset=UTF-8 application/json;charset=UTF-8");
+                request.AddHeader("origin", "https://recruiter.hirect.in");
+                request.AddHeader("referer", "https://recruiter.hirect.in/");
+                request.AddHeader("region", "in");
+                request.AddHeader("sec-ch-ua", "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\"");
+                request.AddHeader("sec-ch-ua-mobile", "?0");
+                request.AddHeader("sec-ch-ua-platform", "\"Windows\"");
+                request.AddHeader("sec-fetch-dest", "empty");
+                request.AddHeader("sec-fetch-mode", "cors");
+                request.AddHeader("sec-fetch-site", "cross-site");
+                client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36";
+                request.AddHeader("x-appversion", "2.1.0");
+                request.AddHeader("x-brand", "Windows");
+                request.AddHeader("x-deviceid", "792de51e4d5be52a35f55f3570193fc3");
+                request.AddHeader("x-idtoken", $"{model.Token}");
+                request.AddHeader("x-model", "10");
+                request.AddHeader("x-os", "webapp");
+                request.AddHeader("x-region", "in");
+                request.AddHeader("x-role", "1");
+                request.AddHeader("x-timestamp", "1669877252654");
+                request.AddHeader("x-uid", "eb02f4980a8546a2ad91f23e5398");
+
+                string[] education = model.education.Split(',');
+                string[] experience = model.experience.Split(',');
+                string[] salary = model.salary.Split(',');
+                var content = JsonContent.Create(new
+                {
+                    education = education,
+                    experience = experience,
+                    salary = salary,
+                    gender = 0,
+                    minAge = 18,
+                });
+
+                var body = JsonConvert.SerializeObject(content.Value);
+                request.AddParameter("application/json;charset=UTF-8 application/json;charset=UTF-8", body, ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+
+                if (response.IsSuccessful)
+                {
+                    var deserializeObject = JsonConvert.DeserializeObject<dynamic>(response.Content);
+                    var list = deserializeObject["data"]["list"];
+
+                    if (((Newtonsoft.Json.Linq.JArray)list).Count == 0)
+                    { break; }
+
+                    foreach (var item in list)
+                    {
+                        string id = item["id"];
+                        string preferenceId = item["preferenceId"];
+
+                        var resource = await _resourcesRepo.GetResourceById(id);
+                        if (string.IsNullOrWhiteSpace(resource.id))
+                        {
+                            await GetResourceDetails(id, preferenceId, model.Token);
+                        }
+                    }
+                }
+            }
         }
 
         //private async Task ListOfResources(ResourceViewModel model)
@@ -117,23 +190,23 @@ namespace TimeTracker.Controllers
         //    }
         //}
 
-        private async Task ListOfResources(ResourceViewModel model)
-        {
-            var deserializeObject = JsonConvert.DeserializeObject<dynamic>(model.Details);
-            var list = deserializeObject["data"]["list"];
+        //private async Task ListOfResources(ResourceViewModel model)
+        //{
+        //    var deserializeObject = JsonConvert.DeserializeObject<dynamic>(model.Details);
+        //    var list = deserializeObject["data"]["list"];
 
-            foreach (var item in list)
-            {
-                string id = item["id"];
-                string preferenceId = item["preferenceId"];
+        //    foreach (var item in list)
+        //    {
+        //        string id = item["id"];
+        //        string preferenceId = item["preferenceId"];
 
-                var resource = await _resourcesRepo.GetResourceById(id);
-                if (string.IsNullOrWhiteSpace(resource.id))
-                {
-                    await GetResourceDetails(id, preferenceId, model.Token);
-                }
-            }
-        }
+        //        var resource = await _resourcesRepo.GetResourceById(id);
+        //        if (string.IsNullOrWhiteSpace(resource.id))
+        //        {
+        //            await GetResourceDetails(id, preferenceId, model.Token);
+        //        }
+        //    }
+        //}
 
         private async Task GetResourceDetails(string id, string preferenceId, string token)
         {
