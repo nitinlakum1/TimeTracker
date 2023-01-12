@@ -27,3 +27,5 @@
 /TimeTracker/packages/Newtonsoft.Json.13.0.1
 /Publish_TimeTracker
 /TimeTracker/UpdateService/obj/Debug
+/TimeTracker/packages/System.IO.Compression.ZipFile.4.3.0
+/TimeTracker/UpdateService/bin/Debug
