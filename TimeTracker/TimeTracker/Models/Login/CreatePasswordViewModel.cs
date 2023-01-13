@@ -9,7 +9,7 @@ namespace TimeTracker.Models.Login
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Confirm Password is required.")]
-        [System.ComponentModel.DataAnnotations.Compare("Password")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Password do not match.")]
         public string ConfirmPassword { get; set; }
         public string Email { get; set; }
     }

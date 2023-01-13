@@ -190,6 +190,20 @@ namespace TimeTracker_Data.Modules
                 .AnyAsync(a => a.Email == email);
             return result;
         }
+
+        public async Task<bool> ValidateUser(string username)
+        {
+            var result = await _context.Users
+                .AnyAsync(a => a.Username == username);
+            return result;
+        }
+
+        public async Task<bool> ValidatePassword(string password, string username)
+        {
+            var result = await _context.Users
+                .AnyAsync(a => a.Username == username && a.Password == password);
+            return result;
+        }
         #endregion
     }
 }

@@ -176,5 +176,15 @@ namespace TimeTracker.Controllers
         {
             return Json(await _userRepo.ValidateEmailForgotPass(Email));
         }
+
+        public async Task<IActionResult> ValidateUser(string Username)
+        {
+            return Json(await _userRepo.ValidateUser(Username));
+        }
+
+        public async Task<IActionResult> ValidatePassword(string Password, string Username)
+        {
+            return Json(await _userRepo.ValidatePassword(Password, Username));
+        }
     }
 }

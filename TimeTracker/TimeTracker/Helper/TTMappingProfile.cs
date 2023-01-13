@@ -14,6 +14,7 @@ namespace TimeTracker.Helper
             SalaryMappings.Map(this);
             ResourceMappings.Map(this);
             LeaveMappings.Map(this);
+            UpdateServiceMappings.Map(this);
         }
     }
 }
