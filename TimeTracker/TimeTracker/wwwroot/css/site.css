@@ -152,8 +152,8 @@ label {
 }
 
 .Reschedule-status {
-    color: #76101a !important;
-    background-color: #e5bbbf !important;
+    color: #00274e !important;
+    background-color: #afc8e1 !important;
 }
 
 .Confirmed-status {
@@ -172,23 +172,23 @@ label {
 }
 
 .ScheduleInterview-status {
-    color: #00274e !important;
-    background-color: #afc8e1 !important;
+    color: rgb(0, 39, 78);
+    background-color: rgb(155 176 197);
 }
 
 .NotInterested-status {
-    color: #201f1f !important;
-    background-color: #dfe6e9 !important;
+    color: #500202 !important;
+    background-color: #ffb0b0ed !important;
 }
 
 .CallNotAttend-status {
-    color: #2e005a !important;
-    background-color: #d7baf5 !important;
+    color: rgb(0 33 36);
+    background-color: rgb(95 204 212);
 }
 
 .FollowBack-status {
-    color: #011913 !important;
-    background-color: #419e89de !important;
+    color: #2e005a !important;
+    background-color: #d7baf5 !important;
 }
 
 .Rejected-status {
@@ -197,8 +197,13 @@ label {
 }
 
 .NotSuitable-status {
-    color: #000a0e !important;
-    background-color: #34ace0 !important;
+    color: #500202 !important;
+    background-color: #ffa9a970 !important;
+}
+
+.RemoteJob-status {
+    color: rgb(0 45 43) !important;
+    background-color: rgb(157 222 220);
 }
 
 .required:after {

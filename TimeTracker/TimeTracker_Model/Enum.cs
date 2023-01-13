@@ -70,7 +70,7 @@ namespace TimeTracker_Model
         InProcess = 4,
 
         [Display(Name = "Schedule Interview")]
-        [Description("ScheduleInterview")]
+        [Description("Schedule Interview")]
         ScheduleInterview = 5,
 
         [Display(Name = "Reschedule")]
@@ -92,6 +92,10 @@ namespace TimeTracker_Model
         [Display(Name = "Confirmed")]
         [Description("Confirmed")]
         Confirmed = 10,
+
+        [Display(Name = "Remote Job")]
+        [Description("Remote Job")]
+        RemoteJob = 11,
     }
     #endregion
 
