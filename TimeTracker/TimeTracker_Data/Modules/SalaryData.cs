@@ -93,12 +93,6 @@ namespace TimeTracker_Data.Modules
 
         public async Task<bool> AddSalaryReport(SalaryReports model)
         {
-            var result = await _context.Salarys
-                .Where(a => a.UserId == model.UserId)
-                .OrderByDescending(a => a.Id)
-                .FirstOrDefaultAsync();
-
-            model.BasicSalary = result.Salary;
             model.SalaryDate = DateTime.Now.Date;
 
             _context.SalaryReports.Add(model);

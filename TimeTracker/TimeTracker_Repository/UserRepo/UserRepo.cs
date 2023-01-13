@@ -130,6 +130,17 @@ namespace TimeTracker_Repository.UserRepo
         {
             return await _userData.ValidateEmailForgotPass(email);
         }
+
+        public async Task<bool> ValidateUser(string username)
+        {
+            return await _userData.ValidateUser(username);
+        }
+
+        public async Task<bool> ValidatePassword(string password, string username)
+        {
+            password = Common.Encrypt(password);
+            return await _userData.ValidatePassword(password, username);
+        }
         #endregion
     }
 }
