@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Management;
@@ -39,7 +40,7 @@ namespace UpdateService
 
                     if (string.IsNullOrWhiteSpace(version)
                         || (updateService != null
-                            && !updateService.Version.Equals(version)))
+                            && updateService.Version != version))
                     {
                         //Stop TTService
                         await ExecuteCommand("sc stop \"TTService\"");
@@ -68,7 +69,7 @@ namespace UpdateService
                         ZipFile.ExtractToDirectory(zipPath, extractPath);
 
                         //Install TTService
-                        ProcessStartInfo procStartInfo = new ProcessStartInfo(@"C:\TimeTrackerService\Install.bat")
+                        ProcessStartInfo procStartInfo = new ProcessStartInfo(@"C:\TimeTrackerService\Install_Start.bat")
                         {
                             RedirectStandardOutput = true,
                             UseShellExecute = false,
@@ -82,13 +83,13 @@ namespace UpdateService
                         };
 
                         proc.Start();
-
-                        //Start TTService
-                        await ExecuteCommand("sc start \"TTService\"");
                     }
                     Thread.Sleep(5000);
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    WriteTextFile("OnStart", ex.Message, 0);
+                }
             }
 
             //while (true)
@@ -191,6 +192,28 @@ namespace UpdateService
 
                     proc.Start();
                 });
+            }
+            catch { }
+        }
+
+        private static void WriteTextFile(string methodName, string message, int lineNumber)
+        {
+            try
+            {
+                var logTime = DateTime.Now;
+                string path = @"C:\Program Files\WCT\TTUpdate\";
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                path = Path.Combine(path, string.Format(@"Error_{0:dd_MM_yy}.txt", logTime));
+
+                FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+                StreamWriter sWriter = new StreamWriter(fs);
+                sWriter.BaseStream.Seek(0, SeekOrigin.End);
+                sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss:fff tt} | Line Number: {lineNumber} | {methodName} | {message}");
+                sWriter.Flush();
+                sWriter.Close();
             }
             catch { }
         }
