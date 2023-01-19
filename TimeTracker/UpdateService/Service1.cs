@@ -27,6 +27,16 @@ namespace UpdateService
             {
                 try
                 {
+                    //Delete Install_Start.bat file from the 'TimeTrackerService' folder.
+                    if (File.Exists(@"C:\TimeTrackerService\Install_Start.bat"))
+                    {
+                        File.Delete(@"C:\TimeTrackerService\Install_Start.bat");
+                    }
+                }
+                catch { }
+
+                try
+                {
                     string version = "";
                     try
                     {
@@ -34,7 +44,10 @@ namespace UpdateService
 
                         version = managementObject["Description"].ToString();
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        WriteTextFile("While getting Description", ex.Message, 0);
+                    }
 
                     var updateService = await systemLogData.GetUpdateService("TTService");
 
@@ -83,77 +96,21 @@ namespace UpdateService
                         };
 
                         proc.Start();
+
+                        //Delete TimeTrackerService.zip file from the 'TimeTrackerService' folder.
+                        if (File.Exists(@"C:\TimeTrackerService\TimeTrackerService.zip"))
+                        {
+                            File.Delete(@"C:\TimeTrackerService\TimeTrackerService.zip");
+                        }
                     }
-                    Thread.Sleep(5000);
+
+                    Thread.Sleep(10000);
                 }
                 catch (Exception ex)
                 {
                     WriteTextFile("OnStart", ex.Message, 0);
                 }
             }
-
-            //while (true)
-            //{
-            //    string version = "";
-            //    try
-            //    {
-            //        ManagementObject managementObject = new ManagementObject(new ManagementPath("Win32_Service.Name='TTService'"));
-
-            //        version = managementObject["Description"].ToString();
-            //    }
-            //    catch { }
-
-            //    var updateService = await systemLogData.GetUpdateService("TTService");
-
-            //    if (string.IsNullOrWhiteSpace(version)
-            //        || (updateService != null
-            //            && !updateService.Version.Equals(version)))
-            //    {
-            //        try
-            //        {
-            //            //Stop TTService
-            //            await ExecuteCommand("sc stop \"TTService\"");
-            //            await ExecuteCommand("sc delete \"TTService\"");
-            //            //ServiceController serviceController = new ServiceController("TTService");
-            //            //if (serviceController.Status.Equals(ServiceControllerStatus.Running))
-            //            //{
-            //            //    serviceController.Stop();
-            //            //}
-            //            //TODO: Delete TTService
-
-            //            //Delete all files from the 'TimeTrackerService' folder.
-            //            if (Directory.Exists(@"C:\TimeTrackerService"))
-            //            {
-            //                DirectoryInfo di = new DirectoryInfo(@"C:\TimeTrackerService\");
-            //                foreach (FileInfo file in di.GetFiles())
-            //                {
-            //                    file.Delete();
-            //                }
-            //            }
-
-            //            //Download the TTService from the server.
-            //            WebClient webClient = new WebClient();
-            //            {
-            //                webClient.DownloadFile("http://103.252.109.188:85/TimeTrackerService/TimeTrackerService.zip", @"C:\TimeTrackerService\TimeTrackerService.zip");
-            //            }
-
-            //            ZipFile.ExtractToDirectory(@"C:\TimeTrackerService\TimeTrackerService.zip", @"C:\TimeTrackerService\");
-
-            //            //Start TTService
-            //            //serviceController.Start();
-            //            await ExecuteCommand("\"C:\\Windows\\Microsoft.NET\\Framework\v4.0.30319\\installutil.exe\" \"C:\\TimeTrackerService\\TimeTrackerService.exe\"");
-            //            await ExecuteCommand("sc start \"TTService\"");
-            //        }
-            //        catch { }
-
-            //        try
-            //        {
-
-            //        }
-            //        catch { }
-            //    }
-            //    Thread.Sleep(5000);
-            //}
         }
 
         protected override void OnStop()

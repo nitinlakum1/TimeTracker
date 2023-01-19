@@ -16,6 +16,7 @@ BEGIN TRY
 		dbo.UpdateServices
 	WHERE
 		[Name] = @Name
+	ORDER BY Id DESC
 
 	RETURN 0
 END TRY
