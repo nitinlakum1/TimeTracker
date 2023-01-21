@@ -8,5 +8,6 @@ namespace TimeTracker.Models.SystemLog
         public DateTime LogTime { get; set; } = DateTime.Now;
         public string Description { get; set; }
         public LogTypes LogType { get; set; }
+        public string? WiFiName { get; set; }
     }
 }

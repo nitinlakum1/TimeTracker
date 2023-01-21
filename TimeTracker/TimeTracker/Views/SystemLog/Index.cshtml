@@ -30,13 +30,10 @@
                     Daily Log
                 </h3>
                 <div style="float:right; display:flex;">
-                    @if (roleId == (int)Roles.Employee){
                         <div style="display:flex;float:left;margin-top:2px;">
                             <i class="fas fa-clock font-color" style="margin-top:5px; margin-right: 3.5px;"></i>
-                            <h5 class="font-color" style="margin-bottom:0px;"><span id="spnLastTime">@ViewBag.LastTime</span></h5>
+                            <h5 class="font-color" style="margin-bottom:0px;"><span id="spnLastTime"></span></h5>
                         </div>
-
-                    }
                     @if (roleId == (int)Roles.Admin)
                     {
                         <div style="float:right; margin-left:5px;">
@@ -102,7 +99,8 @@
 
     <script>
         $(document).ready(function () {
-            startTimeLog();
+            displayLastTime();
+            //startTimeLog();
             SelectedMenu('menuAttendance', 'menuSystemLog');
             bindDataTable();
 

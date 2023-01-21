@@ -22,13 +22,11 @@ namespace TimeTracker_Repository.SystemLogRepo
 
         #region Methods
 
-        public async Task<(List<SystemLogModel>, int)> GetSystemLog(SystemLogFilterModel model)
+        public async Task<List<SystemLogModel>> GetSystemLog(SystemLogFilterModel model)
         {
-            var (result, totalRecord) = await _systemLogData.GetSystemLog(model);
+            var result = await _systemLogData.GetSystemLog(model);
 
-            var systemLogList = _mapper.Map<List<SystemLogModel>>(result);
-
-            return (systemLogList, totalRecord);
+            return _mapper.Map<List<SystemLogModel>>(result);
         }
 
         public async Task<List<SystemLogModel>> GetTodaysSystemLog(int userId)

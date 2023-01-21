@@ -6,6 +6,7 @@
         public string UserId { get; set; }
         public DateTime LogTime { get; set; }
         public string Description { get; set; }
+        public string? WiFiName { get; set; }
         public LogTypes LogType { get; set; }
     }
 }

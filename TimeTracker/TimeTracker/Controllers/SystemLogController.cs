@@ -43,14 +43,14 @@ namespace TimeTracker.Controllers
         {
             try
             {
-                int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
-                var todaysSystemLog = await _systemlogRepo.GetTodaysSystemLog(userId ?? 0);
+                //int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
+                //var todaysSystemLog = await _systemlogRepo.GetTodaysSystemLog(userId ?? 0);
 
-                var todaysHour = GetTotalHours(todaysSystemLog);
+                //var todaysHour = GetTotalHours(todaysSystemLog);
 
-                string lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
+                //string lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
 
-                ViewBag.LastTime = lastTime;
+                //ViewBag.LastTime = lastTime;
 
                 var users = await _userRepo.GetUserLookup();
                 ViewBag.Users = new SelectList(users, "Id", "Username");
@@ -92,14 +92,14 @@ namespace TimeTracker.Controllers
                     dtParam.ToDate = filterData?.ToDate ?? DateTime.Now;
                 }
 
-                var (systemLogList, totalRecord) = await _systemlogRepo.GetSystemLog(dtParam);
+                var systemLogList = await _systemlogRepo.GetSystemLog(dtParam);
 
                 var lst = _mapper.Map<List<SystemLogListModel>>(systemLogList);
                 return Json(new
                 {
                     param.sEcho,
-                    iTotalRecords = totalRecord,
-                    iTotalDisplayRecords = totalRecord,
+                    iTotalRecords = 0,
+                    iTotalDisplayRecords = 0,
                     aaData = lst,
                 });
             }
@@ -209,6 +209,7 @@ namespace TimeTracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    model.WiFiName = "";
                     var addLog = _mapper.Map<SystemLogAdddModel>(model);
                     var result = await _systemlogRepo.AddLog(addLog);
 
@@ -346,6 +347,26 @@ namespace TimeTracker.Controllers
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public async Task<IActionResult> LastTime(int userId)
+        {
+            try
+            {
+                userId = (userId > 0 ? userId : _httpContextAccessor?.HttpContext?.User.GetIdFromClaim()) ?? 0;
+                //int? userId = _httpContextAccessor?.HttpContext?.User.GetIdFromClaim();
+                var todaysSystemLog = await _systemlogRepo.GetTodaysSystemLog(userId);
+
+                var todaysHour = GetTotalHours(todaysSystemLog);
+
+                string lastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
+
+                return Json(lastTime);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
         #endregion
