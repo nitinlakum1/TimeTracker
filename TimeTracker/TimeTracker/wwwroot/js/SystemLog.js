@@ -59,7 +59,6 @@
 
 $('#cmbUser').change(function () {
     $('#tblSystemLogs').DataTable().draw();
-    displayLastTime();
 });
 
 $('#txtDate').change(function () {
@@ -223,20 +222,3 @@ function Close() {
     $("#deleteId").val(0);
     $("#comformdelete").modal('hide');
 }
-
-function displayLastTime() {
-    $.ajax({
-        url: '/SystemLog/LastTime/',
-        type: 'GET',
-        data: {
-            userId: $('#cmbUser').val()
-        },
-        success: function (result) {
-            $('#spnLastTime').text(result);
-            //$('#testTime').text(result);
-        },
-        error: function (result) {
-            alert("Something went wrong!");
-        },
-    })
-};
