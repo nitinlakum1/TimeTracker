@@ -168,7 +168,9 @@ function bindMRDataTable() {
                                     totalHours++;
                                     totalMinutes = totalMinutes - 60;
                                 }
-                                var Hours = ("0" + totalHours).slice(-2);
+                                var Hours = "";
+                                
+                                totalHours < 10 ? Hours = ("0" + totalHours) : Hours = totalHours;
                                 var Minutes = ("0" + totalMinutes).slice(-2);
                                 totalMonthTime = `${Hours}:${Minutes}`;
                                 return row.totalTime;

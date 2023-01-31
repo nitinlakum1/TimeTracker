@@ -24,33 +24,32 @@ namespace TimeTracker_Data
         public DbSet<UpdateServices> UpdateServices { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Users>()
-               .HasOne(g => g.Roles)
-               .WithOne()
-               .OnDelete(DeleteBehavior.NoAction);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Users>()
+        //       .HasOne(g => g.Roles)
+        //       .WithOne()
+        //       .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<SystemLogs>()
-               .HasOne(g => g.Users)
-               .WithOne()
-               .OnDelete(DeleteBehavior.NoAction);
+        //    modelBuilder.Entity<SystemLogs>()
+        //       .HasOne(g => g.Users)
+        //       .WithOne()
+        //       .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Salarys>()
-               .HasOne(g => g.Users)
-               .WithOne()
-               .OnDelete(DeleteBehavior.NoAction);
+        //    modelBuilder.Entity<Salarys>()
+        //       .HasOne(g => g.Users)
+        //       .WithOne()
+        //       .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<SalaryReports>()
-               .HasOne(g => g.Users)
-               .WithOne()
-               .OnDelete(DeleteBehavior.NoAction);
+        //    modelBuilder.Entity<SalaryReports>()
+        //       .HasOne(g => g.Users)
+        //       .WithOne()
+        //       .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Leaves>()
-               .HasOne(g => g.Users)
-               .WithOne()
-               .OnDelete(DeleteBehavior.NoAction);
-
-        }
+        //    modelBuilder.Entity<Leaves>()
+        //       .HasOne(g => g.Users)
+        //       .WithOne()
+        //       .OnDelete(DeleteBehavior.NoAction);
+        //}
     }
 }
