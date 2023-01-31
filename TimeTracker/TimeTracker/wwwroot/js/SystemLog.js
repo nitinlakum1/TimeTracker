@@ -59,14 +59,15 @@
 
 $('#cmbUser').change(function () {
     $('#tblSystemLogs').DataTable().draw();
+    displayLastTime();
 });
 
 $('#txtDate').change(function () {
     $('#tblSystemLogs').DataTable().draw();
+    displayLastTime()
 });
 
 function startTimeLog() {
-    debugger
     var lastTime = $('#spnLastTime').text();
     var hour = parseInt(lastTime.split(':')[0]);
     var min = parseInt(lastTime.split(':')[1]);
@@ -224,3 +225,21 @@ function Close() {
     $("#deleteId").val(0);
     $("#comformdelete").modal('hide');
 }
+
+
+function displayLastTime() {
+    $.ajax({
+        url: '/SystemLog/GetLastTime/',
+        type: 'GET',
+        data: {
+            userId: $('#cmbUser').val(),
+            logDate: $('#txtDate').val()
+        },
+        success: function (result) {
+            $('#spnLastTime').text(result);
+        },
+        error: function (result) {
+            alert("Something went wrong!");
+        },
+    })
+};

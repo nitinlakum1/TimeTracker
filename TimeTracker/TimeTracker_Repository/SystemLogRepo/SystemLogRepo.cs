@@ -55,6 +55,11 @@ namespace TimeTracker_Repository.SystemLogRepo
         {
             return await _systemLogData.DeleteLog(id);
         }
+
+        public async Task<TimeSpan> GetLastTime(int userId, DateTime logDate)
+        {
+            return await _systemLogData.GetLastTime(userId, logDate);
+        }
         #endregion
     }
 }

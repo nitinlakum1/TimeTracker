@@ -245,6 +245,34 @@ namespace TimeTracker.Controllers
             }
             return Json(new { isSuccess, message });
         }
+
+        public async Task<IActionResult> GetLastTime(int userId, DateTime logDate)
+        {
+            try
+            {
+                userId = (userId > 0 ? userId : _httpContextAccessor?.HttpContext?.User.GetIdFromClaim()) ?? 0;
+
+                var todaysHour = new TimeSpan();
+                if (logDate == DateTime.Now.Date)
+                {
+                    var todaysSystemLog = await _systemlogRepo.GetTodaysSystemLog(userId);
+
+                    todaysHour = GetTotalHours(todaysSystemLog);
+                }
+                else
+                {
+                    todaysHour = await _systemlogRepo.GetLastTime(userId, logDate);
+                }
+
+                string lastPastTime = string.Format("{0:D2}:{1:D2}:{2:D2}", todaysHour.Hours, todaysHour.Minutes, todaysHour.Seconds);
+
+                return Json(lastPastTime);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
         #endregion
 
         #region Private_Methods

@@ -83,6 +83,30 @@ namespace TimeTracker_Data.Modules
 
             return true;
         }
+
+        public async Task<TimeSpan> GetLastTime(int userId, DateTime logDate)
+        {
+            var firstLog = await _context.SystemLogs
+             .Where(a => a.LogTime.Date == logDate
+                    && a.UserId == userId)
+             .OrderBy(a => a.LogTime)
+             .FirstOrDefaultAsync();
+
+            var lastLog = await _context.SystemLogs
+             .Where(a => a.LogTime.Date == logDate
+                    && a.UserId == userId)
+             .OrderByDescending(a => a.LogTime)
+             .FirstOrDefaultAsync();
+
+            var result = new TimeSpan();
+            if (firstLog != null && lastLog != null)
+            {
+            result = (lastLog.LogTime.Date == DateTime.Now.Date ? DateTime.Now : lastLog.LogTime)
+                          - firstLog.LogTime;
+            }
+
+            return result;
+        }
         #endregion
     }
 }

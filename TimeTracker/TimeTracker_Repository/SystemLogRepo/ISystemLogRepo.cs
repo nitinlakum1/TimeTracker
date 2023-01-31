@@ -13,5 +13,7 @@ namespace TimeTracker_Repository.SystemLogRepo
         Task<bool> AddLog(SystemLogAdddModel model);
 
         Task<bool> DeleteLog(int id);
+
+        Task<TimeSpan> GetLastTime(int userId, DateTime logDate);
     }
 }
