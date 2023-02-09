@@ -39,7 +39,7 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "1.1.1";
+            this.serviceInstaller1.Description = "1.0.2";
             this.serviceInstaller1.DisplayName = "TTService";
             this.serviceInstaller1.ServiceName = "TTService";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;

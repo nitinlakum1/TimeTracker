@@ -37,23 +37,23 @@ namespace UpdateService
 
                 try
                 {
-                    string version = "";
+                    string version = "1.0.1";
                     try
                     {
                         ManagementObject managementObject = new ManagementObject(new ManagementPath("Win32_Service.Name='TTService'"));
 
                         version = managementObject["Description"].ToString();
                     }
-                    catch (Exception ex)
+                    catch
                     {
-                        WriteTextFile("While getting Description", ex.Message, 0);
+                        version = "1.0.1";
+                        WriteTextFile("While getting Description", "No", 0);
                     }
 
                     var updateService = await systemLogData.GetUpdateService("TTService");
 
-                    if (string.IsNullOrWhiteSpace(version)
-                        || (updateService != null
-                            && updateService.Version != version))
+                    if (updateService != null
+                        && updateService.Version != version)
                     {
                         //Stop TTService
                         await ExecuteCommand("sc stop \"TTService\"");
@@ -104,7 +104,8 @@ namespace UpdateService
                         }
                     }
 
-                    Thread.Sleep(10000);
+                    //5 Minutes
+                    Thread.Sleep(1000 * 60 * 5);
                 }
                 catch (Exception ex)
                 {
