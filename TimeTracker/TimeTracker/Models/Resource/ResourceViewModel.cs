@@ -8,6 +8,5 @@
         public string salary { get; set; }
         public int CityId { get; set; }
         public string Token { get; set; }
-        public string Details { get; set; }
     }
 }
