@@ -515,6 +515,8 @@ namespace TimeTrackerService
                             result = !companyHolidays.Split(',').Contains(DateTime.Now.ToString("dd-MM-yyyy"));
                         }
                     }
+
+                    //TODO: Validate Employee leave.
                 }
                 #endregion
             }
