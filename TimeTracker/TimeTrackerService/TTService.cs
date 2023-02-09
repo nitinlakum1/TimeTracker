@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.ServiceProcess;
-using System.Threading;
 using System.Threading.Tasks;
 using TimeTrackerService.DataModel;
 using static TimeTrackerService.Enums;
@@ -37,7 +36,6 @@ namespace TimeTrackerService
             {
                 wifiName = await GetConnectedWifi();
             }
-            WriteTextFile("OnStart", "Service is Start", 0);
             await SetLog("Service is Start", LogTypes.ServiceStart);
             servesStart = true;
         }
@@ -50,19 +48,15 @@ namespace TimeTrackerService
             {
                 case SessionChangeReason.SessionLogon:
                     while (!servesStart) { }
-                    WriteTextFile("OnSessionChange", "System Log On", 0);
                     await SetLog("System Log On", LogTypes.SystemLogOn);
                     break;
                 case SessionChangeReason.SessionLogoff:
-                    WriteTextFile("OnSessionChange", "System Log Off", 0);
                     await SetSystemLogOff("System Log Off", LogTypes.SystemLogOff);
                     break;
                 case SessionChangeReason.SessionLock:
-                    WriteTextFile("OnSessionChange", "System Locked", 0);
                     await SetLog("System Locked", LogTypes.SystemLock);
                     break;
                 case SessionChangeReason.SessionUnlock:
-                    WriteTextFile("OnSessionChange", "System Unlocked", 0);
                     await SetLog("System Unlocked", LogTypes.SystemUnlock);
                     break;
                 default:
@@ -83,6 +77,93 @@ namespace TimeTrackerService
         #endregion
 
         #region Private Method
+        //private static async Task SetLog(string message, LogTypes logType)
+        //{
+        //    try
+        //    {
+        //        bool serverOnline = await systemLogData.IsServerConnected();
+        //        if (serverOnline)
+        //        {
+        //            //Get settings from database then write in setting.txt file.
+        //            await WriteSetting();
+        //        }
+
+        //        bool writeLog = await ValidateSettings();
+
+        //        if (writeLog)
+        //        {
+        //            var logTime = DateTime.Now;
+        //            var lastLog = GetTodaysLog();
+        //            var addLog = true;
+        //            if (lastLog != null)
+        //            {
+        //                if(lastLog.LogType == LogTypes.SystemLogOn
+        //                    || lastLog.LogType == LogTypes.SystemUnlock
+        //                    || lastLog.LogType == LogTypes.ServiceStart)
+        //                {
+        //                    addLog = logType == LogTypes.SystemLock || logType == LogTypes.SystemLogOff;
+        //                }
+
+        //                if (lastLog.LogType == LogTypes.SystemLock)
+        //                {
+        //                    addLog = logType == LogTypes.SystemUnlock || logType == LogTypes.SystemLogOn;
+        //                }
+        //            }
+
+        //            if (addLog)
+        //            {
+        //                string wifiName = await GetConnectedWifi();
+        //                if (serverOnline)
+        //                {
+        //                    //Sync log text file with database.
+        //                    await SyncTextFileInDB();
+        //                    try
+        //                    {
+        //                        var macAddress = GetMacAddress();
+
+        //                        AddSystemLogModel model = new AddSystemLogModel()
+        //                        {
+        //                            MacAddress = macAddress,
+        //                            LogType = logType,
+        //                            Description = message,
+        //                            LogTime = logTime,
+        //                            CreatedOn = DateTime.Now,
+        //                            WiFiName = wifiName
+        //                        };
+        //                        await systemLogData.AddSystemLog(model);
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        WriteTextFile("AddSystemLog", ex.Message, GetErrorLineNumber(ex));
+        //                    }
+        //                }
+
+        //                string path = @"C:\Program Files\WCT\";
+        //                if (!Directory.Exists(path))
+        //                {
+        //                    Directory.CreateDirectory(path);
+        //                }
+        //                path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
+
+        //                FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
+        //                StreamWriter sWriter = new StreamWriter(fs);
+        //                sWriter.BaseStream.Seek(0, SeekOrigin.End);
+        //                sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)logType} | {message} | {wifiName}");
+        //                sWriter.Flush();
+        //                sWriter.Close();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            WriteTextFile("SetLog", "Settings are not configured.", 0);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        WriteTextFile("SetLog", ex.Message, GetErrorLineNumber(ex));
+        //    }
+        //}
+
         private static async Task SetLog(string message, LogTypes logType)
         {
             try
@@ -103,7 +184,7 @@ namespace TimeTrackerService
                     var addLog = true;
                     if (lastLog != null)
                     {
-                        if(lastLog.LogType == LogTypes.SystemLogOn
+                        if (lastLog.LogType == LogTypes.SystemLogOn
                             || lastLog.LogType == LogTypes.SystemUnlock
                             || lastLog.LogType == LogTypes.ServiceStart)
                         {
@@ -119,31 +200,6 @@ namespace TimeTrackerService
                     if (addLog)
                     {
                         string wifiName = await GetConnectedWifi();
-                        if (serverOnline)
-                        {
-                            //Sync log text file with database.
-                            await SyncTextFileInDB();
-                            try
-                            {
-                                var macAddress = GetMacAddress();
-
-                                AddSystemLogModel model = new AddSystemLogModel()
-                                {
-                                    MacAddress = macAddress,
-                                    LogType = logType,
-                                    Description = message,
-                                    LogTime = logTime,
-                                    CreatedOn = DateTime.Now,
-                                    WiFiName = wifiName
-                                };
-                                await systemLogData.AddSystemLog(model);
-                            }
-                            catch (Exception ex)
-                            {
-                                WriteTextFile("AddSystemLog", ex.Message, GetErrorLineNumber(ex));
-                            }
-                        }
-
                         string path = @"C:\Program Files\WCT\";
                         if (!Directory.Exists(path))
                         {
@@ -157,6 +213,9 @@ namespace TimeTrackerService
                         sWriter.WriteLine($"{logTime:dd-MM-yy hh:mm:ss tt} | {(int)logType} | {message} | {wifiName}");
                         sWriter.Flush();
                         sWriter.Close();
+
+                        //Sync log text file with database.
+                        await SyncTextFileInDB();
                     }
                 }
                 else
@@ -251,6 +310,21 @@ namespace TimeTrackerService
 
                 if (log != null)
                 {
+                    DirectoryInfo directoryInfo = new DirectoryInfo(@"C:\Program Files\WCT\");
+                    FileInfo[] Files = directoryInfo.GetFiles("*.txt"); //Getting Text files
+
+                    foreach (FileInfo file in Files)
+                    {
+                        var fileLogTime = DateTime.ParseExact(file.Name.Split('.')[0], "dd_MM_yy", null);
+
+                        if (File.Exists(@"C:\Program Files\WCT\" + file.Name)
+                            && log.LogTime.Date > fileLogTime)
+                        {
+                            //Delete extra unwanted text files.
+                            File.Delete(@"C:\Program Files\WCT\" + file.Name);
+                        }
+                    }
+
                     List<string> filePath = new List<string>();
                     var length = (DateTime.Now.Date - log.LogTime.Date).TotalDays;
 
@@ -287,7 +361,7 @@ namespace TimeTrackerService
                                             Description = message,
                                             LogTime = logTime,
                                             CreatedOn = DateTime.Now,
-                                            WiFiName= wifiName
+                                            WiFiName = wifiName
                                         };
                                         await systemLogData.AddSystemLog(model);
                                     }
@@ -441,6 +515,8 @@ namespace TimeTrackerService
                             result = !companyHolidays.Split(',').Contains(DateTime.Now.ToString("dd-MM-yyyy"));
                         }
                     }
+
+                    //TODO: Validate Employee leave.
                 }
                 #endregion
             }
