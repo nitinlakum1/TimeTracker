@@ -96,7 +96,6 @@ namespace TimeTracker.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Update(EditUserViewModel model)
         {

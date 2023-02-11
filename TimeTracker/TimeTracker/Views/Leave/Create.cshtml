@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label asp-for="LeaveFromDate" class="required">Leave Start</label>
-                            <input asp-for="LeaveFromDate" type="date" class="form-control form-control-sm" min="@DateTime.Now.ToString("yyyy/MM/dd")">
+                            <input asp-for="LeaveFromDate" type="date" class="form-control form-control-sm" min="@DateTime.Now.ToString("yyyy-MM-dd")">
                             <span asp-validation-for="LeaveFromDate" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-2">
