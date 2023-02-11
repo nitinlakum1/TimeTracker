@@ -60,6 +60,9 @@
     <Content Update="wwwroot\TimeTrackerService\TimeTrackerService.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\UpdateService\UpdateService.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

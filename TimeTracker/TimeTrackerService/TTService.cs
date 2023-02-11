@@ -191,9 +191,9 @@ namespace TimeTrackerService
                             addLog = logType == LogTypes.SystemLock || logType == LogTypes.SystemLogOff;
                         }
 
-                        if (lastLog.LogType == LogTypes.SystemLock)
+                        if (lastLog.LogType == LogTypes.SystemLock || lastLog.LogType == LogTypes.SystemLogOff)
                         {
-                            addLog = logType == LogTypes.SystemUnlock || logType == LogTypes.SystemLogOn;
+                            addLog = logType == LogTypes.SystemUnlock || logType == LogTypes.SystemLogOn || logType == LogTypes.ServiceStart;
                         }
                     }
 
@@ -351,7 +351,7 @@ namespace TimeTrackerService
                                     var message = item.Split('|')[2].Trim();
                                     var wifiName = item.Split('|')[3].Trim();
 
-                                    if (logTime >= log.LogTime)
+                                    if (logTime > log.LogTime)
                                     {
                                         string name = Enum.GetName(typeof(LogTypes), module);
                                         AddSystemLogModel model = new AddSystemLogModel()
