@@ -15,6 +15,20 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\js\Salary.js~RF1f6ab6ff.TMP" />
+    <Content Remove="wwwroot\TimeTrackerService\Delete.bat" />
+    <Content Remove="wwwroot\TimeTrackerService\Delete_Install.bat" />
+    <Content Remove="wwwroot\TimeTrackerService\Delete_Install_Start.bat" />
+    <Content Remove="wwwroot\TimeTrackerService\Install.bat" />
+    <Content Remove="wwwroot\TimeTrackerService\Install.txt" />
+    <Content Remove="wwwroot\TimeTrackerService\Install_Start.bat" />
+    <Content Remove="wwwroot\TimeTrackerService\Newtonsoft.Json.dll" />
+    <Content Remove="wwwroot\TimeTrackerService\Start.bat" />
+    <Content Remove="wwwroot\TimeTrackerService\Stop.bat" />
+    <Content Remove="wwwroot\TimeTrackerService\Stop_Delete.bat" />
+    <Content Remove="wwwroot\TimeTrackerService\TimeTrackerService.exe" />
+    <Content Remove="wwwroot\UpdateService\Delete.bat" />
+    <Content Remove="wwwroot\UpdateService\Install_Start.bat" />
+    <Content Remove="wwwroot\UpdateService\UpdateService.exe" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +41,23 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Template\Email\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\TimeTrackerService\Delete.bat" />
+    <None Include="wwwroot\TimeTrackerService\Delete_Install.bat" />
+    <None Include="wwwroot\TimeTrackerService\Delete_Install_Start.bat" />
+    <None Include="wwwroot\TimeTrackerService\Install.bat" />
+    <None Include="wwwroot\TimeTrackerService\Install.txt" />
+    <None Include="wwwroot\TimeTrackerService\Install_Start.bat" />
+    <None Include="wwwroot\TimeTrackerService\Newtonsoft.Json.dll" />
+    <None Include="wwwroot\TimeTrackerService\Start.bat" />
+    <None Include="wwwroot\TimeTrackerService\Stop.bat" />
+    <None Include="wwwroot\TimeTrackerService\Stop_Delete.bat" />
+    <None Include="wwwroot\TimeTrackerService\TimeTrackerService.exe" />
+    <None Include="wwwroot\UpdateService\Delete.bat" />
+    <None Include="wwwroot\UpdateService\Install_Start.bat" />
+    <None Include="wwwroot\UpdateService\UpdateService.exe" />
   </ItemGroup>
 
   <ItemGroup>
