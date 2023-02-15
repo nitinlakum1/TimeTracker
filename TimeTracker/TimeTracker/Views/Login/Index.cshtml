@@ -21,6 +21,14 @@
             <div class="illustration">
                 <img class="logo-image" src="~/images/6.png" width="123" height="105" />
             </div>
+
+            <div class="alert alert-success alert-dismissible fade show" role="alert" id="divAlertMsg" style="display:none;">
+                <span id="spnAlertMsg"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             <div class="form-group">
                 <input class="form-control" placeholder="Username" asp-for="Username">
                 <span asp-validation-for="Username" class="text-danger"></span>

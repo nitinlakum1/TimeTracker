@@ -24,7 +24,7 @@ namespace TimeTracker.Models.User
         public string Designation { get; set; }
 
         [Required(ErrorMessage = "Contact No. is required.")]
-        [Remote("ValidateContactNo", "User", AdditionalFields = "Id", ErrorMessage = "Email already exist.")]
+        [Remote("ValidateContactNo", "User", AdditionalFields = "Id", ErrorMessage = "Contact No. already exist.")]
         public string ContactNo { get; set; }
 
         [Required(ErrorMessage = "Gender is required.")]

@@ -35,7 +35,5 @@ namespace TimeTracker_Repository.UserRepo
         Task<bool> ValidateEmailForgotPass(string email);
 
         Task<bool> ValidateUser(string username);
-
-        Task<bool> ValidatePassword(string password, string username);
     }
 }
