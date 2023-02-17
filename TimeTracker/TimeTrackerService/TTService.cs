@@ -143,7 +143,7 @@ namespace TimeTrackerService
         //                {
         //                    Directory.CreateDirectory(path);
         //                }
-        //                path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
+        //                path = Path.Combine(path, string.Format(@"{0:dd-MM-yy}.txt", logTime));
 
         //                FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
         //                StreamWriter sWriter = new StreamWriter(fs);
@@ -205,7 +205,7 @@ namespace TimeTrackerService
                         {
                             Directory.CreateDirectory(path);
                         }
-                        path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
+                        path = Path.Combine(path, string.Format(@"{0:dd-MM-yy}.txt", logTime));
 
                         FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
                         StreamWriter sWriter = new StreamWriter(fs);
@@ -244,7 +244,7 @@ namespace TimeTrackerService
                     {
                         Directory.CreateDirectory(path);
                     }
-                    path = Path.Combine(path, string.Format(@"{0:dd_MM_yy}.txt", logTime));
+                    path = Path.Combine(path, string.Format(@"{0:dd-MM-yy}.txt", logTime));
 
                     FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
                     StreamWriter sWriter = new StreamWriter(fs);
@@ -315,7 +315,7 @@ namespace TimeTrackerService
 
                     foreach (FileInfo file in Files)
                     {
-                        var fileLogTime = DateTime.ParseExact(file.Name.Split('.')[0], "dd_MM_yy", null);
+                        var fileLogTime = DateTime.ParseExact(file.Name.Split('.')[0], "dd-MM-yy", null);
 
                         if (File.Exists(@"C:\Program Files\WCT\" + file.Name)
                             && log.LogTime.Date > fileLogTime)
@@ -328,12 +328,12 @@ namespace TimeTrackerService
                     List<string> filePath = new List<string>();
                     var length = (DateTime.Now.Date - log.LogTime.Date).TotalDays;
 
-                    filePath.Add(string.Format(@"{0:dd_MM_yy}.txt", log.LogTime));
+                    filePath.Add(string.Format(@"{0:dd-MM-yy}.txt", log.LogTime));
                     if (length > 0)
                     {
                         for (int i = 0; i < length; i++)
                         {
-                            filePath.Add(string.Format(@"{0:dd_MM_yy}.txt", log.LogTime.AddDays(i + 1)));
+                            filePath.Add(string.Format(@"{0:dd-MM-yy}.txt", log.LogTime.AddDays(i + 1)));
                         }
                     }
 
@@ -387,7 +387,7 @@ namespace TimeTrackerService
                 {
                     Directory.CreateDirectory(path);
                 }
-                path = Path.Combine(path, string.Format(@"Error_{0:dd_MM_yy}.txt", logTime));
+                path = Path.Combine(path, string.Format(@"Error-{0:dd-MM-yy}.txt", logTime));
 
                 FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write);
                 StreamWriter sWriter = new StreamWriter(fs);
@@ -531,7 +531,7 @@ namespace TimeTrackerService
         {
             try
             {
-                string path = Path.Combine(@"C:\Program Files\WCT\", string.Format(@"{0:dd_MM_yy}.txt", DateTime.Now));
+                string path = Path.Combine(@"C:\Program Files\WCT\", string.Format(@"{0:dd-MM-yy}.txt", DateTime.Now));
                 if (File.Exists(path))
                 {
                     var data = File.ReadAllLines(path);
