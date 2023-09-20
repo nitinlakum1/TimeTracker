@@ -68,7 +68,7 @@ namespace TimeTracker.Controllers
                 client.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36";
                 request.AddHeader("x-appversion", "2.1.0");
                 request.AddHeader("x-brand", "Windows");
-                request.AddHeader("x-deviceid", "792de51e4d5be52a35f55f3570193fc3");
+                request.AddHeader("x-deviceid", "6ae23cc7-1fe0-4830-946a-41f90b0b87e4");
                 request.AddHeader("x-idtoken", $"{model.Token}");
                 request.AddHeader("x-model", "10");
                 request.AddHeader("x-os", "webapp");
@@ -232,7 +232,7 @@ namespace TimeTracker.Controllers
             _httpClient.DefaultRequestHeaders.Add("sec-fetch-site", "cross-site");
             _httpClient.DefaultRequestHeaders.Add("x-appversion", "2.1.0");
             _httpClient.DefaultRequestHeaders.Add("x-brand", "Windows");
-            _httpClient.DefaultRequestHeaders.Add("x-deviceid", "792de51e4d5be52a35f55f3570193fc3"); //Change
+            _httpClient.DefaultRequestHeaders.Add("x-deviceid", "6ae23cc7-1fe0-4830-946a-41f90b0b87e4");
             _httpClient.DefaultRequestHeaders.Add("x-idtoken", $"{token}");
             _httpClient.DefaultRequestHeaders.Add("x-model", "10");
             _httpClient.DefaultRequestHeaders.Add("x-os", "webapp");

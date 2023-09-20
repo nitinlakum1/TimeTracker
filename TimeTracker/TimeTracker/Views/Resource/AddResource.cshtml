@@ -4,16 +4,16 @@
 }
 
 @section ContentHeader{
-<div class="col-sm-6">
-    <h4 class="m-0">Resources</h4>
-</div>
-<div class="col-sm-6">
-    <ol class="breadcrumb float-sm-right">
-        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
-        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Resource">Resources</a></li>
-        <li class="breadcrumb-item active">Add Resource</li>
-    </ol>
-</div>
+    <div class="col-sm-6">
+        <h4 class="m-0">Resources</h4>
+    </div>
+    <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index" asp-controller="Resource">Resources</a></li>
+            <li class="breadcrumb-item active">Add Resource</li>
+        </ol>
+    </div>
 }
 
 <div class="row">
@@ -39,6 +39,15 @@
                                 <option value="React Native">React Native</option>
                                 <option value="Node JS Engineer">Node JS Engineer</option>
                                 <option value="Business Development Executive">Business Development Executive</option>
+                                <option value="UI/UX Designer">UI/UX Designer</option>
+                                <option value="UI/UX Developer">UI/UX Developer</option>
+                                <option value="UX Designer">UX Designer</option>
+                                <option value="UI Designer">UI Designer</option>
+                                <option value="Human Resources Consultant">Human Resources Consultant</option>
+                                <option value="Human Resource (HR) Manager">Human Resource (HR) Manager</option>
+                                <option value="Employee Relations Manager">Employee Relations Manager</option>
+                                <option value="Xamarin">Xamarin</option>
+                                <option value="Director of Human Resource">Director of Human Resource</option>
                             </select>
                         </div>
                         <div class="form-group col-md-4">
@@ -75,52 +84,52 @@
 
 
 @section Scripts{
-<script>
+    <script>
         $(document).ready(function () {
             SelectedMenu('menuMaster', 'menuResource');
             $('#Token').val(localStorage.getItem('WCT_Token'));
 
 
             var settings = {
-      "url": "https://prod.hirect.ai/hirect/candidate-service/candidates/search?searchDirect=true&cityId=275&qs=.NET Developer&pageNum=0&pageSize=10",
-      "method": "POST",
-      "timeout": 0,
-      "headers": {
-        "authority": "prod.hirect.ai",
-        "accept": "application/json, text/plain, */*",
-        "accept-language": "en-US,en;q=0.9",
-        "content-type": "application/json;charset=UTF-8 application/json;charset=UTF-8",
-        "origin": "https://recruiter.hirect.in",
-        "referer": "https://recruiter.hirect.in/",
-        "region": "in",
-        "sec-ch-ua": "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\"",
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": "\"Windows\"",
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "cross-site",
-        //"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
-        "x-appversion": "2.1.0",
-        "x-brand": "Windows",
-        "x-deviceid": "792de51e4d5be52a35f55f3570193fc3",
-        "x-idtoken": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWIwMmY0OTgwYTg1NDZhMmFkOTFmMjNlNTM5OCIsImNyZWF0ZVRpbWUiOjE2NzMyNDEzNTEzNDQsImlhdCI6MTY3MzI0MTM1MSwiaXNzIjoiaGlyZWN0X2FwcF9pc3N1ZXIifQ.RkD5AS4cn6tys5SZE5tTU5xnPL6-_tuJ5xnEH6CJYw0",
-        "x-model": "10",
-        "x-os": "webapp",
-        "x-region": "in",
-        "x-role": "1",
-        "x-timestamp": "1669877252654",
-        "x-uid": "eb02f4980a8546a2ad91f23e5398"
-      },
-      "data": "{\"education\":[\"2\",\"3\"],\"experience\":[\"1\"],\"salary\":[\"1\"],\"gender\":0,\"minAge\":18}",
-    };
+                "url": "https://prod.hirect.ai/hirect/candidate-service/candidates/search?searchDirect=true&cityId=275&qs=.NET Developer&pageNum=0&pageSize=10",
+                "method": "POST",
+                "timeout": 0,
+                "headers": {
+                    "authority": "prod.hirect.ai",
+                    "accept": "application/json, text/plain, */*",
+                    "accept-language": "en-US,en;q=0.9",
+                    "content-type": "application/json;charset=UTF-8 application/json;charset=UTF-8",
+                    "origin": "https://recruiter.hirect.in",
+                    "referer": "https://recruiter.hirect.in/",
+                    "region": "in",
+                    "sec-ch-ua": "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\"",
+                    "sec-ch-ua-mobile": "?0",
+                    "sec-ch-ua-platform": "\"Windows\"",
+                    "sec-fetch-dest": "empty",
+                    "sec-fetch-mode": "cors",
+                    "sec-fetch-site": "cross-site",
+                    //"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+                    "x-appversion": "2.1.0",
+                    "x-brand": "Windows",
+                    "x-deviceid": "792de51e4d5be52a35f55f3570193fc3",
+                    "x-idtoken": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiZWIwMmY0OTgwYTg1NDZhMmFkOTFmMjNlNTM5OCIsImNyZWF0ZVRpbWUiOjE2NzMyNDEzNTEzNDQsImlhdCI6MTY3MzI0MTM1MSwiaXNzIjoiaGlyZWN0X2FwcF9pc3N1ZXIifQ.RkD5AS4cn6tys5SZE5tTU5xnPL6-_tuJ5xnEH6CJYw0",
+                    "x-model": "10",
+                    "x-os": "webapp",
+                    "x-region": "in",
+                    "x-role": "1",
+                    "x-timestamp": "1669877252654",
+                    "x-uid": "eb02f4980a8546a2ad91f23e5398"
+                },
+                "data": "{\"education\":[\"2\",\"3\"],\"experience\":[\"1\"],\"salary\":[\"1\"],\"gender\":0,\"minAge\":18}",
+            };
 
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-    });
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+            });
         });
 
-        function setToken(){
-            localStorage.setItem('WCT_Token',$('#Token').val());
+        function setToken() {
+            localStorage.setItem('WCT_Token', $('#Token').val());
         }
-</script>
+    </script>
 }
